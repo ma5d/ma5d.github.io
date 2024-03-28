@@ -1,4 +1,0 @@
-[submodule "build"]
-	path = build
-	url = https://github.com/horse-world/horse-world.github.io.git
-	branch = build
