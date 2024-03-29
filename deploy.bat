@@ -1,5 +1,3 @@
-start npm run build
-timeout /t 40 /nobreak
 cd build
 git init
 git add .
