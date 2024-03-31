@@ -15,5 +15,5 @@ test
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-        target_branch: build
-        publish_dir: build
+            target_branch: build
+            publish_dir: build
