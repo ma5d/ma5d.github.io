@@ -4,15 +4,15 @@ sidebar_position: 1
 
 # 创建一个页面
 
-Add **Markdown or React** files to `src/pages` to create a **standalone page**:
+添加 **Markdown or React** 文件 to `src/pages` 用以创建一个 **单例页面**:
 
 - `src/pages/index.js` → `localhost:3000/`
 - `src/pages/foo.md` → `localhost:3000/foo`
 - `src/pages/foo/bar.js` → `localhost:3000/foo/bar`
 
-## Create your first React Page
+## 创建你的第一个 React 页面
 
-Create a file at `src/pages/my-react-page.js`:
+创建一个文件位于 `src/pages/my-react-page.js`:
 
 ```jsx title="src/pages/my-react-page.js"
 import React from 'react';
@@ -28,11 +28,11 @@ export default function MyReactPage() {
 }
 ```
 
-A new page is now available at [http://localhost:3000/my-react-page](http://localhost:3000/my-react-page).
+现在可以查看页面通过访问url [http://localhost:3000/my-react-page](http://localhost:3000/my-react-page).
 
-## Create your first Markdown Page
+## 创建你的第一个 Markdown 页面
 
-Create a file at `src/pages/my-markdown-page.md`:
+创建一个文件位于 `src/pages/my-markdown-page.md`:
 
 ```mdx title="src/pages/my-markdown-page.md"
 # My Markdown page
@@ -40,4 +40,4 @@ Create a file at `src/pages/my-markdown-page.md`:
 This is a Markdown page
 ```
 
-A new page is now available at [http://localhost:3000/my-markdown-page](http://localhost:3000/my-markdown-page).
+现在可以查看页面通过访问url [http://localhost:3000/my-markdown-page](http://localhost:3000/my-markdown-page).
