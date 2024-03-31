@@ -8,3 +8,8 @@ sidebar_position: 4
 [Jvm-Tutorial](https://gitee.com/looktheworld/jvmdemo)
 
 ## 通过github-action构建代码
+
+## 防盗链
+```html
+<meta name="referrer" content="no-referrer">
+```
