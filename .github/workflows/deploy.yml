@@ -29,7 +29,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: build
-          target_branch: build
 
   deploy:
     name: Deploy to GitHub Pages
@@ -50,3 +49,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+        target_branch: build
+        publish_dir: build
