@@ -13,15 +13,15 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://horse-world.github.io',
+  url: 'https://ma5d.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'horse-world', // Usually your GitHub org/user name.
-  projectName: 'horse-world.github.io', // Usually your repo name.
+  organizationName: 'ma5d', // Usually your GitHub org/user name.
+  projectName: 'ma5d.github.io', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -81,7 +81,7 @@ const config = {
           },
           {to: '/blog', label: '博客', position: 'left'},
           {
-            href: 'https://github.com/horse-world/horse-world.github.io',
+            href: 'https://github.com/ma5d/ma5d.github.io',
             label: 'GitHub',
             position: 'right',
           },
