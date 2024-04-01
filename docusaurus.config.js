@@ -72,6 +72,9 @@ const config = {
           alt: 'world',
           src: 'img/logo.svg',
         },
+        metadata: [
+          {name: 'referrer', content: 'no-referrer'},
+        ],
         items: [
           {
             type: 'docSidebar',
