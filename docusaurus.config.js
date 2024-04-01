@@ -66,15 +66,15 @@ const config = {
     ({
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
+      metadata: [
+        {name: 'referrer', content: 'no-referrer'},
+      ],
       navbar: {
         title: '恐龙文档',
         logo: {
           alt: 'world',
           src: 'img/logo.svg',
         },
-        metadata: [
-          {name: 'referrer', content: 'no-referrer'},
-        ],
         items: [
           {
             type: 'docSidebar',
