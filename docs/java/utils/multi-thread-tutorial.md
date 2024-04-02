@@ -2,14 +2,14 @@
 sidebar_position: 5
 ---
 
-# String 常量池
+# 多线程教程
  
 
 ![](http://www.minio.lookworld.com/001/java-thread/Image00099.jpg)
 
 ![](http://www.minio.lookworld.com/001/java-thread/Image00000.jpg)
 
-# 内容简介
+## 内容简介
 
 随着现代处理器的生产工艺从提升处理器主频频率转向多核化，即在一块芯片上集成多个处理器内核（Core），多核处理器（Multicore Processor）离我们越来越近了——如今就连智能手机这样的消费类设备都已配备了4核乃至8核的处理器，更何况商用系统！在此背景下，以往靠单个处理器自身处理能力的提升所带来的软件计算性能提升的那种“免费午餐”已不复存在，这使得多线程编程在充分利用计算资源、提高软件服务质量方面扮演了越来越重要的角色。故而，掌握多线程编程技能对广大开发人员的重要性亦由此可见一斑。本书以基本概念、原理与方法为主线，辅以丰富的实战案例和生活化实例，并从Java虚拟机、操作系统和硬件多个层次与角度出发，循序渐进、系统地介绍Java平台下的多线程编程核心技术及相关工具。
 
@@ -70,7 +70,7 @@ ISBN 978-7-121-31065-2
 
 本书咨询联系方式：010-51260888-819, faq@phei.com.cn。
 
-# 前言
+## 前言
 
 随着现代处理器的生产工艺从提升处理器主频频率转向多核化，即在一块芯片上集成多个处理器内核（Core），多核处理器（Multicore Processor）离我们越来越近了——如今就连智能手机这样的消费类设备都已配备了4核乃至8核的处理器，更何况商用系统！在此背景下，以往靠单个处理器自身处理能力的提升所带来的软件计算性能提升的那种“免费午餐”已不复存在，这使得多线程编程在充分利用计算资源、提高软件服务质量方面扮演了越来越重要的角色。故而，掌握多线程编程技能对广大开发人员的重要性亦由此可见一斑。
 
@@ -170,7 +170,7 @@ http://www.broadview.com.cn/31065
 
 ![](http://www.minio.lookworld.com/001/java-thread/Image00001.jpg)
 
-# 目录
+## 目录
 
 [前言](#text00003.html#chapter)
 
@@ -560,7 +560,7 @@ http://www.broadview.com.cn/31065
 
 [参考文献](#text00020.html#chapter)
 
-# 第一部分　多线程编程基础
+## 第一部分　多线程编程基础
 
 →　第1章　走近Java世界中的线程
 
@@ -582,7 +582,7 @@ http://www.broadview.com.cn/31065
 
 →　第10章　Java多线程程序的调试与测试
 
-# 第1章 走近Java世界中的线程
+## 第1章 走近Java世界中的线程
 
 To see a world in a grain of sand,  
 一颗沙里看出一个世界，  
@@ -607,15 +607,15 @@ And eternity in an hour.
 清单1-1　一个简单的Java程序
 
 ```java
-    public class SimpleJavaApp {
+    public class SimpleJavaApp `{`
     
-      public static void main(String[] args) throws Exception {
-        while (true) {
+      public static void main(String[] args) throws Exception `{`
+        while (true) `{`
           System.out.println(new Date());
           Thread.sleep(1000);
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 运行如清单1-1所示的Java程序所创建的进程在Linux系统下可以使用如下命令查看 [\[2\]](#text00006.html#ft2) ：
@@ -672,9 +672,9 @@ Thread类的两个常用构造器是：Thread()和Thread(Runnable target)。相�
 清单1-2　以定义Thread类子类的方式创建线程
 
 ```java
-    public class WelcomeApp {
+    public class WelcomeApp `{`
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
         // 创建线程
         Thread welcomeThread = new WelcomeThread();
     
@@ -683,20 +683,20 @@ Thread类的两个常用构造器是：Thread()和Thread(Runnable target)。相�
     
         // 输出“当前线程”的线程名称
         System.out.printf("1.Welcome! I'm %s.%n", Thread.currentThread().getName());
-      }
-    }
+      `}`
+    `}`
 ```
 ```java
     // 定义Thread类的子类
 ```java
-    class WelcomeThread extends Thread {
+    class WelcomeThread extends Thread `{`
     
       // 在该方法中实现线程的任务处理逻辑
       @Override
-      public void run() {
+      public void run() `{`
         System.out.printf("2.Welcome! I'm %s.%n", Thread.currentThread().getName());
-      }
-    }
+      `}`
+    `}`
 ```
 
 在如清单1-2所示的代码中，我们定义了类Thread类的子类WelcomeThread，并在该类的run方法中实现了任务处理逻辑（打印一行欢迎信息）。然后我们在main方法中创建一个WelcomeThread的实例welcomeThread，这就是创建了一个线程（welcomeThread）。接着我们调用welcomeThread的start方法启动相应的线程。如清单1-2所示的程序运行时可能输出如下内容：
@@ -707,9 +707,9 @@ Thread类的两个常用构造器是：Thread()和Thread(Runnable target)。相�
 清单1-3　以创建Runnable接口实例的方式创建线程
 
 ```java
-    public class WelcomeApp1 {
+    public class WelcomeApp1 `{`
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
         // 创建线程
         Thread welcomeThread = new Thread(new WelcomeTask());
     
@@ -718,21 +718,21 @@ Thread类的两个常用构造器是：Thread()和Thread(Runnable target)。相�
         // 输出“当前线程”的线程名称
         System.out.printf("1.Welcome! I'm %s.%n", Thread.currentThread().getName());
     
-      }
+      `}`
     
-    }
+    `}`
 ```
     
 ```java
-    class WelcomeTask implements Runnable {
+    class WelcomeTask implements Runnable `{`
       // 在该方法中实现线程的任务处理逻辑
       @Override
-      public void run() {
+      public void run() `{`
         // 输出“当前线程”的线程名称
         System.out.printf("2.Welcome! I'm %s.%n", Thread.currentThread().getName());
-      }
+      `}`
     
-    }
+    `}`
 ```
 
 在如清单1-3所示的代码中，我们先定义了一个Runnable接口的实现类WelcomeTask，并在该类的run方法中实现了我们要创建的线程的任务处理逻辑（打印一行欢迎信息）。接着，我们在main方法中创建一个WelcomeTask类的实例并以该实例作为构造器参数直接通过new创建一个Thread实例，这就创建了一个线程（welcomeThread）。如清单1-3所示的程序运行时可能输出如下内容：
@@ -768,25 +768,25 @@ Java平台中的任意一段代码（比如一个方法）总是由确定的线�
 清单1-4　应用代码直接调用线程的run方法（避免这样做！）
 
 ```java
-    public class WelcomeApp2 {
-      public static void main(String[] args) {
+    public class WelcomeApp2 `{`
+      public static void main(String[] args) `{`
     
         // 创建线程
-        Thread welcomeThread = new Thread(new Runnable() {
+        Thread welcomeThread = new Thread(new Runnable() `{`
           @Override
-          public void run() {
+          public void run() `{`
           System.out.printf("2.Welcome! I'm %s.%n", Thread.currentThread()
               .getName());
-          }
-        });
+          `}`
+        `}`);
     
         // 启动线程
         welcomeThread.start();
         // 这里直接调用线程的run方法，仅是出于演示的目的
         welcomeThread.run();
         System.out.printf("1.Welcome! I'm %s.%n", Thread.currentThread().getName());
-      }
-    }
+      `}`
+    `}`
 ```
 
 ### 1.3.2　Runnable接口
@@ -815,82 +815,82 @@ Runnable接口可以被看作对任务进行的抽象，任务的处理逻辑就
 清单1-5　线程的两种创建方式的区别
 
 ```java
-    public class ThreadCreationCmp {
+    public class ThreadCreationCmp `{`
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
         Thread t;
         CountingTask ct = new CountingTask();
     
         // 获取处理器个数
         final int numberOfProceesors = Runtime.getRuntime().availableProcessors();
     
-        for (int i = 0; i < 2 * numberOfProceesors; i++) {
+        for (int i = 0; i `<` 2 * numberOfProceesors; i++) `{`
     
           // 直接创建线程
           t = new Thread(ct);
           t.start();
-        }
+        `}`
     
-        for (int i = 0; i < 2 * numberOfProceesors; i++) {
+        for (int i = 0; i `<` 2 * numberOfProceesors; i++) `{`
     
           // 以子类的方式创建线程
           t = new CountingThread();
     
           t.start();
-        }
+        `}`
     
-      }
+      `}`
     
-      static class Counter {
+      static class Counter `{`
         private int count = 0;
     
-        public void increment() {
+        public void increment() `{`
           count++;
-        }
+        `}`
     
-        public int value() {
+        public int value() `{`
           return count;
-        }
-      }
+        `}`
+      `}`
     
-      static class CountingTask implements Runnable {
+      static class CountingTask implements Runnable `{`
         private Counter counter = new Counter();
     
         @Override
-        public void run() {
-          for (int i = 0; i < 100; i++) {
+        public void run() `{`
+          for (int i = 0; i `<` 100; i++) `{`
           doSomething();
           counter.increment();
-          }
+          `}`
           System.out.println("CountingTask:" + counter.value());
-        }
+        `}`
     
-        private void doSomething() {
+        private void doSomething() `{`
           // 使当前线程休眠随机时间
           Tools.randomPause(80);
-        }
+        `}`
     
-      }
+      `}`
     
-      static class CountingThread extends Thread {
+      static class CountingThread extends Thread `{`
         private Counter counter = new Counter();
     
         @Override
-        public void run() {
-          for (int i = 0; i < 100; i++) {
+        public void run() `{`
+          for (int i = 0; i `<` 100; i++) `{`
             doSomething();
             counter.increment();
-          }
+          `}`
           System.out.println("CountingThread:" + counter.value());
-        }
+        `}`
     
-        private void doSomething() {
+        private void doSomething() `{`
           // 使当前线程休眠随机时间
           Tools.randomPause(80);
-        }
+        `}`
     
-      }
-    }
+      `}`
+    `}`
 ```
 
 ### 1.3.3　线程属性
@@ -935,33 +935,33 @@ sleep静态方法的作用相当于执行该方法的线程对线程调度器说
 清单1-6　简易的倒计时器
 
 ```java
-    public class SimpleTimer {
+    public class SimpleTimer `{`
       private static int count;
     
-      public static void main(String[] args) {
-        count = args.length >= 1 ? Integer.valueOf(args[0]) : 60;
+      public static void main(String[] args) `{`
+        count = args.length `>`= 1 ? Integer.valueOf(args[0]) : 60;
         int remaining;
-        while (true) {
+        while (true) `{`
           remaining = countDown();
-          if (0 == remaining) {
+          if (0 == remaining) `{`
           break;
-          } else {
+          `}` else `{`
           System.out.println("Remaining " + count + " second(s)");
-          }
+          `}`
     
-          try {
+          try `{`
           Thread.sleep(1000);
-          } catch (InterruptedException e) {
+          `}` catch (InterruptedException e) `{`
           // 什么也不做
-          }
-        }
+          `}`
+        `}`
         System.out.println("Done.");
-      }
+      `}`
     
-      private static int countDown() {
+      private static int countDown() `{`
         return count--;
-      }
-    }
+      `}`
+    `}`
 ```
 
 ### 1.3.5　Thread类的一些废弃方法
@@ -988,9 +988,9 @@ Java虚拟机启动的时候会创建一个main线程，该线程负责执行Jav
 清单1-7　Java代码的执行线程
 
 ```java
-    public class JavaThreadAnywhere {
+    public class JavaThreadAnywhere `{`
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
         // 获取当前线程
         Thread currentThread = Thread.currentThread();
     
@@ -1001,16 +1001,16 @@ Java虚拟机启动的时候会创建一个main线程，该线程负责执行Jav
           currentThreadName);
         Helper helper = new Helper("Java Thread AnyWhere");
         helper.run();
-      }
+      `}`
     
-      static class Helper implements Runnable {
+      static class Helper implements Runnable `{`
         private final String message;
     
-        public Helper(String message) {
+        public Helper(String message) `{`
           this.message = message;
-        }
+        `}`
     
-        private void doSomething(String message) {
+        private void doSomething(String message) `{`
           // 获取当前线程
           Thread currentThread = Thread.currentThread();
     
@@ -1019,14 +1019,14 @@ Java虚拟机启动的时候会创建一个main线程，该线程负责执行Jav
           System.out.printf("The doSomething method was executed by thread:%s",
               currentThreadName);
           System.out.println("Do something with " + message);
-        }
+        `}`
     
         @Override
-        public void run() {
+        public void run() `{`
           doSomething(message);
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 清单1-7中的程序利用currentThread方法打印出当前线程的线程名，其执行时输出如下：
@@ -1043,25 +1043,25 @@ Web应用中的Servlet类的doGet、doPost等方法也总是由确定的线程�
 
     @WebServlet("/echo")
 ```java
-    public class EchoServlet extends HttpServlet {
+    public class EchoServlet extends HttpServlet `{`
       private static final long serialVersionUID = 4787580353870831328L;
     
       @Override
       protected void
           doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException `{`
         // 获取当前线程
         Thread currentThread = Thread.currentThread();
         // 获取当前线程的线程名称
         String currentThreadName = currentThread.getName();
         response.setContentType("text/plain");
-        try (PrintWriter pwr = response.getWriter()) {
+        try (PrintWriter pwr = response.getWriter()) `{`
           // 输出处理当前请求的线程的名称
           pwr.printf("This request was handled by thread:%s%n", currentThreadName);
           pwr.flush();
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 如清单1-8所示的Servlet类在处理一个HTTP GET请求时，其输出可能如下所示（以Tomcat作为Web容器）：
@@ -1157,38 +1157,38 @@ Java Mission Control（JMC）不仅能够用来获取与查看线程转储，它
 清单1-9　使用多线程下载文件
 
 ```java
-    public class FileDownloaderApp {
+    public class FileDownloaderApp `{`
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
         Thread downloaderThread = null;
-        for (String url : args) {
+        for (String url : args) `{`
           // 创建文件下载器线程
           downloaderThread = new Thread(new FileDownloader(url));
           // 启动文件下载器线程
           downloaderThread.start();
-        }
-      }
+        `}`
+      `}`
     
       // 文件下载器
     
-      static class FileDownloader implements Runnable {
+      static class FileDownloader implements Runnable `{`
 
 
         private final String fileURL;
     
-        public FileDownloader(String fileURL) {
+        public FileDownloader(String fileURL) `{`
           this.fileURL = fileURL;
-        }
+        `}`
     
         @Override
-        public void run() {
+        public void run() `{`
           Debug.info("Downloading from " + fileURL);
 
 
           String fileBaseName = fileURL.substring(fileURL.lastIndexOf('/') + 1);
 
 
-          try {
+          try `{`
 
 
             URL url = new URL(fileURL);
@@ -1209,27 +1209,27 @@ Java Mission Control（JMC）不仅能够用来获取与查看线程转储，它
             downloadFile(url, new FileOutputStream(localFileName), 1024);
 
 
-          } catch (Exception e) {
+          `}` catch (Exception e) `{`
 
 
             e.printStackTrace();
 
 
-          }
+          `}`
 
 
           Debug.info("Done downloading from " + fileURL);
 
 
-        }
+        `}`
     
         // 从指定的URL下载文件，并将其保存到指定的输出流中
         private void downloadFile(URL url, OutputStream outputStream, int bufSize)
-            throws MalformedURLException, IOException {
+            throws MalformedURLException, IOException `{`
           // 完整代码参见本书配套下载资源
-        }
-      }// FileDownloader结束
-    }
+        `}`
+      `}`// FileDownloader结束
+    `}`
 ```
 
 上述程序的main方法为其命令行参数中指定的URL列表中的每个URL创建一个线程。这些线程所执行的任务就是根据指定URL下载文件将其存储在本地磁盘中。而下载文件这个任务的处理逻辑我们是在Runnable接口的实现类FileDownloader的run方法中实现的。
@@ -1320,7 +1320,7 @@ Java Mission Control（JMC）不仅能够用来获取与查看线程转储，它
 
 [\[17\]](#text00006.html#fn17) 例如，一个系统被分解为多个模块，每个模块是一个Java进程（程序）。各个模块间采用网络进行通信。
 
-# 第2章 线程编程的目标与挑战
+## 第2章 线程编程的目标与挑战
 
 If I had only one hour to save the world, I would spend fifty-five minutes defining the problem, and only five minutes finding the solution.  
 如果我只有1小时来拯救世界，我将花55分钟去定义这个问题而只花5分钟去寻找解决方案。
@@ -1363,8 +1363,8 @@ If I had only one hour to save the world, I would spend fifty-five minutes defin
 下面我们看一个竞态实例。某系统为了便于跟踪对其接收到的HTTP请求的处理，会为其收到的每个HTTP请求分配一个唯一编号（Request ID）。Request ID是一个固定长度的编码字符串，其中最后3位是一个在0～999循环递增（即从“000”递增到“999”，接着又从“000”开始递增）的序列号。我们很容易就可以写一个这样的Request ID生成器RequestIDGenerator，如清单2-1所示。
 
 清单2-1　Request ID生成器源码
-
-    public final class RequestIDGenerator implements CircularSeqGenerator {
+```java
+    public final class RequestIDGenerator implements CircularSeqGenerator `{`
       /**
       * 保存该类的唯一实例
       */
@@ -1373,9 +1373,9 @@ If I had only one hour to save the world, I would spend fifty-five minutes defin
       private short sequence = -1;
     
       // 私有构造器
-      private RequestIDGenerator() {
+      private RequestIDGenerator() `{`
         // 什么也不做
-      }
+      `}`
     
       /**
       * 生成循环递增序列号
@@ -1385,28 +1385,28 @@ If I had only one hour to save the world, I would spend fifty-five minutes defin
       @Override
 
 
-      public short nextSequence() {
+      public short nextSequence() `{`
 
 
-        if (sequence >= SEQ_UPPER_LIMIT) {
+        if (sequence `>`= SEQ_UPPER_LIMIT) `{`
 
 
           sequence = 0;
 
 
-        } else {
+        `}` else `{`
 
 
           sequence++;
 
 
-        }
+        `}`
 
 
         return sequence;
 
 
-      }
+      `}`
 
 
 
@@ -1415,7 +1415,7 @@ If I had only one hour to save the world, I would spend fifty-five minutes defin
       *
       * @return
       */
-      public String nextID() {
+      public String nextID() `{`
         SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
         String timestamp = sdf.format(new Date());
         DecimalFormat df = new DecimalFormat("000");
@@ -1423,17 +1423,17 @@ If I had only one hour to save the world, I would spend fifty-five minutes defin
         // 生成请求序列号
         short sequenceNo = nextSequence();
         return "0049" + timestamp + df.format(sequenceNo);
-      }
+      `}`
     
       /**
        * 返回该类的唯一实例
        *
        * @return
        */
-      public static RequestIDGenerator getInstance() {
+      public static RequestIDGenerator getInstance() `{`
         return INSTANCE;
-      }
-    }
+      `}`
+    `}`
 ```
 
 清单2-2模拟了RequestIDGenerator在实际环境（多线程环境）中的使用情况：每个业务线程（请求处理线程）在处理其接收到的请求前都要先为该请求申请一个Request ID。
@@ -1441,55 +1441,55 @@ If I had only one hour to save the world, I would spend fifty-five minutes defin
 清单2-2　竞态Demo
 
 ```java
-    public class RaceConditionDemo {
+    public class RaceConditionDemo `{`
     
-      public static void main(String[] args) throws Exception {
+      public static void main(String[] args) throws Exception `{`
         // 客户端线程数
-        int numberOfThreads = args.length > 0 ? Short.valueOf(args[0]) : Runtime
+        int numberOfThreads = args.length `>` 0 ? Short.valueOf(args[0]) : Runtime
           .getRuntime().availableProcessors();
         Thread[] workerThreads = new Thread[numberOfThreads];
-        for (int i = 0; i < numberOfThreads; i++) {
+        for (int i = 0; i `<` numberOfThreads; i++) `{`
           workerThreads[i] = new WorkerThread(i, 10);
-        }
+        `}`
     
         // 待所有线程创建完毕后，再一次性将其启动，以便这些线程能够尽可能地在同一时间内运行
-        for (Thread ct : workerThreads) {
+        for (Thread ct : workerThreads) `{`
           ct.start();
-        }
-      }
+        `}`
+      `}`
     
       // 模拟业务线程
-      static class WorkerThread extends Thread {
+      static class WorkerThread extends Thread `{`
         private final int requestCount;
     
-        public WorkerThread(int id, int requestCount) {
+        public WorkerThread(int id, int requestCount) `{`
           super("worker-" + id);
           this.requestCount = requestCount;
-        }
+        `}`
     
         @Override
-        public void run() {
+        public void run() `{`
           int i = requestCount;
           String requestID;
           RequestIDGenerator requestIDGen = RequestIDGenerator.getInstance();
-          while (i-- > 0) {
+          while (i-- `>` 0) `{`
             // 生成Request ID
             requestID = requestIDGen.nextID();
 
 
             processRequest(requestID);
-          }
-        }
+          `}`
+        `}`
     
         // 模拟请求处理
-        private void processRequest(String requestID) {
+        private void processRequest(String requestID) `{`
           // 模拟请求处理耗时
           Tools.randomPause(50);
           System.out.printf("%s got requestID: %s %n",
               Thread.currentThread().getName(), requestID);
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 使用如下命令来模拟4个业务线程（其中每个线程处理10个请求）运行上述程序：
@@ -1581,13 +1581,13 @@ read-modify-write（读—改—写）操作，该操作可以被细分为这样
 一个线程在执行完指令①之后到开始（或者正在）执行指令②的这段时间内其他线程可能已经更新了共享变量（sequence）的值，这就使得该线程在执行指令②时使用的是共享变量的旧值（读脏数据）。接着，该线程把根据这个旧值计算出来的结果更新到共享变量，而这又使得其他线程对该共享变量所做的更新被“覆盖”，即造成了更新丢失。读者也可以根据二维表分析法自行分析多个线程并发执行上述代码的时候可能导致丢失更新和读脏数据的问题。
 
 check-then-act（检测而后行动）操作，该操作可以被细分为这样几个步骤：读取某个共享变量的值，根据该变量的值决定下一步的动作是什么。例如，在清单2-1中，nextSequence()中的if-else语句就是该模式的一个实例。
-
-    if (sequence >= 999) { // 子操作①check：检测共享变量的值
+```java
+    if (sequence `>`= 999) `{` // 子操作①check：检测共享变量的值
       sequence = 0; // 子操作②act：下一步的操作
-    }
-``` else {
+    `}`
+ else `{`
       sequence++;
-    }
+    `}`
 ```
 
 一个线程在执行完子操作①到开始（或者正在）执行子操作②的这段时间内，其他线程可能已经更新了共享变量的值而使得if语句中的条件变为不成立，那么此时该线程仍然会执行子操作②，尽管这个子操作所需的前提（if语句中的条件）实际上并未成立！读者也可以根据二维表分析法自行分析多个线程并发执行上述代码的时候可能导致丢失更新和读脏数据的问题。
@@ -1599,20 +1599,20 @@ check-then-act（检测而后行动）操作，该操作可以被细分为这样
 清单2-3　不会出现竞态的一个例子
 
 ```java
-    public class NoRaceCondition {
+    public class NoRaceCondition `{`
     
-      public int nextSequence(int sequence) {
+      public int nextSequence(int sequence) `{`
     
         // 以下语句使用的是局部变量而非状态变量，并不会产生竞态
-        if (sequence >= 999) {
+        if (sequence `>`= 999) `{`
           sequence = 0;
-        } else {
+        `}` else `{`
           sequence++;
-        }
+        `}`
         return sequence;
-      }
+      `}`
     
-    }
+    `}`
 ```
 
 如清单2-2所示Demo中的竞态问题，其中一个解决方法就是在RequestIDGenerator.nextSequence()的声明中添加一个synchronized关键字，如清单2-4所示。
@@ -1620,20 +1620,20 @@ check-then-act（检测而后行动）操作，该操作可以被细分为这样
 清单2-4　不会导致竞态的序列号生成器源码
 
 ```java
-    public class SafeCircularSeqGenerator implements CircularSeqGenerator {
+    public class SafeCircularSeqGenerator implements CircularSeqGenerator `{`
       private short sequence = -1;
     
       public synchronized
     
-     short nextSequence() {
-        if (sequence >= 999) {
+     short nextSequence() `{`
+        if (sequence `>`= 999) `{`
           sequence = 0;
-        } else {
+        `}` else `{`
           sequence++;
-        }
+        `}`
         return sequence;
-      }
-    }
+      `}`
+    `}`
 ```
 
 synchronized关键字会使其修饰的方法在任一时刻只能够被一个线程执行，这使得该方法涉及的共享变量在任一时刻只能够有一个线程访问（读、写），从而避免了这个方法的交错执行而导致的干扰，这样就消除了竞态。第3章会详细解释synchronized。
@@ -1680,10 +1680,10 @@ synchronized关键字会使其修饰的方法在任一时刻只能够被一个�
 清单2-5　原子操作问题示例
 
 ```java
-    public class AtomicityExample {
+    public class AtomicityExample `{`
       private HostInfo hostInfo;
     
-      public void updateHostInfo(String ip, int port) {
+      public void updateHostInfo(String ip, int port) `{`
         // 以下操作不是原子操作
         hostInfo.setIp(ip); // 语句①
 
@@ -1691,24 +1691,24 @@ synchronized关键字会使其修饰的方法在任一时刻只能够被一个�
         hostInfo.setPort(port); // 语句②
 
 
-      }
+      `}`
     
-      public void connectToHost() {
+      public void connectToHost() `{`
         String ip = hostInfo.getIp();
         int port = hostInfo.getPort();
         connectToHost(ip, port);
-      }
+      `}`
     
-      private void connectToHost(String ip, int port) {
+      private void connectToHost(String ip, int port) `{`
         // ...
-      }
+      `}`
     
-      public static class HostInfo {
+      public static class HostInfo `{`
         private String ip;
         private int port;
         //...
-      }
-    }
+      `}`
+    `}`
 ```
 
 设O1 和O2 是访问共享变量V的两个原子操作，这两个操作并非都是读操作。那么一个线程执行O1 期间（开始执行而未执行完毕），其他线程无法执行O2 。也就是说，访问同一组共享变量的原子操作是不能够被交错的，这就排除了一个线程执行一个操作期间另外一个线程读取或者更新该操作所访问的共享变量而导致的干扰（读脏数据）和冲突（丢失更新）的可能。这就是“不可分割”的第二个含义。由此可见，使一个操作具备原子性也就消除了这个操作导致竞态的可能性。
@@ -1743,32 +1743,32 @@ synchronized关键字会使其修饰的方法在任一时刻只能够被一个�
      * @author Viscent Huang
      */
 ```java
-    public class NonAtomicAssignmentDemo implements Runnable {
+    public class NonAtomicAssignmentDemo implements Runnable `{`
       static long value = 0;
       private final long valueToSet;
-      public NonAtomicAssignmentDemo(long valueToSet) {
+      public NonAtomicAssignmentDemo(long valueToSet) `{`
         this.valueToSet = valueToSet;
-      }
+      `}`
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
         // 线程updateThread1将data更新为0
         Thread updateThread1 = new Thread(new NonAtomicAssignmentDemo(0L));
         // 线程updateThread2将data更新为-1
         Thread updateThread2 = new Thread(new NonAtomicAssignmentDemo(-1L));
     
-        PrintStream ps = new PrintStream(new OutputStream() {
+        PrintStream ps = new PrintStream(new OutputStream() `{`
           @Override
-          public void write(int b) throws IOException {
+          public void write(int b) throws IOException `{`
           // 不实际进行输出
-          }
-        });
+          `}`
+        `}`);
     
         updateThread1.start();
         updateThread2.start();
     
         // 共享变量value的快照（即瞬间值）
         long snapshot;
-        while (0 == (snapshot = value) || -1 == snapshot) {
+        while (0 == (snapshot = value) || -1 == snapshot) `{`
           /*
           * 这里，我们将“snapshot = value”放在循环内是为了不断地读取共享变量value的值。
           * 而server运行模式的Java虚拟机（的JIT编译器）在生成这段代码对应的机器码的时候，
@@ -1782,20 +1782,20 @@ synchronized关键字会使其修饰的方法在任一时刻只能够被一个�
           * http://www.compileroptimizations.com/category/hoisting.htm
           */
          ps.print(snapshot);
-        }
+        `}`
     
         System.err.printf("Unexpected data: %d(0x%016x)", snapshot, snapshot);
         ps.close();
         System.exit(0);
-      }
+      `}`
     
       @Override
-      public void run() {
-        for (; ; ) {
+      public void run() `{`
+        for (; ; ) `{`
          value = valueToSet;
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 使用32位（而不是64位）Java虚拟机运行如清单2-6所示的Demo，我们可以看到该程序的输出是：
@@ -1817,15 +1817,15 @@ synchronized关键字会使其修饰的方法在任一时刻只能够被一个�
 volatile关键字仅能够保障变量写操作的原子性，它并不能保障其他操作（比如read-modify-write操作和check-then-act操作）的原子性。第3章会进一步介绍该关键字。
 
 利用Java语言对变量（long/double型变量除外）写操作的原子性的保障，清单2-5中的原子操作问题只需要通过改写updateHostInfo方法就可以解决：
-
-    public void updateHostInfo2(String ip, int port) {
+```java
+    public void updateHostInfo2(String ip, int port) `{`
       HostInfo newHostInfo = new HostInfo(ip, port);
 
 
       hostInfo = newHostInfo; // 原子操作
 
 
-    }
+    `}`
 ```
 
 Java语言中针对任何变量的读操作都是原子操作。
@@ -1860,9 +1860,9 @@ Java语言中针对任何变量的读操作都是原子操作。
 清单2-7　可见性问题Demo
 
 ```java
-    public class VisibilityDemo {
+    public class VisibilityDemo `{`
     
-      public static void main(String[] args) throws InterruptedException {
+      public static void main(String[] args) throws InterruptedException `{`
         TimeConsumingTask timeConsumingTask = new TimeConsumingTask();
         Thread thread = new Thread(new TimeConsumingTask());
         thread.start();
@@ -1870,29 +1870,29 @@ Java语言中针对任何变量的读操作都是原子操作。
         // 指定的时间内任务没有执行结束的话，就将其取消
         Thread.sleep(10000);
         timeConsumingTask.cancel();
-      }
-    }
+      `}`
+    `}`
 ```
     
 ```java
-    class TimeConsumingTask implements Runnable {
+    class TimeConsumingTask implements Runnable `{`
       private boolean toCancel = false;
     
       @Override
-      public void run() {
-        while (! toCancel) {
-          if (doExecute()) {
+      public void run() `{`
+        while (! toCancel) `{`
+          if (doExecute()) `{`
             break;
-          }
-        }
-        if (toCancel) {
+          `}`
+        `}`
+        if (toCancel) `{`
           System.out.println("Task was canceled.");
-        } else {
+        `}` else `{`
           System.out.println("Task done.");
-        }
-      }
+        `}`
+      `}`
     
-      private boolean doExecute() {
+      private boolean doExecute() `{`
         boolean isDone = false;
         System.out.println("executing...");
     
@@ -1901,24 +1901,24 @@ Java语言中针对任何变量的读操作都是原子操作。
         // 省略其他代码
     
         return isDone;
-      }
+      `}`
     
-      public void cancel() {
+      public void cancel() `{`
         toCancel = true;
         System.out.println(this + " canceled.");
-      }
-    }
+      `}`
+    `}`
 ```
 
 上述例子中的可见性问题是因为代码没有给JIT编译器足够的提示而使得其认为状态变量toCancel只有一个线程对其进行访问，从而导致JIT编译器为了避免重复读取状态变量toCancel以提高代码的运行效率，而将TimeConsumingTask的run方法中的while循环优化成与如下代码等效的本地代码（机器码） [\[5\]](#text00007.html#ft5) ：
-
-    if (! toCancel) {
-      while (true) {
-        if (doExecute()) {
+```java
+    if (! toCancel) `{`
+      while (true) `{`
+        if (doExecute()) `{`
             break;
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 不幸的是，此时这种优化导致了死循环，也就是我们所看到的程序一直运行而没有退出。
@@ -1932,11 +1932,11 @@ Java语言中针对任何变量的读操作都是原子操作。
 虽然一个处理器的高速缓存中的内容不能被另外一个处理器直接读取，但是一个处理器可以通过缓存一致性协议（Cache Coherence Protocol）来读取其他处理器的高速缓存中的数据，并将读到的数据更新到该处理器的高速缓存中。这种一个处理器从其自身处理器缓存以外的其他存储部件中读取数据并将其反映（更新）到该处理器的高速缓存的过程，我们称之为缓存同步 。相应地，我们称这些存储部件的内容是可同步的， 这些存储部件包括处理器的高速缓存、主内存。缓存同步使得一个处理器（上运行的线程）可以读取到另外一个处理器（上运行的线程）对共享变量所做的更新，即保障了可见性。因此，为了保障可见性，我们必须使一个处理器对共享变量所做的更新最终被写入该处理器的高速缓存或者主内存中（而不是始终停留在其写缓冲器中），这个过程被称为冲刷处理器缓存 。并且，一个处理器在读取共享变量的时候，如果其他处理器在此之前已经更新了该变量，那么该处理器必须从其他处理器的高速缓存或者主内存中对相应的变量进行缓存同步。这个过程被称为刷新处理器缓存 。因此，可见性的保障是通过使更新共享变量的处理器执行冲刷处理器缓存的动作，并使读取共享变量的处理器执行刷新处理器缓存的动作来实现的。
 
 那么，在Java平台中我们如何保证可见性呢？这里我们先举一个例子，对于如清单2-7所示的代码，我们只需要在TimeConsumingTask的实例变量toCancel的声明中添加一个volatile关键字即可，即将其声明改为如下语句即可保证可见性：
-
+```java
     private volatile
     
      boolean toCancel = false;
-
+```
 这里，volatile关键字所起到的一个作用就是，提示JIT编译器被修饰的变量可能被多个线程共享，以阻止JIT编译器做出可能导致程序运行不正常的优化。另外一个作用就是读取一个volatile关键字修饰的变量会使相应的处理器执行刷新处理器缓存的动作，写一个volatile关键字修饰的变量会使相应的处理器执行冲刷处理器缓存的动作，从而保障了可见性。第3章会详细讲解volatile关键字。
 
 可见性得以保障，并不意味着一个线程能够看到另外一个线程更新的所有变量的值。如果一个线程在某个时刻更新了多个共享变量的值，那么此后其他线程再来读取这些变量时，这些线程所读取到的变量值有些是其他线程更新过的值，而有些则可能仍然是其他线程更新之前的值（旧值）。
@@ -1976,22 +1976,22 @@ Java语言规范（JLS, Java Language Specification）保证，父线程在启�
 清单2-8　线程启动与可见性
 
 ```java
-    public class ThreadStartVisibility {
+    public class ThreadStartVisibility `{`
       // 线程间的共享变量
       static int data = 0;
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
     
-        Thread thread = new Thread() {
+        Thread thread = new Thread() `{`
           @Override
-          public void run() {
+          public void run() `{`
           // 使当前线程休眠R毫秒（R的值为随机数）
           Tools.randomPause(50);
     
           // 读取并打印变量data的值
           System.out.println(data);
-          }
-        };
+          `}`
+        `}`;
     
         // 在子线程thread启动前更新变量data的值
         data = 1; // 语句①
@@ -2002,8 +2002,8 @@ Java语言规范（JLS, Java Language Specification）保证，父线程在启�
         // 在子线程thread启动后更新变量data的值
         data = 2; // 语句②
     
-      }
-    }
+      `}`
+    `}`
 ```
 
 如果我们把上述程序中的语句②注释掉，则由于main线程在启动其子线程thread之前将共享变量data的值更新为1（见语句①），因此子线程thread所读取到的共享变量data的值一定为1。这是由于父线程在子线程启动前对共享变量的更新对子线程的可见性是有保证的；如果我们没有将语句②注释掉，那么由于父线程在子线程启动之后对共享变量的更新对子线程的可见性是没有保证的，因此子线程thread此时读取到的共享变量data的值可能为2，也可能仍然为1。这就解释了为什么多次运行上述程序可以发现其输出可能是“1”，也可能是“2”。
@@ -2013,37 +2013,37 @@ Java语言规范（JLS, Java Language Specification）保证，父线程在启�
 清单2-9　线程终止与可见性
 
 ```java
-    public class ThreadJoinVisibility {
+    public class ThreadJoinVisibility `{`
       // 线程间的共享变量
       static int data = 0;
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
     
-        Thread thread = new Thread() {
+        Thread thread = new Thread() `{`
           @Override
-          public void run() {
+          public void run() `{`
           // 使当前线程休眠R毫秒（R的值为随机数）
           Tools.randomPause(50);
     
           // 更新data的值
           data = 1;
-          }
-        };
+          `}`
+        `}`;
     
         thread.start();
     
         // 等待线程thread结束后，main线程才继续运行
-        try {
+        try `{`
           thread.join();
-        } catch (InterruptedException e) {
+        `}` catch (InterruptedException e) `{`
           e.printStackTrace();
-        }
+        `}`
     
         // 读取并打印变量data的值
         System.out.println(data);
     
-      }
-    }
+      `}`
+    `}`
 ```
 
 在上述程序中，线程thread运行时将共享变量data的值更新为1，因此main线程对线程thread的join方法调用结束后，该线程读取到的共享变量data值为1这一点是有保证的。
@@ -2085,24 +2085,24 @@ Java平台包含两种编译器：静态编译器（javac）和动态编译器�
 在其他编译型语言（如C++）中，编译器是可能导致指令重排序的：编译器出于性能的考虑，在其认为不影响程序（单线程程序）正确性的情况下可能会对源代码顺序进行调整，从而造成程序顺序与相应的源代码顺序不一致。在Java平台中，静态编译器（javac）基本上不会执行指令重排序，而JIT编译器则可能执行指令重排序。下面我们通过一个JIT编译器指令重排序的实验（代码见清单2-10）进一步了解指令重排序。
 
 清单2-10　JIT编译器指令重排序Demo
-
+```java
     /**
      * 再现JIT指令重排序的Demo
      *
      * @author Viscent Huang
      */
     @ConcurrencyTest(iterations = 200000)
-```java
-    public class JITReorderingDemo {
+
+    public class JITReorderingDemo `{`
       private int externalData = 1;
       private Helper helper;
     
       @Actor
-      public void createHelper() {
+      public void createHelper() `{`
         helper = new Helper(externalData);
-      }
+      `}`
     
-      @Observer({
+      @Observer(`{`
           @Expect(desc = "Helper is null", expected = -1),
           @Expect(desc = "Helper is not null, but it is not initialized",
             expected = 0),
@@ -2112,8 +2112,8 @@ Java平台包含两种编译器：静态编译器（javac）和动态编译器�
             expected = 2),
           @Expect(desc = "Only 3 fields of Helper instance were initialized",
             expected = 3),
-          @Expect(desc = "Helper instance was fully initialized", expected = 4) })
-      public int consume() {
+          @Expect(desc = "Helper instance was fully initialized", expected = 4) `}`)
+      public int consume() `{`
         int sum = 0;
     
         /*
@@ -2121,36 +2121,36 @@ Java平台包含两种编译器：静态编译器（javac）和动态编译器�
         * 因此，这里可能存在可见性问题，即当前线程读取到的变量值可能为null。
         */
         final Helper observedHelper = helper;
-        if (null == observedHelper) {
+        if (null == observedHelper) `{`
           sum = -1;
-        } else {
+        `}` else `{`
           sum = observedHelper.payloadA + observedHelper.payloadB
             + observedHelper.payloadC + observedHelper.payloadD;
-        }
+        `}`
     
         return sum;
-      }
+      `}`
     
-      static class Helper {
+      static class Helper `{`
         int payloadA;
         int payloadB;
         int payloadC;
         int payloadD;
     
-        public Helper(int externalData) {
+        public Helper(int externalData) `{`
           this.payloadA = externalData;
           this.payloadB = externalData;
           this.payloadC = externalData;
           this.payloadD = externalData;
-        }
-      }
+        `}`
+      `}`
     
       public static void main(String[] args) throws InstantiationException,
-          IllegalAccessException {
+          IllegalAccessException `{`
         // 调用测试工具运行测试代码
         TestRunner.runTest(JITReorderingDemo.class);
-      }
-    }
+      `}`
+    `}`
 ```
 
 如清单2-10所示的程序非常简单（读者可以忽略其中的注解，因为那是给测试工具用的）：其中，createHelper方法会将实例变量helper更新为一个新创建的Helper实例；consume方法会读取helper所引用的Helper实例，并计算该实例的所有字段（payloadA～payloadB）的值之和作为其返回值。该程序的main方法调用测试工具TestRunner的runTest方法的作用是让测试工具安排一些线程并发地执行createHelper方法和consume方法，并统计consume方法多次执行的返回值。由于createHelper方法创建Helper实例的时候使用的构造器参数externalData值为1，因此这样看来consume方法的返回值似乎“理所当然”地应该是4。然而，事实却并不总是如此。使用如下命令以server模式并设置Java虚拟机参数“-XX:-UseCompressedOops”运行如清单2-10所示的程序 [\[6\]](#text00007.html#ft6) ：
@@ -2158,32 +2158,32 @@ Java平台包含两种编译器：静态编译器（javac）和动态编译器�
     java -server -XX:-UseCompressedOops io.github.viscent.mtia.ch2.JITReorderingDemo
 
 我们可以看到类似如下的输出 [\[7\]](#text00007.html#ft7) ：
-
+```java
     ===================2016-03-13 15:05:40 Sun===========================
-    expected:-1       occurrences:8     ==>Helper is null
-    expected:0        occurrences:2     ==>Helper is not null, but it is not initializ
+    expected:-1       occurrences:8     ==`>`Helper is null
+    expected:0        occurrences:2     ==`>`Helper is not null, but it is not initializ
 
 
     ed
 
 
-    expected:1        occurrences:0     ==>Only 1 field of Helper instance was initia
+    expected:1        occurrences:0     ==`>`Only 1 field of Helper instance was initia
     lized
-    expected:2        occurrences:1     ==>Only 2 fields of Helper instance were init
+    expected:2        occurrences:1     ==`>`Only 2 fields of Helper instance were init
 
 
     ialized
 
 
-    expected:3        occurrences:4     ==>Only 3 fields of Helper instance were init
+    expected:3        occurrences:4     ==`>`Only 3 fields of Helper instance were init
 
 
     ialized
 
 
-    expected:4        occurrences:199985    ==>Helper instance was fully initialized
+    expected:4        occurrences:199985    ==`>`Helper instance was fully initialized
     =========================END=======================================
-
+```
 在上面的输出中，expected后面的数字表示consume方法的返回值，相应的occurrences表示出现相应返回值的次数。不难看出这次程序运行时，有几次consume方法的返回值并不为4：有的为3（出现4次），有的为2（出现1次），甚至还有的为0（出现2次）！下面我们分析其中的原因。
 
 createHelper方法中的唯一一条语句：
@@ -2191,14 +2191,14 @@ createHelper方法中的唯一一条语句：
     helper = new Helper(externalData);
 
 可以分解为以下几个子操作（伪代码表示）：
-
+```java
     // 子操作①：分配Helper实例所需的内存空间，并获得一个指向该空间的引用
     objRef = allocate(Helper.class);
     // 子操作②：调用Helper类的构造器初始化objRef引用指向的Helper实例
     inovkeConstructor(objRef)；
     // 子操作③：将Helper实例引用objRef赋值给实例变量helper
     helper = objRef；
-
+```
 查看上述程序运行过程中JIT编译器动态生成的汇编代码（相当于机器码），如图2-2所示，我们可以发现JIT编译器编译字节码的时候并不是每次都按照上述源代码顺序生成相应的机器码（汇编代码）：JIT编译器将子操作③相应的指令重排到子操作②相应的指令之前，即JIT编译器在初始化Helper实例之前可能已经将对该实例的引用写入helper实例变量。这就导致了其他线程（consume方法的执行线程）看到helper实例变量（不为null）的时候，该实例变量所引用的对象可能还没有被初始化或者未初始化完毕（即相应构造器中的代码未执行结束）。这就解释了为什么我们在运行上述程序的时候，consume方法的返回值有时候并不是4。
 
 ![](http://www.minio.lookworld.com/001/java-thread/Image00015.jpg)
@@ -2218,10 +2218,10 @@ https://kenai.com/projects/base-hsdis/downloads
 接着，将libhsdis-amd64.so文件复制到JDK主目录下的/jre/lib/amd64/server/子目录中。
 
 接下来，我们就可以开始使用了。使用的时候只需要在启动Java程序的时候指定如下几个Java虚拟机扩展参数，如以下的启动命令：
-
+```java
     java -server -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:+LogCompilation
      -XX:PrintAssemblyOptions=intel io.github.viscent.mtia.ch2.JITReorderingDemo
-
+```
 如果程序执行过程中打印出来的汇编代码比较多，直接在控制台上查看不方便，我们在Java虚拟机启动参数中再增加如下参数，就可以使汇编代码打印在日志文件中：
 
     -XX:LogFile=/home/viscent/tmp/live.log
@@ -2245,35 +2245,35 @@ https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html#BABDDFII
 清单2-11　猜测执行示例代码
 
 ```java
-    public class SpeculativeLoadExample {
+    public class SpeculativeLoadExample `{`
       private boolean ready = false;
-      private int[] data = new int[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+      private int[] data = new int[] `{` 1, 2, 3, 4, 5, 6, 7, 8 `}`;
     
-      public void writer() {
-        int[] newData = new int[] { 1, 2, 3, 4, 5, 6, 7, 8 };
-        for (int i = 0; i < newData.length; i++) {
+      public void writer() `{`
+        int[] newData = new int[] `{` 1, 2, 3, 4, 5, 6, 7, 8 `}`;
+        for (int i = 0; i `<` newData.length; i++) `{`
     
           // 此处包含读内存的操作
           newData[i] = newData[i] - i;
-        }
+        `}`
         data = newData; // 语句①
         // 此处包含写内存的操作
         ready = true; // 语句②
-      }
+      `}`
     
-      public int reader() {
+      public int reader() `{`
         int sum = 0;
         int[] snapshot;
-        if (ready) {// 语句③（if语句）
+        if (ready) `{`// 语句③（if语句）
           snapshot = data;
-          for (int i = 0; i < snapshot.length; i++) {// 语句④（for循环语句）
+          for (int i = 0; i `<` snapshot.length; i++) `{`// 语句④（for循环语句）
           sum += snapshot[i]; // 语句⑤
-          }
+          `}`
     
-        }
+        `}`
         return sum;
-      }
-    }
+      `}`
+    `}`
 ```
 
 可见，处理器的指令重排序并不会对单线程程序的正确性产生影响，但是它可能导致多线程程序出现非预期的结果。
@@ -2565,7 +2565,7 @@ https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html#BABDDFII
 
 [\[17\]](#text00007.html#fn17) perfmon的可执行文件为：Windows安装目录\System32\perfmon.exe。
 
-# 第3章 Java线程同步机制
+## 第3章 Java线程同步机制
 
 如何应对多线程编程面临的挑战将是本章及后续章节的重点。本章讲解的Java线程同步机制是Java多线程编程的基础与核心内容。这一章我们会以深入浅出的方式先从基本概念和原理入手，然后再讲解具体的代码。这是因为本章涉及的代码并不难，相对难的是这些代码背后的概念和原理，而它们又恰恰是我们分析和解决实际工作中遇到的问题所不可或缺的。因此，读者学习时需要分清什么是“本”，什么是“末”，以免舍本逐末。另外，需要注意不同线程同步机制的适用场景以及各自的优缺点。
 
@@ -2642,22 +2642,21 @@ https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html#BABDDFII
 #### 1．可重入性
 
 可重入性 （Reentrancy）描述这样一个问题：一个线程在其持有一个锁的时候能否再次（或者多次）申请该锁。如果一个线程持有一个锁的时候还能够继续成功申请该锁，那么我们就称该锁是可重入的 （Reentrant），否则我们就称该锁为非可重入的 （Non-reentrant）。可重入性问题的由来可以通过如下伪代码理解：
-
-    void metheadA(){
+```java
+    void metheadA()`{`
       acquireLock(lock); // 申请锁lock
     
       // 省略其他代码
       methodB();
       releaseLock(lock); // 释放锁lock
-    }
-```
+    `}`
     
-    void metheadB(){
+    void metheadB()`{`
       acquireLock(lock); // 申请锁lock
     
       // 省略其他代码
       releaseLock(lock); // 释放锁lock
-    }
+    `}`
 ```
 
 方法methodA使用了锁lock，该锁引导的临界区代码又调用了另外一个方法methodB，而方法methodB也使用了lock。那么，这就产生了一个问题：methodA的执行线程持有锁lock的时候调用了methodB，而methodB执行的时候又去申请锁lock，而lock此时正被当前线程持有（未被释放）。那么，此时methodB究竟能否获得（申请成功）lock呢？可重入性就描述了这样一个问题。
@@ -2690,7 +2689,7 @@ https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html#BABDDFII
 
 Java平台中的任何一个对象都有唯一一个与之关联的锁。这种锁被称为监视器 （Monitor）或者内部锁 （Intrinsic Lock）。内部锁是一种排他锁，它能够保障原子性、可见性和有序性。
 
-内部锁是通过synchronized关键字实现的。synchronized关键字可以用来修饰方法以及代码块（花括号“{}”包裹的代码）。
+内部锁是通过synchronized关键字实现的。synchronized关键字可以用来修饰方法以及代码块（花括号“`{``}`”包裹的代码）。
 
 synchronized关键字修饰的方法就被称为同步方法 （Synchronized Method）。synchronized修饰的静态方法就被称为同步静态方法， synchronized修饰的实例方法就被称为同步实例方法 。同步方法的整个方法体就是一个临界区。
 
@@ -2699,46 +2698,46 @@ synchronized关键字修饰的方法就被称为同步方法 （Synchronized Met
 清单3-1　同步方法实例
 
 ```java
-    public class SafeCircularSeqGenerator implements CircularSeqGenerator {
+    public class SafeCircularSeqGenerator implements CircularSeqGenerator `{`
         private short sequence = -1;
         public synchronized
     
-     short nextSequence() {
-              if (sequence >= 999) {
+     short nextSequence() `{`
+              if (sequence `>`= 999) `{`
                   sequence = 0;
-              } else {
+              `}` else `{`
                   sequence++;
-              }
+              `}`
               return sequence;
-        }
-    }
+        `}`
+    `}`
 ```
 
 由于nextSequence()会被其多个客户端线程执行，因此sequence实例变量就成为这些线程的共享数据。synchronized会确保nextSequence()一次只能够被一个线程执行（锁的排他性），因此nextSequence()的客户端线程在执行该方法时实际上是串行的（整体并发中的局部串行），这就排除了对sequence变量访问操作的交错的可能性。另外，锁对可见性的保障使得nextSequence()的当前执行线程对sequence变量的更新对该方法的下一个执行线程可见。由此，我们保障了线程安全（保障原子性和可见性），从而避免了序列号生成时的重号（读取旧数据）和丢号（丢失更新）的问题。
 
 synchronized关键字修饰的代码块被称为同步块 （Synchronized Block），其语法如下所示：
 
-    synchronized（锁句柄） {
+    synchronized（锁句柄） `{`
       // 在此代码块中访问共享数据
-    }
+    `}`
 ```
 
 synchronized关键字所引导的代码块就是临界区。锁句柄 是一个对象的引用（或者能够返回对象的表达式）。例如，锁句柄可以填写为this关键字（表示当前对象）。习惯上我们也直接称锁句柄为锁。锁句柄对应的监视器就被称为相应同步块的引导锁 。相应地，我们称呼相应的同步块为该锁引导的同步块 。
 
 同步实例方法相当于以“this”为引导锁的同步块 [\[4\]](#text00008.html#ft4) 。因此，清单3-1中的同步方法可以改写为：
+```java
+    public short nextSequence() `{`
+      synchronized (this) `{`
 
-    public short nextSequence() {
-      synchronized (this) {
 
-
-        if (sequence >= 999) {
+        if (sequence `>`= 999) `{`
           sequence = 0;
-        } else {
+        `}` else `{`
           sequence++;
-        }
+        `}`
         return sequence;
-      }
-    }
+      `}`
+    `}`
 ```
 
 作为锁句柄的变量通常采用final修饰。这是因为锁句柄变量的值一旦改变，会导致执行同一个同步块的多个线程实际上使用不同的锁，从而导致竞态。有鉴于此，通常我们会使用private修饰作为锁句柄的变量。
@@ -2750,14 +2749,14 @@ synchronized关键字所引导的代码块就是临界区。锁句柄 是一个�
 同步静态方法相当于以当前类对象（Java中的类本身也是一个对象）为引导锁的同步块。例如同步静态方法：
 
 ```java
-    public class SynchronizedMethodExample {
+    public class SynchronizedMethodExample `{`
         public static synchronized
     
-     void staticMethod() {
+     void staticMethod() `{`
               // 在此访问共享数据
-        }
+        `}`
         // ....
-    }
+    `}`
 ```
 
 相当于：
@@ -2765,18 +2764,18 @@ synchronized关键字所引导的代码块就是临界区。锁句柄 是一个�
 ```java
     public class SynchronizedMethodExample
     
-     {
-      public static void staticMethod() {
-        synchronized (SynchronizedMethodExample.class) {
+     `{`
+      public static void staticMethod() `{`
+        synchronized (SynchronizedMethodExample.class) `{`
 
 
           // 在此访问共享数据
-        }
+        `}`
 
 
-      }
+      `}`
       // ....
-    }
+    `}`
 ```
 
 线程在执行临界区代码的时候必须持有该临界区的引导锁。一个线程执行到同步块（同步方法也可看作同步块）时必须先申请该同步块的引导锁，只有申请成功（获得）该锁的线程才能够执行相应的临界区。一个线程执行完临界区代码后引导该临界区的锁就会被自动释放。在这个过程中，线程对内部锁的申请与释放的动作由Java虚拟机负责代为实施，这也正是synchronized实现的锁被称为内部锁的原因。
@@ -2798,19 +2797,19 @@ Java虚拟机会为每个内部锁分配一个入口集 （Entry Set），用于
 图3-2　Lock接口定义的方法
 
 一个Lock接口实例就是一个显式锁对象，Lock接口定义的lock方法和unlock方法分别用于申请和释放相应Lock实例表示的锁。显式锁的使用方法如下所示：
-
+```java
     private final Lock lock=…; // 创建一个Lock接口实例
     ……
     
     lock.lock(); // 申请锁lock
-    try{
+    try`{`
       // 在此对共享数据进行访问
       ……
-    }
-```finally{
+    `}`
+finally`{`
       // 总是在finally块中释放锁，以避免锁泄漏
       lock.unlock(); // 释放锁lock
-    }
+    `}`
 ```
 
 显式锁的使用包括以下几个方面。
@@ -2828,35 +2827,35 @@ Java虚拟机会为每个内部锁分配一个入口集 （Entry Set），用于
 清单3-2　使用显式锁实现循环递增序列号生成器
 
 ```java
-    public class LockbasedCircularSeqGenerator implements CircularSeqGenerator {
+    public class LockbasedCircularSeqGenerator implements CircularSeqGenerator `{`
       private short sequence = -1;
       private final Lock lock = new ReentrantLock();
 
 
 
       @Override
-      public short nextSequence() {
+      public short nextSequence() `{`
         lock.lock();
 
 
-        try {
+        try `{`
 
 
-          if (sequence >= 999) {
+          if (sequence `>`= 999) `{`
           sequence = 0;
-          } else {
+          `}` else `{`
           sequence++;
-          }
+          `}`
           return sequence;
-        } finally {
+        `}` finally `{`
 
 
           lock.unlock();
 
 
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 ### 3.4.1　显式锁的调度
@@ -2880,18 +2879,18 @@ ReentrantLock既支持非公平锁也支持公平锁。ReentrantLock的一个构
 显式锁支持了一些内部锁所不支持的特性，这里不一一列举，仅介绍其中的一部分，另外一些特性在后续章节中会体现出来。
 
 如果一个内部锁的持有线程一直不释放这个锁（这通常是由于代码错误导致的），那么同步在该锁之上的所有线程就会一直被暂停而使其任务无法进展。而显式锁则可以轻松地避免这样的问题。Lock接口定义了一个tryLock方法。该方法的作用是尝试申请相应Lock实例锁表示的锁。如果相应的锁未被其他任何线程持有，那么该方法会返回true，表示其获得了相应的锁；否则，该方法并不会导致其执行线程被暂停而是直接返回false，表示其未获得相应的锁。tryLock方法的使用方法如下代码模板所示：
-
+```java
     Lock lock = ...;
-    if (lock.tryLock()) {
-      try {
+    if (lock.tryLock()) `{`
+      try `{`
         // 在此访问共享数据
-      } finally {
+      `}` finally `{`
         lock.unlock();
-      }
-    }
-``` else {
+      `}`
+    `}`
+ else `{`
       // 执行其他操作
-    }
+    `}`
 ```
 
 tryLock方法是个多载（Overload）的方法，它还有另外一个签名版本：
@@ -2907,42 +2906,42 @@ tryLock方法是个多载（Overload）的方法，它还有另外一个签名�
 清单3-3　演示线程转储显式锁信息的示例程序
 
 ```java
-    public class ExplicitLockInfo {
+    public class ExplicitLockInfo `{`
       private static final Lock lock = new ReentrantLock();
       private static int sharedData = 0;
     
-      public static void main(String[] args) throws Exception {
-        Thread t = new Thread(new Runnable() {
+      public static void main(String[] args) throws Exception `{`
+        Thread t = new Thread(new Runnable() `{`
           @Override
-          public void run() {
+          public void run() `{`
           lock.lock();
-          try {
-            try {
+          try `{`
+            try `{`
               Thread.sleep(2200000);
-            } catch (InterruptedException e) {
+            `}` catch (InterruptedException e) `{`
               e.printStackTrace();
-            }
+            `}`
             sharedData = 1;
-          } finally {
+          `}` finally `{`
             lock.unlock();
-          }
+          `}`
     
-          }
-        });
+          `}`
+        `}`);
         t.start();
         Thread.sleep(100);
         lock.lock();
-        try {
+        try `{`
           System.out.println("sharedData:" + sharedData);
-        } finally {
+        `}` finally `{`
           lock.unlock();
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 可以得到类似如下的线程信息（省略部分输出） [\[6\]](#text00008.html#ft6) ：
-
+```java
     Full thread dump Java HotSpot(TM) 64-Bit Server VM (20.45-b01 mixed mode):
     
     "Thread-1"
@@ -2960,8 +2959,7 @@ tryLock方法是个多载（Overload）的方法，它还有另外一个签名�
       Locked ownable synchronizers:
 
 
-        - <0x00000000d7291ea8> (aj.u.c.locks.ReentrantLock$NonfairSync)
-
+        - `<`0x00000000d7291ea8`>` (aj.u.c.locks.ReentrantLock$NonfairSync)
 
 
       ……省略其他输出
@@ -2974,7 +2972,7 @@ tryLock方法是个多载（Overload）的方法，它还有另外一个签名�
 
 
         at sun.misc.Unsafe.park(Native Method)
-        - parking to wait for  <0x00000000d7291ea8> (a j.u.c.locks.ReentrantLock$Non
+        - parking to wait for  `<`0x00000000d7291ea8`>` (a j.u.c.locks.ReentrantLock$Non
 
 
     fairSync)
@@ -2995,7 +2993,7 @@ tryLock方法是个多载（Overload）的方法，它还有另外一个签名�
         - None
     
      ……省略其他输出
-
+```
 可见，main线程由于需要获得唯一标识为“0x00000000d7291ea8”的显式锁而处于等待状态，而这个锁被线程“Thread-1”所持有。
 
 显式锁提供了一些接口（指方法）可以用来对锁的相关信息进行监控，而内部锁不支持这种特性。RentrantLock中定义的方法isLocked()可用于检测相应锁是否被某个线程持有 [\[7\]](#text00008.html#ft7) , getQueueLength()方法可用于检查相应锁的等待线程的数量。
@@ -3045,7 +3043,7 @@ java.util.concurrent.locks.ReadWriteLock接口是对读写锁的抽象，其默�
 清单3-4　读写锁使用方法
 
 ```java
-    public class ReadWriteLockUsage {
+    public class ReadWriteLockUsage `{`
       private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
 
 
@@ -3057,25 +3055,25 @@ java.util.concurrent.locks.ReadWriteLock接口是对读写锁的抽象，其默�
 
 
       // 读线程执行该方法
-      public void reader() {
+      public void reader() `{`
         readLock.lock(); // 申请读锁
-        try {
+        try `{`
           // 在此区域读取共享变量
-        } finally {
+        `}` finally `{`
           readLock.unlock(); // 总是在finally块中释放锁，以免锁泄漏
-        }
-      }
+        `}`
+      `}`
     
       // 写线程执行该方法
-      public void writer() {
+      public void writer() `{`
         writeLock.lock(); // 申请读锁
-        try {
+        try `{`
           // 在此区域访问（读、写）共享变量
-        } finally {
+        `}` finally `{`
           writeLock.unlock(); // 总是在finally块中释放锁，以免锁泄漏
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 与普通的排他锁（如内部锁和ReentrantLock）相比，读写锁在排他性方面比较弱（这是我们所期望的）。在原子性、可见性和有序性保障方面，它所起到的作用与普通的排他锁是一致的。写线程释放写锁所起到的作用相当于一个线程释放一个普通排他锁；读线程获得读锁所起到的作用相当于一个线程获得一个普通排他锁。由于读写锁内部实现比内部锁和其他显式锁要复杂得多，因此读写锁适合于在以下条件同时得以满足的场景中使用：
@@ -3091,37 +3089,37 @@ ReentrantReadWriteLock所实现的读写锁是个可重入锁。ReentrantReadWri
 清单3-5　读写锁的降级示例
 
 ```java
-    public class ReadWriteLockDowngrade {
+    public class ReadWriteLockDowngrade `{`
       private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
       private final Lock readLock = rwLock.readLock();
       private final Lock writeLock = rwLock.writeLock();
     
-      public void operationWithLockDowngrade() {
+      public void operationWithLockDowngrade() `{`
         boolean readLockAcquired = false;
         writeLock.lock(); // 申请写锁
-        try {
+        try `{`
           // 对共享数据进行更新
           // ...
           // 当前线程在持有写锁的情况下申请读锁readLock
           readLock.lock();
           readLockAcquired = true;
-        } finally {
+        `}` finally `{`
           writeLock.unlock(); // 释放写锁
-        }
+        `}`
     
-        if (readLockAcquired) {
-          try {
+        if (readLockAcquired) `{`
+          try `{`
           // 读取共享数据并据此执行其他操作
           // ...
     
-          } finally {
+          `}` finally `{`
           readLock.unlock(); // 释放读锁
-          }
-        } else {
+          `}`
+        `}` else `{`
           // ...
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 锁的降级的反面是锁的升级（Upgrade），即一个线程在持有读写锁的读锁的情况下，申请相应的写锁。ReentrantReadWriteLock并不支持锁的升级。读线程如果要转而申请写锁，需要先释放读锁，然后申请相应的写锁。
@@ -3282,7 +3280,7 @@ volatile关键字在原子性方面仅保障对被修饰的变量的读操作、
 
     @ConcurrencyTest(iterations = 200000)
 ```java
-    public class VolatileOrderingDemo {
+    public class VolatileOrderingDemo `{`
         private int dataA = 0;
         private long dataB = 0L;
         private String dataC = null;
@@ -3291,56 +3289,56 @@ volatile关键字在原子性方面仅保障对被修饰的变量的读操作、
 
 
         @Actor
-        public void writer() {
+        public void writer() `{`
               dataA = 1;
               dataB = 10000L;
               dataC = "Content...";
               ready = true;
 
 
-        }
+        `}`
     
-        @Observer({
+        @Observer(`{`
               @Expect(desc = "Normal", expected = 1),
           @Expect(desc = "Impossible", expected = 2),
           @Expect(desc = "ready not true", expected = 3)
-        })
-        public int reader() {
+        `}`)
+        public int reader() `{`
               int result = 0;
               boolean allISOK;
-              if (ready) {
+              if (ready) `{`
 
 
                   allISOK = (1 == dataA) && (10000L == dataB) &&
                       "Content...".equals(dataC);
                   result = allISOK ? 1 : 2;
-              } else {
+              `}` else `{`
                   result = 3;
-              }
+              `}`
               return result;
-          }
+          `}`
     
           public static void main(String[] args) throws InstantiationException,
-            IllegalAccessException {
+            IllegalAccessException `{`
     
               // 调用测试工具运行测试代码
               TestRunner.runTest(VolatileOrderingDemo.class);
-          }
+          `}`
     
-    }
+    `}`
 ```
 
 上述程序运行后的输出类似如下：
 
     ===========================2016-04-06 20:59:37 Wed====================
     
-    expected:1        occurrences:199999         ==>Normal
+    expected:1        occurrences:199999         ==`>`Normal
     
-    expected:2        occurrences:0     ==>Impossible
+    expected:2        occurrences:0     ==`>`Impossible
 
 
 
-    expected:3        occurrences:1     ==>ready not true
+    expected:3        occurrences:1     ==`>`ready not true
     
     =====================================END=========================
 
@@ -3409,19 +3407,19 @@ volatile关键字并非锁的替代品，volatile关键字和锁各自有其适�
 清单3-7　基于volatile的简易读写锁
 
 ```java
-    public class Counter {
+    public class Counter `{`
         private volatile
     
      long count;
-        public long vaule() {
+        public long vaule() `{`
               return count;
-        }
-        public void increment() {
-              synchronized (this) {
+        `}`
+        public void increment() `{`
+              synchronized (this) `{`
                   count++;
-              }
-        }
-    }
+              `}`
+        `}`
+    `}`
 ```
 
 下面我们通过某分布式系统的负载均衡模块的设计与实现这样的实战案例来进一步讲解上述应用场景。某分布式系统（以下简称为系统）在其业务处理过程中需要通过网络连接调用下游部件提供的服务，即发送请求给下游部件。下游部件是一个集群环境（即多台主机对外提供相同的服务）。因此，该系统调用其下游部件服务的时候需要进行负载均衡控制，即保障下游部件的各台主机上接收到的请求数分布均匀（统计意义上的均匀）。
@@ -3441,7 +3439,7 @@ volatile关键字并非锁的替代品，volatile关键字和锁各自有其适�
 清单3-8　ServiceInvoker源码
 
 ```java
-    public class ServiceInvoker {
+    public class ServiceInvoker `{`
       // 保存当前类的唯一实例
       private static final ServiceInvoker INSTANCE = new ServiceInvoker();
       // 负载均衡器实例，使用volatile变量保障可见性
@@ -3450,16 +3448,16 @@ volatile关键字并非锁的替代品，volatile关键字和锁各自有其适�
 
 
       // 私有构造器
-      private ServiceInvoker() {
+      private ServiceInvoker() `{`
         // 什么也不做
-      }
+      `}`
     
       /**
       * 获取当前类的唯一实例
       */
-      public static ServiceInvoker getInstance() {
+      public static ServiceInvoker getInstance() `{`
         return INSTANCE;
-      }
+      `}`
     
       /**
       * 根据指定的负载均衡器派发请求到特定的下游部件
@@ -3467,52 +3465,52 @@ volatile关键字并非锁的替代品，volatile关键字和锁各自有其适�
       * @param request
       *         待派发的请求
       */
-      public void dispatchRequest(Request request) {
+      public void dispatchRequest(Request request) `{`
         // 这里读取volatile变量loadBalancer
         Endpoint endpoint = getLoadBalancer().nextEndpoint();
 
 
 
-        if (null == endpoint) {
+        if (null == endpoint) `{`
           // 省略其他代码
     
           return;
-        }
+        `}`
     
         // 将请求发给下游部件
         dispatchToDownstream(request, endpoint);
     
-      }
+      `}`
       // 真正将指定的请求派发给下游部件
-      private void dispatchToDownstream(Request request, Endpoint endpoint) {
+      private void dispatchToDownstream(Request request, Endpoint endpoint) `{`
         Debug.info("Dispatch request to " + endpoint + ":" + request);
         // 省略其他代码
-      }
+      `}`
     
-      public LoadBalancer getLoadBalancer() {
+      public LoadBalancer getLoadBalancer() `{`
         // 读取负载均衡器实例
         return loadBalancer;
 
 
-      }
+      `}`
     
-      public void setLoadBalancer(LoadBalancer loadBalancer) {
+      public void setLoadBalancer(LoadBalancer loadBalancer) `{`
         // 设置或者更新负载均衡器实例
         this.loadBalancer = loadBalancer;
 
 
-      }
-    }
+      `}`
+    `}`
 ```
 
 首先，我们使用LoadBalancer接口（源码见清单3-9）对负载均衡算法进行抽象，并为系统支持的每个负载均衡算法创建一个LoadBalancer实现类，从而满足了要求1。
 
 清单3-9　LoadBalancer接口源码
-
-    public interface LoadBalancer {
+```java
+    public interface LoadBalancer `{`
         void updateCandidate(final Candidate candidate);
         Endpoint nextEndpoint();
-    }
+    `}`
 ```
 
 接着，我们为ServiceInvoker设置一个实例变量loadBalancer用来保存LoadBalancer实例（即具体的负载均衡算法）。这里，我们使用volatile关键字修饰loadBalancer，就是属于volatile关键字的场景二 的运用：ServiceInvoker的dispatchRequest方法会通过调用getLoadBalancer()方法来读取volatile变量loadBalancer，该方法运行在业务线程（即Web服务器的工作者线程）中。当系统的启动线程（即main线程）或者配置管理线程（负责配置数据的刷新）更新了变量loadBalancer的值之后，所有业务线程在无须使用锁的情况下也能够读取到更新后的loadBalancer变量值，这实现了对负载均衡算法的动态调整，即满足了要求2。
@@ -3520,32 +3518,32 @@ volatile关键字并非锁的替代品，volatile关键字和锁各自有其适�
 再看看具体的负载均衡算法是如何满足要求3的。这个实现过程会涉及volatile关键字的场景一 的运用。首先看加权轮询负载均衡算法的实现类WeightedRoundRobinLoadBalancer，如清单3-10示。
 
 清单3-10　加权轮询负载均衡算法源码
-
+ ```java
     /**
      * 加权轮询负载均衡算法实现类
       *
       * @author Viscent Huang
       */
- ```java
-    public class WeightedRoundRobinLoadBalancer extends AbstractLoadBalancer {
+
+    public class WeightedRoundRobinLoadBalancer extends AbstractLoadBalancer `{`
        // 私有构造器
-       private WeightedRoundRobinLoadBalancer(Candidate candidate) {
+       private WeightedRoundRobinLoadBalancer(Candidate candidate) `{`
         super(candidate);
-       }
+       `}`
     
        // 通过该静态方法创建该类的实例
        public static LoadBalancer newInstance(Candidate candidate)
-          throws Exception {
+          throws Exception `{`
         WeightedRoundRobinLoadBalancer lb =
             new WeightedRoundRobinLoadBalancer(candidate);
         lb.init();
         return lb;
     
-       }
+       `}`
     
        // 在该方法中实现相应的负载均衡算法
        @Override
-       public Endpoint nextEndpoint() {
+       public Endpoint nextEndpoint() `{`
         Endpoint selectedEndpoint = null;
         int subWeight = 0;
         int dynamicTotoalWeight;
@@ -3557,9 +3555,9 @@ volatile关键字并非锁的替代品，volatile关键字和锁各自有其适�
 
 
         dynamicTotoalWeight = candiate.totalWeight;
-        for (Endpoint endpoint : candiate) {
+        for (Endpoint endpoint : candiate) `{`
           // 选取节点以及计算总权重时跳过非在线节点
-          if (! endpoint.isOnline()) {
+          if (! endpoint.isOnline()) `{`
 
 
             dynamicTotoalWeight -= endpoint.weight;
@@ -3568,17 +3566,17 @@ volatile关键字并非锁的替代品，volatile关键字和锁各自有其适�
             continue;
 
 
-          }
+          `}`
           rand = (int) (rawRnd * dynamicTotoalWeight);
           subWeight += endpoint.weight;
-          if (rand <= subWeight) {
+          if (rand `<`= subWeight) `{`
             selectedEndpoint = endpoint;
             break;
-          }
-        }
+          `}`
+        `}`
         return selectedEndpoint;
-       }
-     }
+       `}`
+     `}`
 
 WeightedRoundRobinLoadBalancer在选取下游部件节点（Endpoint）的时候会先判断相应节点是否在线，它会跳过非在线的节点。再看看Endpoint类的源码（参见清单3-11）。
 
@@ -3589,40 +3587,40 @@ WeightedRoundRobinLoadBalancer在选取下游部件节点（Endpoint）的时候
      * @author Viscent Huang
      */
 ```java
-    public class Endpoint {
+    public class Endpoint `{`
         public final String host;
         public final int port;
         public final int weight;
         private volatile boolean online = true;
 
 
-        public Endpoint(String host, int port, int weight) {
+        public Endpoint(String host, int port, int weight) `{`
               this.host = host;
               this.port = port;
               this.weight = weight;
-        }
-        public boolean isOnline() {
+        `}`
+        public boolean isOnline() `{`
               return online;
 
 
-        }
-        public void setOnline(boolean online) {
+        `}`
+        public void setOnline(boolean online) `{`
               this.online = online;
-        }
+        `}`
         // 完整代码见配套下载资源
-    }
+    `}`
 ```
 
 这里Endpoint的online实例变量是个volatile变量，它用来表示相应节点的服务状态：是否在线。所有负载均衡算法实现类的抽象父类AbstractLoadBalancer内部会维护一个心跳线程（heartbeatThread）来定时检测下游部件各个节点的状态，并根据检测的结果来更新相应Endpoint的online实例变量，如清单3-12所示。这里心跳线程根据检测结果更新volatile变量online的值，而具体的负载均衡算法实现类（如WeightedRoundRobinLoadBalancer）则根据变量online的值决定其动作（跳过还是不跳过相应节点，见清单3-10），从而满足了要求3。这个过程涉及了volatile关键字的场景一 的运用。
 
 清单3-12　负载均衡算法抽象类AbstractLoadBalancer源码
-
+```java
     /**
      * 负载均衡算法抽象实现类，所有负载均衡算法实现类的父类
      *
      * @author Viscent Huang
      */
-    public abstract class AbstractLoadBalancer implements LoadBalancer {
+    public abstract class AbstractLoadBalancer implements LoadBalancer `{`
       private final static Logger LOGGER = Logger.getAnonymousLogger();
     // 使用volatile变量替代锁（有条件替代）
     protected volatile Candidate candidate;
@@ -3632,33 +3630,33 @@ WeightedRoundRobinLoadBalancer在选取下游部件节点（Endpoint）的时候
     // 心跳线程
     private Thread heartbeatThread;
     
-    public AbstractLoadBalancer(Candidate candidate) {
-      if (null == candidate || 0 == candidate.getEndpointCount()) {
+    public AbstractLoadBalancer(Candidate candidate) `{`
+      if (null == candidate || 0 == candidate.getEndpointCount()) `{`
         throw new IllegalArgumentException("Invalid candidate " + candidate);
-      }
+      `}`
       this.candidate = candidate;
       random = new Random();
-    }
-```
+    `}`
+
     
-    public synchronized void init() throws Exception {
-      if (null == heartbeatThread) {
+    public synchronized void init() throws Exception `{`
+      if (null == heartbeatThread) `{`
         heartbeatThread = new Thread(new HeartbeatTask(), "LB_Heartbeat");
         heartbeatThread.setDaemon(true);
         heartbeatThread.start();
-      }
-    }
-```
+      `}`
+    `}`
+
     
     @Override
-    public void updateCandidate(final Candidate candidate) {
-      if (null == candidate || 0 == candidate.getEndpointCount()) {
+    public void updateCandidate(final Candidate candidate) `{`
+      if (null == candidate || 0 == candidate.getEndpointCount()) `{`
         throw new IllegalArgumentException("Invalid candidate " + candidate);
-      }
+      `}`
       // 更新volatile变量candidate
       this.candidate = candidate;
-    }
-```
+    `}`
+
     
     /*
      * 留给子类实现的抽象方法
@@ -3668,96 +3666,96 @@ WeightedRoundRobinLoadBalancer在选取下游部件节点（Endpoint）的时候
     @Override
     public abstract Endpoint nextEndpoint();
     
-    protected void monitorEndpoints() {
+    protected void monitorEndpoints() `{`
       // 读取volatile变量
       final Candidate currCandidate = candidate;
       boolean isTheEndpointOnline;
     
       // 检测下游部件状态是否正常
-      for (Endpoint endpoint : currCandidate) {
+      for (Endpoint endpoint : currCandidate) `{`
         isTheEndpointOnline = endpoint.isOnline();
-        if (doDetect(endpoint) ! = isTheEndpointOnline) {
+        if (doDetect(endpoint) ! = isTheEndpointOnline) `{`
           endpoint.setOnline(! isTheEndpointOnline);
 
 
          // 省略记录日志的代码
-        }
-      }// for循环结束
-    }
-```
+        `}`
+      `}`// for循环结束
+    `}`
+
     
     // 检测指定的节点是否在线
-    private boolean doDetect(Endpoint endpoint) {
+    private boolean doDetect(Endpoint endpoint) `{`
     // ...
-    }
-```
+    `}`
+
     
-    private class HeartbeatTask implements Runnable {
+    private class HeartbeatTask implements Runnable `{`
     @Override
-    public void run() {
-        try {
-          while (true) {
+    public void run() `{`
+        try `{`
+          while (true) `{`
             // 检测节点列表中的所有节点是否在线
             monitorEndpoints();
             Thread.sleep(2000);
-          }
-        } catch (InterruptedException e) {
+          `}`
+        `}` catch (InterruptedException e) `{`
           // 什么也不做
-        }
-    }
-```
-    }
-```// HeartbeatTask类结束
-    }
+        `}`
+    `}`
+
+    `}`
+// HeartbeatTask类结束
+    `}`
 ```
 
 再看看要求4的满足与volatile关键字的场景三 的运用之间的关系。从WeightedRoundRobinLoadBalancer的源码（见清单3-10）可以看出，负载均衡算法的nextEndpoint方法选取下游部件节点的时候会用到一个关键的volatile实例变量candidate，该变量由负载均衡算法的抽象父类AbstractBalancer（见清单3-12）定义，其类型为Candidate（见清单3-13）。
 
 清单3-13　Candidate类源码
-
-    public final class Candidate implements Iterable<Endpoint> {
+```java
+    public final class Candidate implements Iterable`<`Endpoint`>` `{`
       // 下游部件节点列表
-      private final Set<Endpoint> endpoints;
+      private final Set`<`Endpoint`>` endpoints;
       // 下游部件节点的总权重
       public final int totalWeight;
     
-      public Candidate(Set<Endpoint> endpoints) {
+      public Candidate(Set`<`Endpoint`>` endpoints) `{`
         int sum = 0;
-        for (Endpoint endpoint : endpoints) {
+        for (Endpoint endpoint : endpoints) `{`
           sum += endpoint.weight;
-        }
+        `}`
         totalWeight = sum;
         this.endpoints = endpoints;
-      }
+      `}`
       // 完整代码见本书配套下载资源
-    }
+    `}`
 ```
 
 Candidate类包含了下游部件的节点列表（endpoints）以及列表中所有节点的总权重（totalWeight）。这里的实例变量totalWeight作为一个冗余信息，其作用是避免负载均衡算法每次都要计算总权重。如果我们要变更下游部件的节点信息（如删除一个节点），那么配置管理器（一个单独的工作者线程）只需要调用AbstractBalancer（见清单3-12）子类的updateCandidate方法即可。updateCandidate方法会直接更新candidate变量的值，这里volatile保障了这个操作的原子性和可见性。这就是volatile关键字的场景三的 运用。相反，如果我们采用下面的设计：
-
-    public abstract class AbstractLoadBalancer implements LoadBalancer {
+```java
+    public abstract class AbstractLoadBalancer implements LoadBalancer `{`
         // candidate变量不可更新
         protected final Candidate candidate;
 
 
-        public AbstractLoadBalancer(Candidate candidate) {
+        public AbstractLoadBalancer(Candidate candidate) `{`
               this.candidate = candidate;
-        }
+        `}`
         // 省略其他与清单3-12相同的代码
-    }
+    `}`
 ```
     
 ```java
-    public class Candidate {
+    public class Candidate `{`
         // 使endpoints及totalWeight这两个实例变量可更改
-        public Set<Endpoint> endpoints;
+        public Set`<`Endpoint`>` endpoints;
 
 
         public int totalWeight;
 
 
         // 省略其他与清单3-13相同的代码
-    }
+    `}`
 ```
 
 那么，变更下游部件节点信息的时候配置管理器需要更新Candidate实例（候选节点信息）的endpoints实例变量以及totalWeight实例变量的值，如下伪代码所示：
@@ -3776,7 +3774,7 @@ Candidate类包含了下游部件的节点列表（endpoints）以及列表中�
 清单3-14　单线程版单例模式实现
 
 ```java
-    public class SingleThreadedSingleton {
+    public class SingleThreadedSingleton `{`
       // 保存该类的唯一实例
       private static SingleThreadedSingleton instance = null;
     
@@ -3784,27 +3782,27 @@ Candidate类包含了下游部件的节点列表（endpoints）以及列表中�
       /*
       * 私有构造器使其他类无法直接通过new创建该类的实例
       */
-      private SingleThreadedSingleton() {
+      private SingleThreadedSingleton() `{`
         // 什么也不做
-      }
+      `}`
     
       /**
-      * 创建并返回该类的唯一实例 <BR>
+      * 创建并返回该类的唯一实例 `<`BR`>`
       * 即只有该方法被调用时该类的唯一实例才会被创建
       *
       * @return
       */
-     public static SingleThreadedSingleton getInstance() {
-       if (null == instance) {// 操作①
+     public static SingleThreadedSingleton getInstance() `{`
+       if (null == instance) `{`// 操作①
         instance = new SingleThreadedSingleton(); // 操作②
-       }
+       `}`
        return instance;
-     }
+     `}`
     
-     public void someService() {
+     public void someService() `{`
        // 省略其他代码
-     }
-    }
+     `}`
+    `}`
 ```
 
 在多线程环境下，getInstance()中的if语句形成一个check-then-act操作，它不是一个原子操作。由于代码中未使用任何同步机制，因此该程序的运行可能出现线程交错的情形：在instance值还是null的时候，线程T1 和线程T2 同时执行到操作①。接着在T1 执行操作②前T2 已率先执行完操作②。下一时刻，当T1 执行到操作②的时候，尽管instance实际上已经不为null，但是T1 此时依然会再创建一个实例（因为T1 执行操作①时instance为null）。这就导致了多个实例的创建，从而违背了初衷。当然，我们不难想到通过加锁可以解决这种问题，代码如清单3-15所示。
@@ -3812,88 +3810,88 @@ Candidate类包含了下游部件的节点列表（endpoints）以及列表中�
 清单3-15　简单加锁实现的单例模式实现
 
 ```java
-    public class SimpleMultithreadedSingleton {
+    public class SimpleMultithreadedSingleton `{`
       // 保存该类的唯一实例
       private static SimpleMultithreadedSingleton instance = null;
     
       /*
       * 私有构造器使其他类无法直接通过new创建该类的实例
       */
-      private SimpleMultithreadedSingleton() {
+      private SimpleMultithreadedSingleton() `{`
         // 什么也不做
-      }
+      `}`
     
       /**
-      * 创建并返回该类的唯一实例 <BR>
+      * 创建并返回该类的唯一实例 `<`BR`>`
       * 即只有该方法被调用时该类的唯一实例才会被创建
       *
       * @return
       */
-      public static SimpleMultithreadedSingleton getInstance() {
-        synchronized (SimpleMultithreadedSingleton.class) {
+      public static SimpleMultithreadedSingleton getInstance() `{`
+        synchronized (SimpleMultithreadedSingleton.class) `{`
 
 
-          if (null == instance) {
+          if (null == instance) `{`
           instance = new SimpleMultithreadedSingleton();
-          }
-        }
+          `}`
+        `}`
 
 
         return instance;
-      }
+      `}`
     
-      public void someService() {
+      public void someService() `{`
         // 省略其他代码
-      }
-    }
+      `}`
+    `}`
 ```
 
 这种方法实现的单例模式固然是线程安全的，但是这意味着getInstance()的任何一个执行线程都需要申请锁。为了避免锁的开销，人们想到一个“聪明”的方法：在执行如清单3-15所示的临界区代码前先检查instance是否为null；若instance不为null，则getInstance()直接返回，否则才执行临界区。由于这种方法实现的getInstance()会两次检查instance的值是否为null，因此它被称为双重检查锁定 （Double-checked Locking, DCL） [\[15\]](#text00008.html#ft15) ，如清单3-16所示。
 
 清单3-16　基于双重检查锁定的错误单例模式实现
-
+```java
     /**
      * 基于双重检查锁定的错误单例模式实现
      *
      * @author Viscent Huang
      */
-```java
-    public class IncorrectDCLSingletion {
+
+    public class IncorrectDCLSingletion `{`
       // 保存该类的唯一实例
       private static IncorrectDCLSingletion instance = null;
     
       /*
       * 私有构造器使其他类无法直接通过new创建该类的实例
       */
-      private IncorrectDCLSingletion() {
+      private IncorrectDCLSingletion() `{`
         // 什么也不做
-      }
+      `}`
     
       /**
-      * 创建并返回该类的唯一实例 <BR>
+      * 创建并返回该类的唯一实例 `<`BR`>`
       * 即只有该方法被调用时该类的唯一实例才会被创建
       *
       * @return
       */
-      public static IncorrectDCLSingletion getInstance() {
-        if (null == instance) {// 操作①：第1次检查
+      public static IncorrectDCLSingletion getInstance() `{`
+        if (null == instance) `{`// 操作①：第1次检查
 
 
-          synchronized (IncorrectDCLSingletion.class) {
-            if (null == instance) {// 操作②：第2次检查
+          synchronized (IncorrectDCLSingletion.class) `{`
+            if (null == instance) `{`// 操作②：第2次检查
 
 
             instance = new IncorrectDCLSingletion(); // 操作③
-            }
-          }
-        }
+            `}`
+          `}`
+        `}`
         return instance;
-      }
+      `}`
     
-      public void someService() {
+      public void someService() `{`
         // 省略其他代码
-      }
-    }
+      `}`
+    `}`
 ```
 
 尽管第1次检查（操作①）对变量instance的访问没有加锁从而使竞态仍然可能存在，但是乍一看，它似乎既避免了锁的开销又保障了线程安全：一个线程T1 执行到操作①的时候发现instance为null，而此刻另外一个线程T2 可能恰好刚执行完操作③而使instance值不为null；接着T1 获得锁而执行临界区代码的时候会再次判断instance值是否为null（第2次检查），此时由于该线程是在临界区内读取共享变量instance的，因此T1 可以发现此刻instance值已经不为null，于是，T1 不会操作③（创建实例），从而避免了再次创建一个实例。当然，仅仅从可见性的角度分析结论确实如此。但是，在一些情形下为了确保线程安全光考虑可见性是不够的，我们还需要考虑重排序的因素。我们知道操作③可以分解为以下伪代码所示的几个独立子操作：
@@ -3915,7 +3913,7 @@ Candidate类包含了下游部件的节点列表（endpoints）以及列表中�
 清单3-17　基于双重检查锁定的正确单例模式实现
 
 ```java
-    public class DCLSingleton {
+    public class DCLSingleton `{`
       /*
       * 保存该类的唯一实例，使用volatile关键字修饰instance
       */
@@ -3926,30 +3924,30 @@ Candidate类包含了下游部件的节点列表（endpoints）以及列表中�
       /*
       * 私有构造器使其他类无法直接通过new创建该类的实例
       */
-      private DCLSingleton() {
+      private DCLSingleton() `{`
         // 什么也不做
-      }
+      `}`
     
       /**
-      * 创建并返回该类的唯一实例 <BR>
+      * 创建并返回该类的唯一实例 `<`BR`>`
       * 即只有该方法被调用时该类的唯一实例才会被创建
       *
       * @return
       */
-      public static DCLSingleton getInstance() {
-        if (null == instance) {// 操作①：第1次检查
-          synchronized (DCLSingleton.class) {
-          if (null == instance) {// 操作②：第2次检查
+      public static DCLSingleton getInstance() `{`
+        if (null == instance) `{`// 操作①：第1次检查
+          synchronized (DCLSingleton.class) `{`
+          if (null == instance) `{`// 操作②：第2次检查
             instance = new DCLSingleton(); // 操作③
-          }
-          }
-        }
+          `}`
+          `}`
+        `}`
         return instance;
-      }
-      public void someService() {
+      `}`
+      public void someService() `{`
         // 省略其他代码
-      }
-    }
+      `}`
+    `}`
 ```
 
 考虑到双重检测锁定法实现上容易出错，我们可以采用另外一种同样可以实现延迟加载的效果且比较简单的一种方法，如清单3-18所示。
@@ -3957,37 +3955,37 @@ Candidate类包含了下游部件的节点列表（endpoints）以及列表中�
 清单3-18　基于静态内部类的单例模式实现
 
 ```java
-    public class StaticHolderSingleton {
+    public class StaticHolderSingleton `{`
       // 私有构造器
-      private StaticHolderSingleton() {
+      private StaticHolderSingleton() `{`
         Debug.info("StaticHolderSingleton inited.");
-      }
+      `}`
     
-      private static class InstanceHolder {
+      private static class InstanceHolder `{`
         // 保存外部类的唯一实例
         final static StaticHolderSingleton INSTANCE = new StaticHolderSingleton();
 
 
-      }
+      `}`
     
-      public static StaticHolderSingleton getInstance() {
+      public static StaticHolderSingleton getInstance() `{`
         Debug.info("getInstance invoked.");
         return InstanceHolder.INSTANCE;
 
 
-      }
+      `}`
     
-      public void someService() {
+      public void someService() `{`
         Debug.info("someService invoked.");
         // 省略其他代码
-      }
+      `}`
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
         StaticHolderSingleton.getInstance().someService();
 
 
-      }
-    }
+      `}`
+    `}`
 ```
 
 我们知道类的静态变量被初次访问会触发Java虚拟机对该类进行初始化，即该类的静态变量的值会变为其初始值而不是默认值。因此，静态方法getInstance()被调用的时候Java虚拟机会初始化这个方法所访问的内部静态类InstanceHolder。这使得InstanceHolder的静态变量INSTANCE被初始化，从而使StaticHolderSingleton类的唯一实例得以创建。由于类的静态变量只会创建一次，因此StaticHolderSingleton（单例类）只会被创建一次。
@@ -3997,37 +3995,37 @@ Candidate类包含了下游部件的节点列表（endpoints）以及列表中�
 清单3-19　基于枚举类型的单例模式实现示例代码
 
 ```java
-    public class EnumBasedSingletonExample {
-      public static void main(String[] args) {
-        Thread t = new Thread() {
+    public class EnumBasedSingletonExample `{`
+      public static void main(String[] args) `{`
+        Thread t = new Thread() `{`
           @Override
-          public void run() {
+          public void run() `{`
           Debug.info(Singleton.class.getName());
           Singleton.INSTANCE.someService();
 
 
-          };
-        };
+          `}`;
+        `}`;
         t.start();
-      }
+      `}`
     
       public static enum Singleton
     
-     {
+     `{`
         INSTANCE;
 
 
         // 私有构造器
-        Singleton() {
+        Singleton() `{`
           Debug.info("Singleton inited.");
-        }
+        `}`
     
-        public void someService() {
+        public void someService() `{`
           Debug.info("someService invoked.");
           // 省略其他代码
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 这里，枚举类型Singleton相当于一个单例类，其字段INSTANCE值相当于该类的唯一实例。这个实例是在Singleton.INSTANCE初次被引用的时候才被初始化的。仅访问Singleton本身（比如上述的Singleton.class.getName()调用）并不会导致Singleton的唯一实例被初始化。
@@ -4039,25 +4037,25 @@ CAS（Compare and Swap）是对一种处理器指令（例如x86处理器中的c
 ### 3.10.1　CAS
 
 前文（参见3.8.3节）我们讲到的一个简易读写锁的increment方法（参见清单3-7）使用了一个内部锁来保障计数器自增这个操作的原子性：
-
-    public void increment() {
-      synchronized (this) {
+```java
+    public void increment() `{`
+      synchronized (this) `{`
         count++;
-      }
-    }
+      `}`
+    `}`
 ```
 
 实际上，这里使用锁来保障原子性显得有点杀鸡用牛刀的样子！锁固然是功能最强大、适用范围也很广泛的同步机制，但是毕竟它的开销也是最大的。另外，volatile虽然开销小一点，但是它无法保障“count++”这种自增操作的原子性（这也是我们在前文的代码中使用锁的一个原因）。事实上，保障像自增这种比较简单的操作的原子性我们有更好的选择——CAS。CAS能够将read-modify-write和check-and-act之类的操作转换为原子操作。
 
 我们知道“count++”（count是共享变量）实际上是一个read-modify-write操作，它可以由CAS转换为一种一般性的if-then-act的操作，并由处理器保障该操作的原子性。这里，CAS好比一个代理人（中间人），共享同一个变量V的多个线程就是它的客户。当客户需要更新变量V的值的时候，它们只需要请求（即调用）代理人代为修改，为此，客户要告诉代理人其看到的共享变量的当前值A及其期望的新值B。CAS作为代理人，相当于如下伪代码所示的函数：
-
-    boolean compareAndSwap(Variable V, Object A, Object B){
-      f (A == V.get()){// check：检查变量值是否被其他线程修改过
+```java
+    boolean compareAndSwap(Variable V, Object A, Object B)`{`
+      f (A == V.get())`{`// check：检查变量值是否被其他线程修改过
           V.set(B); // act：更新变量值
           return true; // 更新成功
-      }
+      `}`
       return false; // 变量值已被其他线程修改，更新失败
-    }
+    `}`
 ```
 
 CAS是一个原子的if-then-act的操作，其背后的假设是：当一个客户（线程）执行CAS操作的时候，如果变量V的当前值和客户请求（即调用）CAS时所提供的变量值A（即变量的旧值）是相等的，那么就说明其他线程并没有修改过变量V的值 [\[16\]](#text00008.html#ft16) 。执行CAS时如果没有其他线程修改过变量V的值，那么下手最快的客户（当前线程）就会抢先将变量V的值更新为B（新值），而其他客户（线程）的更新请求则会失败。这些失败的客户（线程）通常可以选择再次尝试，直到成功。这好比春节的时候抢购火车票，下手快的会抢先买到票，而下手慢的可以再次尝试，直到买到票。显然，这种更新机制是以CAS操作是一个原子操作为基础的，这一点直接由处理器来保障。
@@ -4067,18 +4065,18 @@ CAS是一个原子的if-then-act的操作，其背后的假设是：当一个客
 清单3-20　使用CAS实现线程安全的计数器
 
 ```java
-    public class CASBasedCounter {
+    public class CASBasedCounter `{`
       private volatile long count;
       // 完整代码参见本书配套下载资源
     
-      public long vaule() {
+      public long vaule() `{`
         return count;
-      }
+      `}`
     
-      public void increment() {
+      public void increment() `{`
         long oldValue;
         long newValue;
-        do {
+        do `{`
 
 
           oldValue = count; // 读取共享变量的当前值
@@ -4087,27 +4085,27 @@ CAS是一个原子的if-then-act的操作，其背后的假设是：当一个客
           newValue = oldValue + 1; // 计算共享变量的新值
 
 
-        } while (/* 调用CAS来更新共享变量的值 */! compareAndSwap(oldValue, newValue));
+        `}` while (/* 调用CAS来更新共享变量的值 */! compareAndSwap(oldValue, newValue));
 
 
-      }
+      `}`
     
       /*
       * 该方法是一个实例方法，且共享变量count是当前类的实例变量，因此这里没有必要在方法参数中声明
     一个表示共享变量的参数
       */
-      private boolean compareAndSwap(long oldValue, long newValue) {
+      private boolean compareAndSwap(long oldValue, long newValue) `{`
         // 完整代码参见本书配套下载资源
-      }
-    }
+      `}`
+    `}`
 ```
 
 上述increment方法中的do-while循环用于更新共享变量失败的时候继续重试，直到更新成功。这也是许多基于CAS的算法的代码模板（伪代码）：
-
-    do {
+```java
+    do `{`
       oldValue = V.get(); // 读取共享变量V的旧值
       newValue = calculate(oldValue); // 计算变量V的新值
-    }
+    `}`
 ``` while ( /* 调用CAS */ ! compareAndSwap(V, oldValue, newValue) );
 
 即在循环体中读取共享变量V的旧值（当前值）A，并以该值为输入经过一些列操作计算共享变量的新值B，接着调用CAS试图将V的值更新为B。若更新失败（说明更新期间其他线程修改了共享变量V的值）则继续重试，直到成功。
@@ -4147,7 +4145,7 @@ AtomicLong类可以被看作一个增强型的volatile long变量：调用Atomic
 清单3-21　基于原子变量类的指标统计器
 
 ```java
-    public class Indicator {
+    public class Indicator `{`
       // 保存当前类的唯一实例
       private static final Indicator INSTANCE = new Indicator();
       /**
@@ -4165,48 +4163,48 @@ AtomicLong类可以被看作一个增强型的volatile long变量：调用Atomic
       */
      private final AtomicLong failureCount = new AtomicLong(0);
     
-     private Indicator() {
+     private Indicator() `{`
        // 什么也不做
-     }
+     `}`
     
      // 返回该类的唯一实例
-     public static Indicator getInstance() {
+     public static Indicator getInstance() `{`
        return INSTANCE;
-     }
+     `}`
     
-     public void newRequestReceived() {
+     public void newRequestReceived() `{`
        // 使总请求数增加1。这里无须加锁
        requestCount.incrementAndGet();
-     }
+     `}`
     
-     public void newRequestProcessed() {
+     public void newRequestProcessed() `{`
        // 使总请求数增加1。这里无须加锁
        successCount.incrementAndGet();
-     }
+     `}`
     
-     public void requestProcessedFailed() {
+     public void requestProcessedFailed() `{`
        // 使总请求数增加1。这里无须加锁
        failureCount.incrementAndGet();
-     }
+     `}`
     
-     public long getRequestCount() {
+     public long getRequestCount() `{`
        return requestCount.get();
-     }
+     `}`
     
-     public long getSuccessCount() {
+     public long getSuccessCount() `{`
        return successCount.get();
-     }
+     `}`
     
-     public long getFailureCountCount() {
+     public long getFailureCountCount() `{`
        return failureCount.get();
-      }
-      public void reset() {
+      `}`
+      public void reset() `{`
         requestCount.set(0);
         successCount.set(0);
         failureCount.set(0);
-      }
+      `}`
       // 完整代码见本书配套下载资源
-    }
+    `}`
 ```
 
 这里我们直接使用AtomicLong作为计数器，在调用其相关方法的时候我们并不需要加锁。接着，我们会在Servlet Filter中调用Indicator实例的相关方法：测试桩每收到一个请求就将请求总数的值自增1，每给其客户端一个成功响应就将处理成功数自增1，每给其客户端一个失败的响应就将处理失败数自增1，如清单3-22所示。
@@ -4214,12 +4212,12 @@ AtomicLong类可以被看作一个增强型的volatile long变量：调用Atomic
 清单3-22　在Servlet Filter中更新统计指标
 
 ```java
-    public class CountingFilter implements Filter {
+    public class CountingFilter implements Filter `{`
       final Indicator indicator = Indicator.getInstance();
     
       @Override
       public void doFilter(ServletRequest request, ServletResponse response,
-          FilterChain chain) throws IOException, ServletException {
+          FilterChain chain) throws IOException, ServletException `{`
         indicator.newRequestReceived();
 
 
@@ -4228,18 +4226,18 @@ AtomicLong类可以被看作一个增强型的volatile long变量：调用Atomic
         chain.doFilter(request, httpResponse);
     
         int statusCode = httpResponse.getStatus();
-        if (0 == statusCode || 2 == statusCode / 100) {
+        if (0 == statusCode || 2 == statusCode / 100) `{`
           indicator.newRequestProcessed();
 
 
-        } else {
+        `}` else `{`
           indicator.requestProcessedFailed();
 
 
-        }
-      }
+        `}`
+      `}`
       // 完整代码见本书配套下载资源
-    }
+    `}`
 ```
 
 尽管上面的Filter实例会被Web服务器的多个工作者线程并发调用，但是我们调用Indicator实例的相关方法时是直接调用的而没有加锁。
@@ -4247,17 +4245,17 @@ AtomicLong类可以被看作一个增强型的volatile long变量：调用Atomic
 实现查看上述指标值的时候我们只需要调用Indicator的相应get方法，如清单3-23的JSP代码所示。
 
 清单3-23　查看统计指标值的JSP代码片段
-
-    Request Count:<%= Indicator.getInstance().getRequestCount()
+```java
+    Request Count:`<`%= Indicator.getInstance().getRequestCount()
     
-     %><br>
-    Success Count:<%= Indicator.getInstance().getSuccessCount()
+     %`>``<`br`>`
+    Success Count:`<`%= Indicator.getInstance().getSuccessCount()
     
-     %><br>
-    Failure Count:<%= Indicator.getInstance().getFailureCountCount()
+     %`>``<`br`>`
+    Failure Count:`<`%= Indicator.getInstance().getFailureCountCount()
     
-     %><br>
-
+     %`>``<`br`>`
+```
 Indicator的reset方法调用了3个AtomicLong实例的set()方法将3个指标值清零，以便再次测试。
 
 AtomicInteger的使用方法类似于AtomicLong，这里不再赘述。
@@ -4265,8 +4263,8 @@ AtomicInteger的使用方法类似于AtomicLong，这里不再赘述。
 AtomicBoolean类乍一看似乎显得有些多余，因为对布尔型变量的写操作本身就是个原子操作。实际上，这里需要注意更新操作并不一定是简单地进行赋值。AtomicBoolean类如同其他原子操作类一样，它们是要实现以read-modify-write操作的原子性。下面通过一个实战案例来介绍AtomicBoolean的典型运用场景。某系统的告警（Alarm）模块中的类AlarmMgr（告警管理器）内部会维护一个工作者线程（告警上报线程）用于将告警信息上报（发送）到告警服务器。告警上报线程是在AlarmMgr.init()中创建并启动的，为了避免该线程被重复创建（即创建多个告警上报线程），我们需要在AlarmMgr.init()进行相应的控制，如清单3-24所示。
 
 清单3-24　AtomicBoolean运用实例代码
-
-    public enum AlarmMgr implements Runnable {
+```java
+    public enum AlarmMgr implements Runnable `{`
       // 保存该类的唯一实例
       INSTANCE;
       private final AtomicBoolean initializating = new AtomicBoolean(false);
@@ -4274,13 +4272,13 @@ AtomicBoolean类乍一看似乎显得有些多余，因为对布尔型变量的�
 
       boolean initInProgress;
     
-      AlarmMgr() {
+      AlarmMgr() `{`
         // 什么也不做
-      }
+      `}`
     
-      public void init() {
+      public void init() `{`
         // 使用AtomicBoolean的CAS操作确保工作者线程只会被创建（并启动）一次
-        if (initializating.compareAndSet(false, true)) {
+        if (initializating.compareAndSet(false, true)) `{`
 
 
           Debug.info("initializating...");
@@ -4288,46 +4286,46 @@ AtomicBoolean类乍一看似乎显得有些多余，因为对布尔型变量的�
           new Thread(this).start();
 
 
-        }
-      }
+        `}`
+      `}`
     
-      public int sendAlarm(String message) {
+      public int sendAlarm(String message) `{`
         int result = 0;
         // ...
         return result;
-      }
+      `}`
       @Override
-      public void run() {
+      public void run() `{`
         // ...
-      }
-    }
+      `}`
+    `}`
 ```
 
 AtomicBoolean变量initializating用于表示告警管理器初始化（即创建并启动告警上报线程）的状态。initializating内部值为true表示正在初始化（或已初始化完毕），false表示未开始初始化。AlarmMgr.init()在创建（并启动）告警上报线程前会检查initializating的内部值：若initializating内部值为false，则将其置为true以表示当前线程即将执行初始化；若initializating内部值为true，则当前线程直接从AlarmMgr.init()返回。显然，在多线程环境下这个将initializating内部值从false调整为true的过程是一个check-then-act操作，若用锁来保障该操作的原子性，那么AlarmMgr.init()看起来会像这样：
+```java
+    public void init() `{`
+        synchronized (this) `{`
 
-    public void init() {
-        synchronized (this) {
 
-
-          if (initInProgress) {
+          if (initInProgress) `{`
 
 
             return;
 
 
-          }
+          `}`
 
 
           initInProgress = true;
 
 
-        }
+        `}`
 
 
         Debug.info("initializating...");
         // 创建并启动工作者线程
         new Thread(this).start();
-    }
+    `}`
 ```
 
 而实际上，我们使用了AtomicBoolean的compareAndSwap方法（相当于CAS）来保障上述check-then-act操作的原子性，从而既避免了锁的开销，又使代码更加简单。
@@ -4345,14 +4343,14 @@ AtomicReference类和AtomicBoolean类比较类似，因为对引用型变量的�
 我们知道线程安全问题产生的前提条件是多个线程共享变量。即使是private变量，它也可能被多个线程共享。例如如下代码：
 
 ```java
-    public class Example {
+    public class Example `{`
         private
     
-     Map<String, Integer> registry = new HashMap<String, Integer>();
-        public void someService(String in) {
+     Map`<`String, Integer`>` registry = new HashMap`<`String, Integer`>`();
+        public void someService(String in) `{`
               // 访问registry
-        }
-    }
+        `}`
+    `}`
 ```
 
 如果上述someService方法是被多个线程执行（比如多个线程的run方法调用了该方法），那么private变量registry实际上就是被多个线程共享。当然，这里我们可以使用锁、volatile关键字来保障此情形下的线程安全。
@@ -4366,24 +4364,24 @@ public Map\<String, Integer\> registry=new HashMap\<String, Integer\>();
 从面向对象编程的角度来看，这种发布形式不太提倡，因为它违反了信息封装（Information Hiding）的原则，不利于问题定位。
 
 ●　发布形式2 　在非private方法（包括public、protected、package方法）中返回一个对象。例如：
-
-    private Map<String, Integer> registry = new HashMap<String, Integer>();
-    public Map<String, Integer> getRegistry(){
+```java
+    private Map`<`String, Integer`>` registry = new HashMap`<`String, Integer`>`();
+    public Map`<`String, Integer`>` getRegistry()`{`
         return this.registry;
-    }
+    `}`
 ```
 
 ●　发布形式3 　创建内部类，使得当前对象（this）能够被这个内部类使用。例如：
-
-    public void startTask(final Object task) {
-        Thread t = new Thread(new Runnable() {
+```java
+    public void startTask(final Object task) `{`
+        Thread t = new Thread(new Runnable() `{`
               @Override
-              public void run() {
+              public void run() `{`
                 // 省略其他代码
-              }
-        });
+              `}`
+        `}`);
         t.start();
-    }
+    `}`
 ```
 
 上述代码中的“new Runnable()”所创建的匿名类可用访问其外层类的当前实例this（通过“外层类名．this”这种语法访问），也就是说该匿名类的外层类发布了自身的当前实例。
@@ -4396,25 +4394,25 @@ public Map\<String, Integer\> registry=new HashMap\<String, Integer\>();
 
 ### 3.11.1　对象的初始化安全：重访final与static
 
-前面介绍的线程安全的单例模式的实现方法中静态内部类法（见清单3-18）能够奏效的前提是静态变量只会被初始化一次。Java中类的初始化实际上也采取了延迟加载的技术，即一个类被Java虚拟机加载之后，该类的所有静态变量的值都仍然是其默认值（引用型变量的默认值为null, boolean变量的默认值为false），直到有个线程初次访问了该类的任意一个静态变量才使这个类被初始化——类的静态初始化块（“static{}”）被执行，类的所有静态变量被赋予初始值，如清单3-25所示。
+前面介绍的线程安全的单例模式的实现方法中静态内部类法（见清单3-18）能够奏效的前提是静态变量只会被初始化一次。Java中类的初始化实际上也采取了延迟加载的技术，即一个类被Java虚拟机加载之后，该类的所有静态变量的值都仍然是其默认值（引用型变量的默认值为null, boolean变量的默认值为false），直到有个线程初次访问了该类的任意一个静态变量才使这个类被初始化——类的静态初始化块（“static`{``}`”）被执行，类的所有静态变量被赋予初始值，如清单3-25所示。
 
 清单3-25　类的延迟初始化Demo
 
 ```java
-    public class ClassLazyInitDemo {
-      public static void main(String[] args) {
+    public class ClassLazyInitDemo `{`
+      public static void main(String[] args) `{`
         Debug.info(Collaborator.class.hashCode()); // 语句①
         Debug.info(Collaborator.number); // 语句②
         Debug.info(Collaborator.flag);
-      }
-      static class Collaborator {
+      `}`
+      static class Collaborator `{`
         static int number = 1;
         static boolean flag = true;
-        static {
+        static `{`
           Debug.info("Collaborator initializing...");
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 上述Demo的运行输出类似如下：
@@ -4433,43 +4431,43 @@ static关键字在多线程环境下有其特殊的涵义，它能够保证一�
 清单3-26　static关键字可见性保障示例
 
 ```java
-    public class StaticVisibilityExample {
-      private static Map<String, String> taskConfig
+    public class StaticVisibilityExample `{`
+      private static Map`<`String, String`>` taskConfig
     
     ;
-      static {
+      static `{`
         Debug.info("The class being initialized...");
-        taskConfig = new HashMap<String, String>(); // 语句①
+        taskConfig = new HashMap`<`String, String`>`(); // 语句①
         taskConfig.put("url", "https://github.com/Viscent"); // 语句②
         taskConfig.put("timeout", "1000"); // 语句③
-      }
+      `}`
     
-      public static void changeConfig(String url, int timeout) {
-        taskConfig = new HashMap<String, String>(); // 语句④
+      public static void changeConfig(String url, int timeout) `{`
+        taskConfig = new HashMap`<`String, String`>`(); // 语句④
         taskConfig.put("url", url); // 语句⑤
         taskConfig.put("timeout", String.valueOf(timeout)); // 语句⑥
-      }
+      `}`
     
-      public static void init() {
+      public static void init() `{`
         // 该线程至少能够看到语句①～语句③的操作结果，而能否看到语句④～语句⑥的操作结果是没有保障的
-        Thread t = new Thread() {
+        Thread t = new Thread() `{`
           @Override
-          public void run() {
+          public void run() `{`
           String url = taskConfig.get("url");
           String timeout = taskConfig.get("timeout");
           doTask(url, Integer.valueOf(timeout));
-          }
-        };
+          `}`
+        `}`;
         t.start();
-      }
+      `}`
     
-      private static void doTask(String url, int timeout) {
+      private static void doTask(String url, int timeout) `{`
         // 省略其他代码
     
         // 模拟实际操作的耗时
         Tools.randomPause(500);
-      }
-    }
+      `}`
+    `}`
 ```
 
 对于引用型静态变量，static关键字还能够保障一个线程读取到该变量的初始值时，这个值所指向（引用）的对象已经初始化完毕。
@@ -4487,7 +4485,7 @@ static关键字仅仅保障读线程能够读取到相应字段的初始值，�
 清单3-27　final关键字的作用示例
 
 ```java
-    public class FinalFieldExample {
+    public class FinalFieldExample `{`
       final int x;
 
 
@@ -4496,32 +4494,32 @@ static关键字仅仅保障读线程能够读取到相应字段的初始值，�
 
       static FinalFieldExample instance;
     
-      public FinalFieldExample() {
+      public FinalFieldExample() `{`
         x = 1;
         y = 2;
-      }
+      `}`
     
-      public static void writer() {
+      public static void writer() `{`
         instance = new FinalFieldExample();
-      }
+      `}`
     
-      public static void reader() {
+      public static void reader() `{`
         final FinalFieldExample theInstance = instance;
-        if (theInstance ! = null) {
+        if (theInstance ! = null) `{`
           int diff = theInstance.y - theInstance.x;
 
 
           // diff的值可能为1(=2-1），也可能为-1（=0-1）
           print(diff);
-        }
-    }
+        `}`
+    `}`
 ```
     
-    private static void print(int x) {
+    private static void print(int x) `{`
       // ...
-    }
+    `}`
 ```
-    }
+    `}`
 ```
 
 在JIT编译器的内联（Inline）优化的作用下，FinalFieldExample方法中的语句会被“挪入”writer方法，因此writer方法对应的指令可能被编译为与如下伪代码等效的代码：
@@ -4538,7 +4536,7 @@ static关键字仅仅保障读线程能够读取到相应字段的初始值，�
 清单3-28　final关键字保障对象初始化完毕示例
 
 ```java
-    public class HTTPRangeRequest {
+    public class HTTPRangeRequest `{`
       private final Range range;
 
 
@@ -4546,27 +4544,27 @@ static关键字仅仅保障读线程能够读取到相应字段的初始值，�
 
 
 
-      public HTTPRangeRequest(String url, int lowerBound, int upperBound) {
+      public HTTPRangeRequest(String url, int lowerBound, int upperBound) `{`
         this.url = url;
         this.range = new Range(lowerBound, upperBound);
-      }
-    public Range getRange() {
+      `}`
+    public Range getRange() `{`
       return range;
-    }
-```
+    `}`
+
     
-    public static class Range {
+    public static class Range `{`
       private long lowerBound;
       private long upperBound;
     
-      public Range(long lowerBound, long upperBound) {
+      public Range(long lowerBound, long upperBound) `{`
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
-      }
+      `}`
       // 完整代码见本书配套下载资源
-    }
+    `}`
 ```
-    }
+    `}`
 ```
 
 我们知道，在JIT编译器的内联（Inline）优化的作用下，如下语句
@@ -4612,23 +4610,23 @@ static关键字仅仅保障读线程能够读取到相应字段的初始值，�
 清单3-29　在启动工作者线程时实现对象安全发布范例
 
 ```java
-    public class SafeObjPublishWhenStartingThread {
-      private final Map<String, String> objectState;
+    public class SafeObjPublishWhenStartingThread `{`
+      private final Map`<`String, String`>` objectState;
     
-      private SafeObjPublishWhenStartingThread(Map<String, String> objectState) {
+      private SafeObjPublishWhenStartingThread(Map`<`String, String`>` objectState) `{`
         this.objectState = objectState;
         // 不在构造器中启动工作者线程，以避免this逸出
-      }
+      `}`
     
-      private void init() {
+      private void init() `{`
         // 创建并启动工作者线程
-        new Thread() {
+        new Thread() `{`
 
 
           @Override
 
 
-          public void run() {
+          public void run() `{`
 
 
             // 访问外层类实例的状态变量
@@ -4643,24 +4641,24 @@ static关键字仅仅保障读线程能够读取到相应字段的初始值，�
             // 省略其他代码
 
 
-          }
+          `}`
 
 
-        }.start();
+        `}`.start();
 
 
-      }
+      `}`
       // 工厂方法
       public static SafeObjPublishWhenStartingThread newInstance(
-          Map<String, String> objState) {
+          Map`<`String, String`>` objState) `{`
         SafeObjPublishWhenStartingThread instance =
           new SafeObjPublishWhenStartingThread(objState);
         instance.init();
 
 
         return instance;
-      }
-    }
+      `}`
+    `}`
 ```
 
 一个对象在其初始化过程中没有出现this逸出，我们就称该对象为正确创建的对象 （Properly Constructed Object）。要安全发布一个正确创建的对象，我们可以根据情况从以下几种方式中选择。
@@ -4763,7 +4761,7 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
 
 [\[18\]](#text00008.html#fn18) JIT编译器是通过在编译后的机器码中插入特殊的内存屏障来实现这一点的。
 
-# 第4章 牛刀小试：玩转线程
+## 第4章 牛刀小试：玩转线程
 
 结识新朋友，不忘老朋友！
 
@@ -4806,7 +4804,7 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
     * @author Viscent Huang
     */
  ```java
-    public class BigFileDownloader {
+    public class BigFileDownloader `{`
      protected final URL requestURL;
      protected final long fileSize;
      /**
@@ -4815,7 +4813,7 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
      protected final Storage storage;
      protected final AtomicBoolean taskCanceled = new AtomicBoolean(false);
     
-     public BigFileDownloader(String strURL) throws Exception {
+     public BigFileDownloader(String strURL) throws Exception `{`
       requestURL = new URL(strURL);
     
       // 获取待下载资源的大小（单位：字节）
@@ -4824,7 +4822,7 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
       String fileName = strURL.substring(strURL.lastIndexOf('/') + 1);
       // 创建负责存储已下载数据的对象
       storage = new Storage(fileSize, fileName);
-     }
+     `}`
     
      /**
       * 下载指定的文件
@@ -4836,7 +4834,7 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
       * @throws Exception
       */
      public void download(int taskCount, long reportInterval)
-        throws Exception {
+        throws Exception `{`
     
       long chunkSizePerThread = fileSize / taskCount;
       // 下载数据段的起始字节
@@ -4844,63 +4842,63 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
       // 下载数据段的结束字节
       long upperBound = 0;
       DownloadTask dt;
-      for (int i = taskCount - 1; i >= 0; i--) {
+      for (int i = taskCount - 1; i `>`= 0; i--) `{`
         lowerBound = i * chunkSizePerThread;
-        if (i == taskCount - 1) {
+        if (i == taskCount - 1) `{`
           upperBound = fileSize;
-        } else {
+        `}` else `{`
           upperBound = lowerBound + chunkSizePerThread - 1;
-        }
+        `}`
           // 创建下载任务
           dt = new DownloadTask(lowerBound, upperBound, requestURL, storage,
               taskCanceled);
           dispatchWork(dt, i);
-        }
+        `}`
         // 定时报告下载进度
         reportProgress(reportInterval);
         // 清理程序占用的资源
         doCleanup();
     
-      }
+      `}`
     
-      protected void doCleanup() {
+      protected void doCleanup() `{`
         Tools.silentClose(storage);
-      }
+      `}`
     
-      protected void cancelDownload() {
-        if (taskCanceled.compareAndSet(false, true)) {
+      protected void cancelDownload() `{`
+        if (taskCanceled.compareAndSet(false, true)) `{`
           doCleanup();
-        }
-      }
+        `}`
+      `}`
     
-      protected void dispatchWork(final DownloadTask dt, int workerIndex) {
+      protected void dispatchWork(final DownloadTask dt, int workerIndex) `{`
         // 创建下载线程
-        Thread workerThread = new Thread(new Runnable() {
+        Thread workerThread = new Thread(new Runnable() `{`
           @Override
-          public void run() {
-            try {
+          public void run() `{`
+            try `{`
               dt.run();
-            } catch (Exception e) {
+            `}` catch (Exception e) `{`
               e.printStackTrace();
               // 取消整个文件的下载
               cancelDownload();
-            }
-          }
-        });
+            `}`
+          `}`
+        `}`);
         workerThread.setName("downloader-" + workerIndex);
         workerThread.start();
-      }
+      `}`
     
       // 根据指定的URL获取相应文件的大小
-      private static long retieveFileSize(URL requestURL) throws Exception {
+      private static long retieveFileSize(URL requestURL) throws Exception `{`
         // 完整代码见本书配套下载资源
-      }
+      `}`
     
       // 报告下载进度
-      private void reportProgress(long reportInterval) throws InterruptedException {
+      private void reportProgress(long reportInterval) throws InterruptedException `{`
         // 完整代码见本书配套下载资源
-      }
-    }
+      `}`
+    `}`
 ```
 
 文件下载器的待下载资源相当于位于Web服务器上的一个大文件（输入），我们从逻辑上将其分解为若干子文件（起始字节和结束字节所表示的数据段），并使用多个工作者线程各自负责这些子文件的下载。比如，待下载资源的大小为600MB，如果我们指定3个下载线程，那么每个下载线程只需要下载这个大文件中200MB的数据。因此，该案例实际上是将程序算法中从服务器上下载数据这个部分由原来单线程程序的串行处理变成了并发处理，即实现了并发化。
@@ -4925,7 +4923,7 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
      * @author Viscent Huang
      */
 ```java
-    public class DownloadTask implements Runnable {
+    public class DownloadTask implements Runnable `{`
       private final long lowerBound;
       private final long upperBound;
       private final DownloadBuffer xbuf;
@@ -4933,31 +4931,31 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
       private final AtomicBoolean cancelFlag;
     
       public DownloadTask(long lowerBound, long upperBound, URL requestURL,
-          Storage storage, AtomicBoolean cancelFlag) {
+          Storage storage, AtomicBoolean cancelFlag) `{`
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
         this.requestURL = requestURL;
         this.xbuf = new DownloadBuffer(lowerBound, upperBound, storage);
         this.cancelFlag = cancelFlag;
-      }
+      `}`
     
       // 对指定的URL发起HTTP分段下载请求
       private static InputStream issueRequest(URL requestURL, long lowerBound,
-          long upperBound) throws IOException {
+          long upperBound) throws IOException `{`
         // 完整代码见本书配套下载资源
-      }
+      `}`
     
       @Override
-      public void run() {
-        if (cancelFlag.get()) {
+      public void run() `{`
+        if (cancelFlag.get()) `{`
           return;
-        }
+        `}`
         ReadableByteChannel channel = null;
-        try {
+        try `{`
           channel = Channels.newChannel(issueRequest(requestURL, lowerBound,
             upperBound));
           ByteBuffer buf = ByteBuffer.allocate(1024);
-          while (! cancelFlag.get() && channel.read(buf) > 0) {
+          while (! cancelFlag.get() && channel.read(buf) `>` 0) `{`
           // 将从网络读取的数据写入缓冲区
           xbuf.write(buf);
 
@@ -4965,20 +4963,20 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
             buf.clear();
 
 
-          }
-        } catch (Exception e) {
+          `}`
+        `}` catch (Exception e) `{`
           throw new RuntimeException(e);
-        } finally {
+        `}` finally `{`
           Tools.silentClose(channel, xbuf);
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 清单4-3　缓冲区实现类DownloadBuffer源码
 
 ```java
-    public class DownloadBuffer implements Closeable {
+    public class DownloadBuffer implements Closeable `{`
       /**
       * 当前Buffer中缓冲的数据相对于整个存储文件的位置偏移
       */
@@ -4988,60 +4986,60 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
       public final ByteBuffer byteBuf;
       private final Storage storage;
     
-      public DownloadBuffer(long globalOffset, long upperBound, final Storage storage){
+      public DownloadBuffer(long globalOffset, long upperBound, final Storage storage)`{`
         this.globalOffset = globalOffset;
         this.upperBound = upperBound;
         this.byteBuf = ByteBuffer.allocate(1024 * 1024);
         this.storage = storage;
-      }
+      `}`
     
-      public void write(ByteBuffer buf) throws IOException {
+      public void write(ByteBuffer buf) throws IOException `{`
         int length = buf.position();
         final int capacity = byteBuf.capacity();
     
         // 当前缓冲区已满，或者剩余容量不够容纳新数据
-        if ((offset + length) > capacity || length == capacity) {
+        if ((offset + length) `>` capacity || length == capacity) `{`
           // 将缓冲区中的数据写入文件
           flush();
-        }
+        `}`
         byteBuf.position(offset);
         buf.flip();
         byteBuf.put(buf);
         offset += length;
-      }
+      `}`
     
-      public void flush() throws IOException {
+      public void flush() throws IOException `{`
         int length;
         byteBuf.flip();
         length = storage.store(globalOffset, byteBuf);
         byteBuf.clear();
         globalOffset += length;
         offset = 0;
-      }
-      public void close() throws IOException {
-        if (globalOffset < upperBound) {
+      `}`
+      public void close() throws IOException `{`
+        if (globalOffset `<` upperBound) `{`
           flush();
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 清单4-4　文件存储实现类Storage源码
 
 ```java
-    public class Storage implements Closeable, AutoCloseable {
+    public class Storage implements Closeable, AutoCloseable `{`
       private final RandomAccessFile storeFile;
       private final FileChannel storeChannel;
       protected final AtomicLong totalWrites = new AtomicLong(0);
     
-      public Storage(long fileSize, String fileShortName) throws IOException {
+      public Storage(long fileSize, String fileShortName) throws IOException `{`
         String fullFileName = System.getProperty("java.io.tmpdir") + "/"
           + fileShortName;
         String localFileName;
         localFileName = createStoreFile(fileSize, fullFileName);
         storeFile = new RandomAccessFile(localFileName, "rw");
         storeChannel = storeFile.getChannel();
-      }
+      `}`
     
       /**
       * 将data中指定的数据写入文件
@@ -5054,39 +5052,39 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
       * @return 写入文件的数据长度
       */
       public int store(long offset, ByteBuffer byteBuf)
-          throws IOException {
+          throws IOException `{`
         int length;
         storeChannel.write(byteBuf, offset);
         length = byteBuf.limit();
         totalWrites.addAndGet(length);
         return length;
-      }
+      `}`
     
-      public long getTotalWrites() {
+      public long getTotalWrites() `{`
         return totalWrites.get();
-      }
+      `}`
     
       private String createStoreFile(final long fileSize, String fullFileName)
-          throws IOException {
+          throws IOException `{`
         File file = new File(fullFileName);
         Debug.info("create local file:%s", fullFileName);
         RandomAccessFile raf;
         raf = new RandomAccessFile(file, "rw");
-        try {
+        try `{`
           raf.setLength(fileSize);
-        } finally {
+        `}` finally `{`
           Tools.silentClose(raf);
-        }
+        `}`
         return fullFileName;
-      }
+      `}`
     
       @Override
-      public synchronized void close() throws IOException {
-        if (storeChannel.isOpen()) {
+      public synchronized void close() throws IOException `{`
+        if (storeChannel.isOpen()) `{`
           Tools.silentClose(storeChannel, storeFile);
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 ## 4.4　基于任务的分割实现并发化
@@ -5128,13 +5126,13 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
 由此可见，在该案例中直接使用基于数据的分割是不太合适的。因此，我们不妨先考虑一下单线程的实现方式。为了便于评估其他的实现方案（比如其他方法实现的多线程版），我们对这个统计程序的算法步骤进行了抽象，如清单4-5所示。
 
 清单4-5　对统计程序算法步骤的抽象
-
+```java
     /**
      * 对统计程序的算法步骤进行抽象
      *
      * @author Viscent Huang
      */
-    public abstract class AbstractStatTask implements Runnable {
+    public abstract class AbstractStatTask implements Runnable `{`
       private static final String TIME_STAMP_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
       private final Calendar calendar;
       // 此处是单线程访问，故其使用是线程安全的
@@ -5145,21 +5143,21 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
       protected final StatProcessor recordProcessor;
     
       public AbstractStatTask(int sampleInterval, int traceIdDiff,
-          String expectedOperationName, String expectedExternalDeviceList) {
+          String expectedOperationName, String expectedExternalDeviceList) `{`
         this(sampleInterval, new RecordProcessor(sampleInterval,
           traceIdDiff,
           expectedOperationName, expectedExternalDeviceList));
-      }
+      `}`
     
       public AbstractStatTask(int sampleInterval,
-          StatProcessor recordProcessor) {
+          StatProcessor recordProcessor) `{`
         SimpleTimeZone stz = new SimpleTimeZone(0, "UTC");
         this.sdf = new SimpleDateFormat(TIME_STAMP_FORMAT);
         sdf.setTimeZone(stz);
         this.calendar = Calendar.getInstance(stz);
         this.sampleInterval = sampleInterval;
         this.recordProcessor = recordProcessor;
-      }
+      `}`
     
       /**
       * 留给子类用于实现统计操作的抽象方法
@@ -5168,32 +5166,32 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
         InterruptedException;
     
      @Override
-     public void run() {
+     public void run() `{`
        // 执行统计逻辑
-       try {
+       try `{`
         doCalculate();
 
 
-       } catch (Exception e) {
+       `}` catch (Exception e) `{`
         e.printStackTrace();
         return;
-       }
+       `}`
        // 获取统计结果
-       Map<Long, DelayItem> result = recordProcessor.getResult();
+       Map`<`Long, DelayItem`>` result = recordProcessor.getResult();
 
 
        // 输出统计结果
        report(result);
 
 
-     }
+     `}`
     
-     protected void report(Map<Long, DelayItem> summaryResult) {
+     protected void report(Map`<`Long, DelayItem`>` summaryResult) `{`
        int sampleCount;
        final PrintStream ps = System.out;
        ps.printf("%s\t\t%s\t%s\t%s%n",
           "Timestamp", "AvgDelay(ms)", "TPS", "SampleCount");
-       for (DelayItem delayStatData : summaryResult.values()) {
+       for (DelayItem delayStatData : summaryResult.values()) `{`
         sampleCount = delayStatData.getSampleCount().get();
         ps.printf("%s%8d%8d%8d%n",
             getUTCTimeStamp(delayStatData
@@ -5201,15 +5199,15 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
                 / sampleCount,
             sampleCount
                 / sampleInterval, sampleCount);
-       }
-     }
+       `}`
+     `}`
     
-     private String getUTCTimeStamp(long timeStamp) {
+     private String getUTCTimeStamp(long timeStamp) `{`
        calendar.setTimeInMillis(timeStamp);
        String tempTs = sdf.format(calendar.getTime());
        return tempTs;
-     }
-    }
+     `}`
+    `}`
 ```
 
 这里，我们在Runnable接口的run方法中定义了统计程序的算法步骤：执行统计逻辑、获取统计结果和打印统计结果。无论是采用单线程方式还是多线程方式实现这个算法步骤，其中不同的部分只有第1步，因此我们使用了抽象方法doCalculate来表示这个步骤。下面我们以单线程的方式实现这个统计程序，为此我们只需要创建AbstractStatTask的一个子类SimpleStatTask，并在该子类中实现抽象方法doCalculate即可，如清单4-6所示。
@@ -5219,38 +5217,38 @@ final关键字在多线程环境下也有其特殊作用：当一个对象被发
 ```java
     public class SimpleStatTask extends AbstractStatTask
     
-     {
+     `{`
       private final InputStream in;
     
       public SimpleStatTask(InputStream in, int sampleInterval, int traceIdDiff,
-          String expectedOperationName, String expectedExternalDeviceList) {
+          String expectedOperationName, String expectedExternalDeviceList) `{`
         super(sampleInterval, traceIdDiff, expectedOperationName,
           expectedExternalDeviceList);
         this.in = in;
-      }
+      `}`
     
       @Override
-      protected void doCalculate() throws IOException, InterruptedException {
+      protected void doCalculate() throws IOException, InterruptedException `{`
         String strBufferSize = System.getProperty("x.input.buffer");
         int inputBufferSize = null ! = strBufferSize ? Integer
           .valueOf(strBufferSize) : 8192 * 4;
         final BufferedReader logFileReader = new BufferedReader(
           new InputStreamReader(in), inputBufferSize);
         String record;
-        try {
+        try `{`
           while ((record = logFileReader.readLine()
     
-    ) ! = null) {
+    ) ! = null) `{`
           // 实例变量recordProcessor是在AbstractStatTask中定义的
           recordProcessor.process(record);
 
 
-          }
-        } finally {
+          `}`
+        `}` finally `{`
           Tools.silentClose(logFileReader);
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 SimpleStatTask的doCalculate方法每读取一条日志记录便调用recordProcessor（RecordProcessor类的实例，源码见本书配套下载资源）的process方法进行统计处理。显然，doCalculate方法所执行的任务是一个混合型任务。这个任务的执行线程（即SimpleStatTask.run()的执行线程）在等待磁盘返回数据期间什么也做不了，从而导致处理器时间的浪费。为了提高并发性以提高统计效率，我们可以考虑将这个任务分解为CPU密集型和I/O密集型两种子任务，并采用专门的工作者线程分别负责这两种子任务的执行。为此，我们只需要再定义一个AbstractStatTask的子类MultithreadedStatTask，如清单4-7所示。
@@ -5260,7 +5258,7 @@ SimpleStatTask的doCalculate方法每读取一条日志记录便调用recordProc
 ```java
     public class MultithreadedStatTask extends AbstractStatTask
     
-     {
+     `{`
     // 日志文件输入缓冲大小
     protected final int inputBufferSize;
     // 日志记录集大小
@@ -5269,33 +5267,33 @@ SimpleStatTask的doCalculate方法每读取一条日志记录便调用recordProc
     protected final InputStream in;
     
     /* 实例初始化块 */
-    {
+    `{`
       String strBufferSize = System.getProperty("x.input.buffer");
       inputBufferSize = null ! = strBufferSize ? Integer.valueOf(strBufferSize)
           : 8192;
       String strBatchSize = System.getProperty("x.batch.size");
       batchSize = null ! = strBatchSize ? Integer.valueOf(strBatchSize) : 2000;
-    }
-```
+    `}`
+
     
     public MultithreadedStatTask(int sampleInterval,
-        StatProcessor recordProcessor) {
+        StatProcessor recordProcessor) `{`
       super(sampleInterval, recordProcessor);
       this.in = null;
-    }
-```
+    `}`
+
     
     public MultithreadedStatTask(InputStream in, int sampleInterval,
         int traceIdDiff,
-        String expectedOperationName, String expectedExternalDeviceList) {
+        String expectedOperationName, String expectedExternalDeviceList) `{`
       super(sampleInterval, traceIdDiff, expectedOperationName,
           expectedExternalDeviceList);
       this.in = in;
-    }
-```
+    `}`
+
     
     @Override
-    protected void doCalculate() throws IOException, InterruptedException {
+    protected void doCalculate() throws IOException, InterruptedException `{`
       final AbstractLogReader logReaderThread = createLogReader();
 
 
@@ -5305,83 +5303,83 @@ SimpleStatTask的doCalculate方法每读取一条日志记录便调用recordProc
 
       RecordSet recordSet;
       String record;
-      for (; ; ) {
+      for (; ; ) `{`
         recordSet = logReaderThread.nextBatch();
 
 
-        if (null == recordSet) {
+        if (null == recordSet) `{`
           break;
-        }
-        while (null ! = (record = recordSet.nextRecord())) {
+        `}`
+        while (null ! = (record = recordSet.nextRecord())) `{`
           // 实例变量recordProcessor是在AbstractStatTask中定义的
           recordProcessor.process(record);
 
 
-        }
-      }// for循环结束
-    }
-```
-      protected AbstractLogReader createLogReader() {
+        `}`
+      `}`// for循环结束
+    `}`
+
+      protected AbstractLogReader createLogReader() `{`
         AbstractLogReader logReader = new LogReaderThread(in, inputBufferSize,
             batchSize);
         return logReader;
-      }
-    }
+      `}`
+    `}`
 ```
 
 MultithreadedStatTask.doCalculate()创建并启动了工作者线程logReaderThread（LogReaderThread实例，源码见清单4-10），该线程专门负责日志文件的读取并将其读取到的一批日志记录填充到指定的日志记录集（RecordSet类的实例，代表一批日志记录，源码见清单4-8）中。因此，我们称AbstractLogReader子类的实例（logReaderThread）为日志文件读取线程 。MultithreadedStatTask.doCalculate()需要读取一批日志记录的时候便调用logReaderThread.nextBatch()来获取一个已填充完毕的日志记录集，然后遍历该日志记录集并调用RecordProcessor的process方法对遍历到的日志记录进行统计处理。因此，我们称MultithreadedStatTask.doCalculate()的执行线程为统计处理线程 。由于MultithreadedStatTask.doCalculate()是由其父类（AbstractStatTask）的run方法调用的，而AbstractStatTask.run()是由main线程执行的，因此main线程就是统计处理线程。这里，我们使用唯一的一个线程（统计处理线程）负责对日志记录进行统计逻辑处理，同时又采用另外一个工作者线程（日志文件读取线程）负责对日志文件进行读取（参见清单4-9）。因此我们自然地绕过了上述问题2和问题1。另外，由于统计处理线程和日志文件读取线程是并发执行的，因此我们也绕过了上述问题3。
 
 清单4-8　日志记录集RecordSet源码
-
+```java
     /**
      * 日志记录集。包含若干条日志记录
      *
      * @author Viscent Huang
      */
-```java
-    public class RecordSet {
+
+    public class RecordSet `{`
       public final int capacity;
       final String[] records;
       int readIndex = 0;
       int writeIndex = 0;
     
-      public RecordSet(int capacity) {
+      public RecordSet(int capacity) `{`
         this.capacity = capacity;
         records = new String[capacity];
-      }
+      `}`
     
-      public String nextRecord() {
+      public String nextRecord() `{`
         String record = null;
-        if (readIndex < writeIndex) {
+        if (readIndex `<` writeIndex) `{`
           record = records[readIndex++];
-        }
+        `}`
         return record;
-      }
+      `}`
     
-      public boolean putRecord(String line) {
-        if (writeIndex == capacity) {
+      public boolean putRecord(String line) `{`
+        if (writeIndex == capacity) `{`
           return true;
-        }
+        `}`
         records[writeIndex++] = line;
         return false;
-      }
+      `}`
     
-      public void reset() {
+      public void reset() `{`
         readIndex = 0;
         writeIndex = 0;
-        for (int i = 0, len = records.length; i < len; i++) {
+        for (int i = 0, len = records.length; i `<` len; i++) `{`
           records[i] = null;
-        }
-      }
+        `}`
+      `}`
     
-      public boolean isEmpty() {
+      public boolean isEmpty() `{`
         return 0 == writeIndex;
-      }
-    }
+      `}`
+    `}`
 ```
 
 清单4-9　日志文件读取线程AbstractLogReader源码
-
+```java
     /**
      * 日志文件读取线程
      *
@@ -5389,22 +5387,21 @@ MultithreadedStatTask.doCalculate()创建并启动了工作者线程logReaderThr
      */
     public abstract class AbstractLogReader extends Thread
     
-     {
+     `{`
       protected final BufferedReader logFileReader;
       // 表示日志文件是否读取结束
       protected volatile boolean isEOF = false;
       protected final int batchSize;
     
-      public AbstractLogReader(InputStream in, int inputBufferSize, int batchSize) {
+      public AbstractLogReader(InputStream in, int inputBufferSize, int batchSize) `{`
         logFileReader = new BufferedReader(new InputStreamReader(in),
           inputBufferSize);
         this.batchSize = batchSize;
-      }
+      `}`
     
-      protected RecordSet getNextToFill() {
+      protected RecordSet getNextToFill() `{`
       return new RecordSet(batchSize);
-    }
-```
+    `}`
     
     /* 留给子类实现的抽象方法 */
     // 获取下一个记录集
@@ -5416,45 +5413,44 @@ MultithreadedStatTask.doCalculate()创建并启动了工作者线程logReaderThr
         throws InterruptedException;
     
     @Override
-    public void run() {
+    public void run() `{`
       RecordSet recordSet;
       boolean eof = false;
-      try {
-        while (true) {
+      try `{`
+        while (true) `{`
           recordSet = getNextToFill();
           recordSet.reset();
           eof = doFill(recordSet);
           publish(recordSet);
-          if (eof) {
-            if (! recordSet.isEmpty()) {
+          if (eof) `{`
+            if (! recordSet.isEmpty()) `{`
             publish(new RecordSet(1));
-            }
+            `}`
             isEOF = eof;
             break;
-          }
-        }
-      } catch (Exception e) {
+          `}`
+        `}`
+      `}` catch (Exception e) `{`
         e.printStackTrace();
-      } finally {
+      `}` finally `{`
         Tools.silentClose(logFileReader);
-      }
-    }
-```
+      `}`
+    `}`
     
-    protected boolean doFill(final RecordSet recordSet) throws IOException {
+    protected boolean doFill(final RecordSet recordSet) throws IOException `{`
       final int capacity = recordSet.capacity;
       String record;
-      for (int i = 0; i < capacity; i++) {
+      for (int i = 0; i `<` capacity; i++) `{`
         record = logFileReader.readLine();
-        if (null == record) {
+        if (null == record) `{`
           return true;
-        }
+        `}`
         // 将读取到的日志记录存入指定的记录集
         recordSet.putRecord(record);
-      }
+      `}`
         return false;
-      }
-    }
+      `}`
+    `}`
 ```
 
 综上所述，本案例实际上是将程序算法中的读取日志文件和对日志记录进行统计处理这两个步骤由原来的单线程程序的串行处理改为并发处理，即实现了并发化。
@@ -5520,37 +5516,37 @@ MultithreadedStatTask.doCalculate()创建并启动了工作者线程logReaderThr
 ```java
     public class LogReaderThread extends AbstractLogReader
     
-     {
+     `{`
       // 线程安全的队列
-      final BlockingQueue<RecordSet> channel = new ArrayBlockingQueue<RecordSet>(2);
+      final BlockingQueue`<`RecordSet`>` channel = new ArrayBlockingQueue`<`RecordSet`>`(2);
 
 
-      public LogReaderThread(InputStream in, int inputBufferSize, int batchSize) {
+      public LogReaderThread(InputStream in, int inputBufferSize, int batchSize) `{`
         super(in, inputBufferSize, batchSize);
-      }
+      `}`
     
       @Override
       public RecordSet nextBatch()
-          throws InterruptedException {
+          throws InterruptedException `{`
         RecordSet batch;
         // 从队列中取出一个记录集
         batch = channel.take();
 
 
-        if (batch.isEmpty()) {
+        if (batch.isEmpty()) `{`
           batch = null;
-        }
+        `}`
         return batch;
-      }
+      `}`
     
       @Override
-      protected void publish(RecordSet recordBatch) throws InterruptedException {
+      protected void publish(RecordSet recordBatch) throws InterruptedException `{`
         // 记录集存入队列
         channel.put(recordBatch);
 
 
-      }
-    }
+      `}`
+    `}`
 ```
 
 上述案例中待统计的日志记录可能多达上千万条，因此如果日志统计处理线程是逐条地从日志读取线程读取日志记录，那么这两个线程之间的数据传递（移动）的开销将不容小觑。所以，我们使用RecordSet类作为日志统计处理线程和日志文件读取线程之间数据传递的容器。该容器使得一批日志记录（例如2000条）成为日志统计处理线程和日志文件读取线程之间的数据传递单位，从而减少了数据传递的开销，而这同时也在一定程度上增加了程序的复杂性。
@@ -5567,7 +5563,7 @@ MultithreadedStatTask.doCalculate()创建并启动了工作者线程logReaderThr
 
 ### 4.4.3　按处理步骤分割
 
-如果程序对其输入集{d1 , d2 , …, d N }中的任何一个输入元素di (1≤i≤N )的处理都包含若干步骤{Step1 , Step2 , …, Step M }，那么为了提高程序的吞吐率，我们可以考虑为其中的每一个处理步骤都安排一个（或者多个）工作者线程负责相应的处理。这就是按处理步骤分割的基本思想。
+如果程序对其输入集``{`d1 , d2 , …, d N `}``中的任何一个输入元素di (1≤i≤N )的处理都包含若干步骤``{`Step1 , Step2 , …, Step M `}``，那么为了提高程序的吞吐率，我们可以考虑为其中的每一个处理步骤都安排一个（或者多个）工作者线程负责相应的处理。这就是按处理步骤分割的基本思想。
 
 按任务的资源消耗属性分割可以被看作按处理步骤分割的一个特例。多线程设计模式中的Pipeline模式的核心思想也正是按处理步骤分割的。
 
@@ -5635,26 +5631,26 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
 清单4-11　实际测量WT/ST值Demo
 
 ```java
-    public class WTSTMeasureDemo implements Runnable {
+    public class WTSTMeasureDemo implements Runnable `{`
       final long waitTime;
     
-      public WTSTMeasureDemo(long waitTime) {
+      public WTSTMeasureDemo(long waitTime) `{`
         this.waitTime = waitTime;
-      }
+      `}`
     
-      public static void main(String[] args) throws Exception {
+      public static void main(String[] args) throws Exception `{`
         main0(args);
-      }
+      `}`
     
-      public static void main0(String[] args) throws Exception {
+      public static void main0(String[] args) throws Exception `{`
         final int argc = args.length;
-        int nThreads = argc > 0 ? Integer.valueOf(args[0]) : 1;
-        long waitTime = argc >= 1 ? Long.valueOf(args[0]) : 4000L;
+        int nThreads = argc `>` 0 ? Integer.valueOf(args[0]) : 1;
+        long waitTime = argc `>`= 1 ? Long.valueOf(args[0]) : 4000L;
         WTSTMeasureDemo demo = new WTSTMeasureDemo(waitTime);
         Thread[] threads = new Thread[nThreads];
-        for (int i = 0; i < nThreads; i++) {
+        for (int i = 0; i `<` nThreads; i++) `{`
           threads[i] = new Thread(demo);
-        }
+        `}`
         long s = System.currentTimeMillis();
         Tools.startAndWaitTerminated(threads);
         long duration = System.currentTimeMillis() - s;
@@ -5664,27 +5660,27 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
           waitTime * 1.0f / serviceTime,
           waitTime, serviceTime,
           duration * 1.0f / 1000);
-      }
+      `}`
     
       @Override
-      public void run() {
-        try {
+      public void run() `{`
+        try `{`
           // 模拟I/O操作
           Thread.sleep(waitTime);
     
           // 模拟实际执行计算
           String result = null;
-          for (int i = 0; i < 400000; i++) {
+          for (int i = 0; i `<` 400000; i++) `{`
           result = DESEncryption.encryptAsString(
               "it is a cpu-intensive task" + i,
               "12345678");
-        }
+        `}`
         System.out.printf("result:%s%n", result);
-        } catch (Exception e) {
+        `}` catch (Exception e) `{`
         e.printStackTrace();
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 该程序的输出类似如下：
@@ -5742,7 +5738,7 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
 
 [\[5\]](#text00009.html#fn5) Java平台本身就是一个多线程的平台，因此我们所说的单线程程序实际上是指应用程序自身没有创建其线程。
 
-# 第5章 线程间协作
+## 第5章 线程间协作
 
 你不是一个人在战斗！
 
@@ -5754,17 +5750,17 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
 ## 5.1　等待与通知：wait/notify
 
 在单线程编程中，程序要执行的操作（目标动作）如果需要满足一定的条件（保护条件）才能执行，那么我们可以将该操作放在一个if语句体中，这使得目标动作只有在保护条件得以满足的时候才会被执行。在多线程编程中处理这种情形我们有另外一个选择——保护条件未满足可能只是暂时的，稍后其他线程可能更新了保护条件涉及的共享变量而使得其成立，因此我们可以将当前线程暂停，直到其所需的保护条件得以成立时再将其唤醒，如下伪代码所示：
-
+```java
     // 原子操作
-    atomic{
-      while（保护条件不成立）{
+    atomic`{`
+      while（保护条件不成立）`{`
         暂停当前线程；
-      }
+      `}`
       // 执行目标动作
       doAction();
 
 
-    }
+    `}`
 ```
 
 显然，上述操作必须具有原子性。这里，一个线程因其执行目标动作所需的保护条件未满足而被暂停的过程就被称为等待 （Wait）。一个线程更新了系统的状态，使得其他线程所需的保护条件得以满足的时候唤醒那些被暂停的线程的过程就被称为通知 （Notify）。
@@ -5774,18 +5770,18 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
 在Java平台中，Object.wait()/Object.wait(long)以及Object.notify()/Object.notifyAll()可用于实现等待和通知：Object.wait()的作用是使其执行线程被暂停（其生命周期状态变更为WAITING），该方法可用来实现等待；Object.notify()的作用是唤醒一个被暂停的线程，调用该方法可实现通知。相应地，Object.wait()的执行线程就被称为等待线程 ；Object.notify()的执行线程就被称为通知线程 。由于Object类是Java中任何对象的父类，因此使用Java中的任何对象都能够实现等待与通知。
 
 使用Object.wait()实现等待，其代码模板如下伪代码所示：
-
+```java
     // 在调用wait方法前获得相应对象的内部锁
-    synchronized(someObject){
-        while（保护条件不成立）{
+    synchronized(someObject)`{`
+        while（保护条件不成立）`{`
               // 调用Object.wait()暂停当前线程
             someObject.wait();
-        }
+        `}`
     
         // 代码执行到这里说明保护条件已经满足
         // 执行目标动作
         doAction();
-    }
+    `}`
 ```
 
 其中，保护条件是一个包含共享变量的布尔表达式。当这些共享变量被其他线程（通知线程）更新之后使相应的保护条件得以成立时，这些线程会通知等待线程。由于一个线程只有在持有一个对象的内部锁的情况下才能够调用该对象的wait方法，因此Object.wait()调用总是放在相应对象所引导的临界区之中。包含上述模板代码的方法被称为受保护方法 （Guarded Method）。受保护方法包括3个要素：保护条件、暂停当前线程和目标动作。
@@ -5805,13 +5801,13 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
 ●　Object.wait()暂停当前线程时释放的锁只是与该wait方法所属对象的内部锁。当前线程所持有的其他内部锁、显式锁并不会因此而被释放。
 
 使用Object.notify()实现通知，其代码模板如下伪代码所示：
-
-    synchronized(someObject){
+```java
+    synchronized(someObject)`{`
       // 更新等待线程的保护条件涉及的共享变量
       updateSharedState()；
       // 唤醒其他线程
       someObject.notify();
-    }
+    `}`
 ```
 
 包含上述模板代码的方法被称为通知方法， 它包含两个要素：更新共享变量、唤醒其他线程。由于一个线程只有在持有一个对象的内部锁的情况下才能够执行该对象的notify方法，因此Object.notify()调用总是放在相应对象内部锁所引导的临界区之中。也正是由于Object.notify()要求其执行线程必须持有该方法所属对象的内部锁，因此Object.wait()在暂停其执行线程的同时必须释放相应的内部锁；否则通知线程无法获得相应的内部锁，也就无法执行相应对象的notify方法来通知等待线程！Object.notify()的执行线程持有的相应对象的内部锁只有在Object.notify()调用所在的临界区代码执行结束后才会被释放，而Object.notify()本身并不会将这个内部锁释放。因此，为了使等待线程在其被唤醒之后能够尽快再次获得相应的内部锁，我们要尽可能地将Object.notify()调用放在靠近临界区结束的地方。等待线程被唤醒之后占用处理器继续运行时，如果有其他线程持有了相应对象的内部锁，那么这个等待线程可能又会再次被暂停，以等待再次获得相应内部锁的机会，而这会导致上下文切换。
@@ -5825,31 +5821,31 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
 扩展阅读　Object.wait()/notify()的内部实现
 
 我们知道Java虚拟机会为每个对象维护一个入口集（Entry Set）用于存储申请该对象内部锁的线程。此外，Java虚拟机还会为每个对象维护一个被称为等待集（Wait Set）的队列，该队列用于存储该对象上的等待线程。Object.wait()将当前线程暂停并释放相应内部锁的同时会将当前线程（的引用）存入该方法所属对象的等待集中。执行一个对象的notify方法会使该对象的等待集中的一个任意线程被唤醒。被唤醒的线程仍然会停留在相应对象的等待集之中，直到该线程再次持有相应内部锁的时候（此时Object.wait()调用尚未返回）Object.wait()会使当前线程从其所在的等待集移除，接着Object.wait()调用就返回了。Object.wait()/notify()实现的等待/通知中的几个关键动作，包括将当前线程加入等待集、暂停当前线程、释放锁以及将唤醒后的等待线程从等待集中移除等，都是在Object.wait()中实现的。Object.wait()的部分内部实现相当于如下伪代码：
-
-    public void wait(){
+```java
+    public void wait()`{`
       // 执行线程必须持有当前对象对应的内部锁
-      if(! Thread.holdsLock(this)){
+      if(! Thread.holdsLock(this))`{`
         throws new IllegalMonitorStateException();
-      }
+      `}`
     
-      if（当前对象不在等待集中）{
+      if（当前对象不在等待集中）`{`
         // 将当前线程加入当前对象的等待集中
         addToWaitSet(Thread.currentThread());
-      }
+      `}`
     
-      atomic{// 原子操作开始
+      atomic`{`// 原子操作开始
         // 释放当前对象的内部锁
         releaseLock(this);
         // 暂停当前线程
         block(Thread.currentThread()); // 语句①
-      }// 原子操作结束
+      `}`// 原子操作结束
     
       // 再次申请当前对象的内部锁
       acquireLock(this); // 语句②
       // 将当前线程从当前对象的等待集中移除
       removeFromWaitSet(Thread.currentThread());
       return; // 返回
-    }
+    `}`
 ```
 
 等待线程在语句①被执行之后就被暂停了。被唤醒的线程在其占用处理器继续运行的时候会继续执行其暂停前调用的Object.wait()中的其他指令，即从上述代码中的语句②开始继续执行：先再次申请Object.wait()所属对象的内部锁，接着将当前线程从相应的等待集中移除，然后Object.wait()调用才返回！
@@ -5859,14 +5855,14 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
 由于告警发送线程执行AlarmAgent.sendAlarm(String)的时候AlarmAgent与告警服务器的网络连接可能尚未建立完毕，或者中途由于一些故障（比如告警服务器宕机）连接已经中断，因此该线程需要等待AlarmAgent与告警服务器的连接完毕或者恢复连接之后才能上报告警消息，否则会导致告警上报失败。这里，我们可以使用wait/notify实现一套等待/通知的机制：告警发送线程在上报告警消息前必须等待，直到AlarmAgent与告警服务器的连接成功建立或者恢复；心跳线程在检测到网络连接恢复之后通知告警发送线程，如清单5-1所示。
 
 清单5-1　AlarmAgent源码
-
+```java
     /**
      * 告警代理
      *
      * @author Viscent Huang
      */
-```java
-    public class AlarmAgent {
+
+    public class AlarmAgent `{`
       // 保存该类的唯一实例
       private final static AlarmAgent INSTANCE = new AlarmAgent();
       // 是否连接上告警服务器
@@ -5874,34 +5870,34 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
       // 心跳线程，用于检测告警代理与告警服务器的网络连接是否正常
       private final HeartbeartThread heartbeatThread = new HeartbeartThread();
     
-      private AlarmAgent() {
+      private AlarmAgent() `{`
         // 什么也不做
-      }
+      `}`
     
-      public static AlarmAgent getInstance() {
+      public static AlarmAgent getInstance() `{`
         return INSTANCE;
-      }
+      `}`
     
-      public void init() {
+      public void init() `{`
         connectToServer();
         heartbeatThread.setDaemon(true);
         heartbeatThread.start();
-      }
+      `}`
     
-      private void connectToServer() {
+      private void connectToServer() `{`
         // 创建并启动网络连接线程，在该线程中与告警服务器建立连接
-        new Thread() {
+        new Thread() `{`
           @Override
-          public void run() {
+          public void run() `{`
           doConnect();
-          }
-        }.start();
-      }
+          `}`
+        `}`.start();
+      `}`
     
-      private void doConnect() {
+      private void doConnect() `{`
         // 模拟实际操作耗时
         Tools.randomPause(100);
-        synchronized (this) {
+        synchronized (this) `{`
 
 
           connectedToServer = true;
@@ -5913,18 +5909,18 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
           notify();
 
 
-        }
+        `}`
 
 
-      }
-    public void sendAlarm(String message) throws InterruptedException {
-      synchronized (this) {
+      `}`
+    public void sendAlarm(String message) throws InterruptedException `{`
+      synchronized (this) `{`
 
 
         // 使当前线程等待，直到告警代理与告警服务器的连接建立完毕或者恢复
 
 
-        while (! connectedToServer) {
+        while (! connectedToServer) `{`
 
 
           Debug.info("Alarm agent was not connected to server.");
@@ -5933,7 +5929,7 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
           wait();
 
 
-        }
+        `}`
 
 
         // 真正将告警消息上报到告警服务器
@@ -5942,28 +5938,28 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
         doSendAlarm(message);
 
 
-      }
+      `}`
 
 
-    }
+    `}`
     
-    private void doSendAlarm(String message) {
+    private void doSendAlarm(String message) `{`
       // ...
       Debug.info("Alarm sent:%s", message);
-    }
+    `}`
     
     // 心跳线程
 
-    class HeartbeartThread extends Thread {
+    class HeartbeartThread extends Thread `{`
       @Override
-      public void run() {
-        try {
+      public void run() `{`
+        try `{`
           // 留一定的时间给网络连接线程与告警服务器建立连接
           Thread.sleep(1000);
-          while (true) {
-          if (checkConnection()) {
+          while (true) `{`
+          if (checkConnection()) `{`
             connectedToServer = true;
-          } else {
+          `}` else `{`
             connectedToServer = false;
             Debug.info("Alarm agent was disconnected from server.");
     
@@ -5971,28 +5967,28 @@ Amdahl's定律（Amdahl's Law）描述了线程数与多线程程序相对于单
             connectToServer();
 
 
-          }
+          `}`
           Thread.sleep(2000);
-          }
-        } catch (InterruptedException e) {
+          `}`
+        `}` catch (InterruptedException e) `{`
           // 什么也不做；
-        }
-      }
+        `}`
+      `}`
     
       // 检测与告警服务器的网络连接情况
-      private boolean checkConnection() {
+      private boolean checkConnection() `{`
         boolean isConnected = true;
         final Random random = new Random();
     
         // 模拟随机性的网络断链
           int rand = random.nextInt(1000);
-          if (rand <= 500) {
+          if (rand `<`= 500) `{`
             isConnected = false;
-          }
+          `}`
           return isConnected;
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 AlarmAgent的实例变量connectedToServer用来表示告警代理与告警服务器的网络连接状态。sendAlarm方法在调用doSendAlarm方法将告警消息上报到告警服务器之前会先判断connectedToServer的值。若connectedToServer值为false（表示网络连接未建立或者已中断），那么告警发送线程会调用AlarmAgent.wait()来暂停当前线程。这里，告警发送线程就是一个等待线程，布尔表达式“connectedToServer”构成了该等待线程的保护条件。心跳线程在检测到网络连接中断的情况下，会调用connectToServer方法重新创建一个网络连接线程实例来重建网络连接。网络连接线程在其建立与告警服务器的网络连接之后会调用AlarmAgent.notify()来通知告警发送线程。这里，网络连接线程相当于通知线程。该案例中的等待线程和通知线程是同步在AlarmAgent实例之上的。
@@ -6006,44 +6002,44 @@ Object.wait(long)允许我们指定一个超时时间（单位为毫秒）。如
 清单5-2　使用Object.wait(long)实现等待超时控制
 
 ```java
-    public class TimeoutWaitExample {
+    public class TimeoutWaitExample `{`
       private static final Object lock = new Object();
       private static boolean ready = false;
       protected static final Random random = new Random();
     
-      public static void main(String[] args) throws InterruptedException {
-        Thread t = new Thread() {
+      public static void main(String[] args) throws InterruptedException `{`
+        Thread t = new Thread() `{`
           @Override
-          public void run() {
-          for (; ; ) {
-            synchronized (lock) {
-              ready = random.nextInt(100) < 20 ? true : false;
-              if (ready) {
+          public void run() `{`
+          for (; ; ) `{`
+            synchronized (lock) `{`
+              ready = random.nextInt(100) `<` 20 ? true : false;
+              if (ready) `{`
                 lock.notify();
-              }
-            }
+              `}`
+            `}`
     
             // 使当前线程暂停一段（随机）时间
             Tools.randomPause(500);
-          }// for循环结束
-        }
-      };
+          `}`// for循环结束
+        `}`
+      `}`;
       t.setDaemon(true);
       t.start();
       waiter(1000);
-    }
-```
+    `}`
+
     
-    public static void waiter(final long timeOut) throws InterruptedException {
-      if (timeOut < 0) {
+    public static void waiter(final long timeOut) throws InterruptedException `{`
+      if (timeOut `<` 0) `{`
         throw new IllegalArgumentException();
-      }
+      `}`
     
       long start = System.currentTimeMillis();
       long waitTime;
       long now;
-      synchronized (lock) {
-        while (! ready) {
+      synchronized (lock) `{`
+        while (! ready) `{`
 
 
           now = System.currentTimeMillis();
@@ -6058,7 +6054,7 @@ Object.wait(long)允许我们指定一个超时时间（单位为毫秒）。如
           Debug.info("Remaining time to wait:%sms", waitTime);
 
 
-          if (waitTime <= 0) {
+          if (waitTime `<`= 0) `{`
 
 
             // 等待超时退出
@@ -6067,17 +6063,17 @@ Object.wait(long)允许我们指定一个超时时间（单位为毫秒）。如
             break;
 
 
-          }
+          `}`
 
 
           lock.wait(waitTime);
 
 
-        }// while循环结束
+        `}`// while循环结束
 
 
 
-        if (ready) {
+        if (ready) `{`
 
 
           // 执行目标动作
@@ -6086,7 +6082,7 @@ Object.wait(long)允许我们指定一个超时时间（单位为毫秒）。如
           guardedAction();
 
 
-        } else {
+        `}` else `{`
 
 
           // 等待超时，保护条件未成立
@@ -6095,17 +6091,17 @@ Object.wait(long)允许我们指定一个超时时间（单位为毫秒）。如
           Debug.error("Wait timed out, unable to execution target action! ");
 
 
-        }
+        `}`
 
 
-        }// 同步块结束
-      }
+        `}`// 同步块结束
+      `}`
     
-      private static void guardedAction() {
+      private static void guardedAction() `{`
         Debug.info("Take some action.");
         // ...
-      }
-    }
+      `}`
+    `}`
 ```
 
 在上述代码中，Object.wait(long)调用仍要放在一个循环语句之中。在每次调用Object.wait(long)之前，我们总是先根据系统当前时间（now）和等待方法被调用的时间（start）计算出剩余的等待时间（waitTime），然后以该时间为参数去调用Object.wait(long)。并且，在执行目标动作前我们会再次判断保护条件（ready==true）是否成立，此时保护条件若仍然不成立，则说明循环语句中的Object.wait(long)的返回是由等待超时导致的。
@@ -6187,61 +6183,61 @@ Lock.newCondition()的返回值就是一个Condition实例，因此调用任意�
 Condition接口的使用方法与wait/notify的使用方法相似，如下代码模板所示：
 
 ```java
-    class ConditionUsage {
+    class ConditionUsage `{`
         private final Lock lock = new ReentrantLock();
 
 
         private final Condition condition = lock.newCondition();
 
 
-        public void aGuaredMethod() throws InterruptedException {
+        public void aGuaredMethod() throws InterruptedException `{`
               lock.lock();
 
 
-              try {
-                  while （保护条件不成立） {
+              try `{`
+                  while （保护条件不成立） `{`
 
 
                       condition.await();
 
 
-                  }
+                  `}`
                   // 执行目标动作
                   doAction();
 
 
-              } finally {
+              `}` finally `{`
                   lock.unlock();
 
 
-              }
-        }
+              `}`
+        `}`
     
-        private void doAction() {
+        private void doAction() `{`
               // ...
-        }
+        `}`
     
-        public void anNotificationMethod() throws InterruptedException {
+        public void anNotificationMethod() throws InterruptedException `{`
               lock.lock();
 
 
-              try {
+              try `{`
                   // 更新共享变量
                   changeState();
                   condition.signal();
 
 
-              } finally {
+              `}` finally `{`
                   lock.unlock();
 
 
-              }
-          }
+              `}`
+          `}`
     
-          private void changeState() {
+          private void changeState() `{`
               // ...
-          }
-    }
+          `}`
+    `}`
 ```
 
 可见，Condition.await()/signal()的执行线程需要持有创建相应条件变量的显式锁。对保护条件的判断、Condition.await()的调用也同样放在一个循环语句之中，并且该循环语句与目标动作的执行放在同一个显式锁所引导的临界区之中，这同样也是考虑到了欺骗性唤醒问题、信号丢失问题。Condition.await()与Object.wait()类似，它使当前线程暂停的同时也使当前线程释放其持有的相应显式锁，并且这时Condition.await()调用也同样未返回。被唤醒的等待线程继续运行的时候也需要再次申请相应的显式锁，被唤醒的等待线程再次获得相应的显式锁后Condition.await()调用才返回。上述模板代码中的aGuaredMethod方法是一个受保护方法，anNotificationMethod方法是一个通知方法。
@@ -6263,40 +6259,40 @@ Condition接口还解决了Object.wait(long)存在的问题——Object.wait(lon
 清单5-3　使用条件变量实现等待超时控制
 
 ```java
-    public class TimeoutWaitWithCondition {
+    public class TimeoutWaitWithCondition `{`
       private static final Lock lock = new ReentrantLock();
       private static final Condition condition = lock.newCondition();
       private static boolean ready = false;
       protected static final Random random = new Random();
     
-      public static void main(String[] args) throws InterruptedException {
-        Thread t = new Thread() {
+      public static void main(String[] args) throws InterruptedException `{`
+        Thread t = new Thread() `{`
           @Override
-          public void run() {
-          for (; ; ) {
+          public void run() `{`
+          for (; ; ) `{`
             lock.lock();
-            try {
-              ready = random.nextInt(100) < 5 ? true : false;
-                if (ready) {
+            try `{`
+              ready = random.nextInt(100) `<` 5 ? true : false;
+                if (ready) `{`
                 condition.signal();
-              }
-            } finally {
+              `}`
+            `}` finally `{`
               lock.unlock();
-            }
+            `}`
     
             // 使当前线程暂停一段（随机）时间
             Tools.randomPause(500);
-          }// for循环结束
-          }
-        };
+          `}`// for循环结束
+          `}`
+        `}`;
         t.setDaemon(true);
         t.start();
         waiter(1000);
-      }
-    public static void waiter(final long timeOut) throws InterruptedException {
-     if (timeOut < 0) {
+      `}`
+    public static void waiter(final long timeOut) throws InterruptedException `{`
+     if (timeOut `<` 0) `{`
         throw new IllegalArgumentException();
-      }
+      `}`
       // 计算等待的最后期限
       final Date deadline = new Date(System.currentTimeMillis() + timeOut);
 
@@ -6304,11 +6300,11 @@ Condition接口还解决了Object.wait(long)存在的问题——Object.wait(lon
       // 是否继续等待
       boolean continueToWait = true;
       lock.lock();
-      try {
-        while (! ready) {
+      try `{`
+        while (! ready) `{`
           Debug.info("still not ready, continue to wait:%s", continueToWait);
           // 等待未超时，继续等待
-          if (! continueToWait) {
+          if (! continueToWait) `{`
 
 
             // 等待超时退出
@@ -6318,28 +6314,28 @@ Condition接口还解决了Object.wait(long)存在的问题——Object.wait(lon
             return;
 
 
-          }
+          `}`
 
 
           continueToWait = condition.awaitUntil(deadline);
 
 
-        }// while循环结束
+        `}`// while循环结束
     
         // 执行目标动作
         guarededAction();
-      } finally {
+      `}` finally `{`
         lock.unlock();
-      }
-    }
-```
+      `}`
+    `}`
+
     
-    private static void guarededAction() {
+    private static void guarededAction() `{`
       Debug.info("Take some action.");
       // ...
-    }
-```
-    }
+    `}`
+
+    `}`
 ```
 
 在上述代码中，我们根据系统当前时间和等待超时时间限制（timeOut）来计算出等待的最后期限（deadline），并以此为参数去调用Condition.awaitUntil(Date)。这里Condition.awaitUntil(Date)调用与Condition.await()调用一样，也要放在一个循环语句之中。如果Condition.awaitUntil(Date)调用返回false（表示等待超时），那么等待方法就直接返回，否则等待方法可以继续等待。
@@ -6365,9 +6361,9 @@ count参数用于表示先决操作的数量或者需要被执行的次数。当
 清单5-4　服务器启动代码
 
 ```java
-    public class ServerStarter {
+    public class ServerStarter `{`
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
         // 省略其他代码
     
         // 启动所有服务
@@ -6384,10 +6380,10 @@ count参数用于表示先决操作的数量或者需要被执行的次数。当
 
 
 
-        if (allIsOK) {
+        if (allIsOK) `{`
           System.out.println("All services were sucessfully started! ");
           // 省略其他代码
-        } else {
+        `}` else `{`
           // 个别服务启动失败，退出JVM
           System.err.println("Some service(s) failed to start, exiting JVM...");
 
@@ -6395,10 +6391,10 @@ count参数用于表示先决操作的数量或者需要被执行的次数。当
           System.exit(1);
 
 
-        }
+        `}`
         // ...
-      }
-    }
+      `}`
+    `}`
 ```
 
 这里，ServiceManager.startServices ()负责启动所有服务。其中，每个服务都有一个相应的服务启动线程负责执行该服务的启动操作。ServiceManager.checkServiceStatus ()用于检查全部服务的启动状态，该方法的执行线程为main线程。显然，我们只有在所有服务的启动操作执行结束后才能够检查这些服务的启动状态（最终状态）。即检查服务启动状态这个操作的先决操作是所有服务启动动作执行完毕。因此，我们可以创建一个CountDownLatch实例latch，ServiceManager.checkServiceStatus ()会调用latch.await()进行等待，直到所有服务的启动动作被各自的服务启动线程执行完毕。每个服务启动线程在执行完相应服务的启动动作后都会执行latch.countDown()。ServiceManager的源码如清单5-5所示。
@@ -6406,102 +6402,102 @@ count参数用于表示先决操作的数量或者需要被执行的次数。当
 清单5-5　ServiceManager源码
 
 ```java
-    public class ServiceManager {
+    public class ServiceManager `{`
       static volatile CountDownLatch latch;
 
 
-      static Set<Service> services;
-      public static void startServices() {
+      static Set`<`Service`>` services;
+      public static void startServices() `{`
         services = getServices();
-        for (Service service : services) {
+        for (Service service : services) `{`
           service.start();
-        }
-      }
+        `}`
+      `}`
     
-      public static boolean checkServiceStatus() {
+      public static boolean checkServiceStatus() `{`
         boolean allIsOK = true;
         // 等待服务启动结束
-        try {
+        try `{`
           latch.await();
 
 
-        } catch (InterruptedException e) {
+        `}` catch (InterruptedException e) `{`
           return false;
-        }
+        `}`
     
-        for (Service service : services) {
-          if (! service.isStarted()) {
+        for (Service service : services) `{`
+          if (! service.isStarted()) `{`
             allIsOK = false;
             break;
-          }
-        }
+          `}`
+        `}`
         return allIsOK;
-      }
+      `}`
     
-      static Set<Service> getServices() {
+      static Set`<`Service`>` getServices() `{`
         // 模拟实际代码
         latch = new CountDownLatch(3);
-        HashSet<Service> servcies = new HashSet<Service>();
+        HashSet`<`Service`>` servcies = new HashSet`<`Service`>`();
         servcies.add(new SampleServiceC(latch));
         servcies.add(new SampleServiceA(latch));
         servcies.add(new SampleServiceB(latch));
         return servcies;
-      }
-    }
+      `}`
+    `}`
 ```
 
 服务启动的公共处理逻辑在Service接口的抽象实现类AbstractService中定义，如清单5-6所示。
 
 清单5-6　AbstractService源码
-
+```java
     public abstract class AbstractService implements Service
     
-     {
+     `{`
       protected boolean started = false;
       protected final CountDownLatch latch;
-      public AbstractService(CountDownLatch latch) {
+      public AbstractService(CountDownLatch latch) `{`
         this.latch = latch;
-      }
+      `}`
       @Override
-      public boolean isStarted() {
+      public boolean isStarted() `{`
         return started;
-      }
+      `}`
     
       // 留给子类实现的抽象方法，用于实现服务器的启动逻辑
       protected abstract void doStart() throws Exception;
     
       @Override
-      public void start() {
+      public void start() `{`
         new ServiceStarter().start();
-      }
+      `}`
     
       @Override
-      public void stop() {
+      public void stop() `{`
         // 默认什么也不做
-      }
+      `}`
     
-      class ServiceStarter extends Thread {
+      class ServiceStarter extends Thread `{`
         @Override
-        public void run() {
+        public void run() `{`
           final String serviceName = AbstractService.this.getClass()
             .getSimpleName();
           Debug.info("Starting %s", serviceName);
-          try {
+          try `{`
             doStart();
 
 
             started = true;
 
 
-          } catch (Exception e) {
+          `}` catch (Exception e) `{`
             e.printStackTrace();
-          } finally {
+          `}` finally `{`
             latch.countDown();
             Debug.info("Done Starting %s", serviceName);
-          }
-        }
-      }
-    }
+          `}`
+        `}`
+      `}`
+    `}`
 ```
 
 AbstractService为每个服务创建了一个服务启动线程（ServiceStarter实例）。服务启动线程会执行AbstractService子类的doStart方法中实现的服务启动动作，并在该方法返回后将相应服务的状态设置为“已启动”。doStart方法调用结束之后，不管其成功返回（说明服务启动成功）还是抛出异常（说明服务启动失败），服务启动线程都会执行latch.countDown()。
@@ -6530,17 +6526,17 @@ CountDownLatch内部计数器值达到0后其值就恒定不变，后续执行�
 清单5-7　一个线程多次执行CountDownLatch.countDown()示例
 
 ```java
-    public class CountDownLatchExample {
+    public class CountDownLatchExample `{`
       private static final CountDownLatch latch = new CountDownLatch(4);
 
 
       private static int data;
     
-      public static void main(String[] args) throws InterruptedException {
-        Thread workerThread = new Thread() {
+      public static void main(String[] args) throws InterruptedException `{`
+        Thread workerThread = new Thread() `{`
           @Override
-          public void run() {
-          for (int i = 1; i < 10; i++) {
+          public void run() `{`
+          for (int i = 1; i `<` 10; i++) `{`
             data = i;
             latch.countDown();
 
@@ -6549,9 +6545,9 @@ CountDownLatch内部计数器值达到0后其值就恒定不变，后续执行�
             Tools.randomPause(1000);
 
 
-          }
-          };
-        };
+          `}`
+          `}`;
+        `}`;
         workerThread.start();
         latch.await();
 
@@ -6559,8 +6555,8 @@ CountDownLatch内部计数器值达到0后其值就恒定不变，后续执行�
         Debug.info("It's done. data=%d", data);
 
 
-      }
-    }
+      `}`
+    `}`
 ```
 
 我们在创建CountDownLatch实例latch的时候指定的构造器参数为4。尽管latch.countDown()一共会被子线程workerThread执行10次，但是该程序的输出总是如下：
@@ -6582,7 +6578,7 @@ CountDownLatch内部计数器值达到0后其值就恒定不变，后续执行�
 清单5-8　CyclicBarrier使用示例
 
 ```java
-    public class ShootPractice {
+    public class ShootPractice `{`
       // 参与打靶训练的全部士兵
       final Soldier[][] rank;
       // 靶的个数，即每排中士兵的个数
@@ -6599,22 +6595,22 @@ CountDownLatch内部计数器值达到0后其值就恒定不变，后续执行�
       final CyclicBarrier startBarrier;
 
 
-    public ShootPractice(int N, final int lineCount, int lasting) {
+    public ShootPractice(int N, final int lineCount, int lasting) `{`
       this.N = N;
       this.lasting = lasting;
       this.rank = new Soldier[lineCount][N];
-      for (int i = 0; i < lineCount; i++) {
-        for (int j = 0; j < N; j++) {
+      for (int i = 0; i `<` lineCount; i++) `{`
+        for (int j = 0; j `<` N; j++) `{`
           rank[i][j] = new Soldier(i * N + j);
-        }
-      }
-      shiftBarrier = new CyclicBarrier(N, new Runnable() {
+        `}`
+      `}`
+      shiftBarrier = new CyclicBarrier(N, new Runnable() `{`
 
 
         @Override
 
 
-        public void run() {
+        public void run() `{`
 
 
           // 更新下一轮打靶的排
@@ -6626,60 +6622,60 @@ CountDownLatch内部计数器值达到0后其值就恒定不变，后续执行�
           Debug.info("Next turn is :%d", nextLine);
 
 
-        }
+        `}`
 
 
-      });
+      `}`);
 
 
       // 语句②
       startBarrier = new CyclicBarrier(N);
 
 
-    }
-```
+    `}`
+
     
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException `{`
       ShootPractice sp = new ShootPractice(4, 5, 24);
       sp.start();
-    }
-```
+    `}`
+
     
-    public void start() throws InterruptedException {
+    public void start() throws InterruptedException `{`
       // 创建并启动工作者线程
       Thread[] threads = new Thread[N];
-      for (int i = 0; i < N; ++i) {
+      for (int i = 0; i `<` N; ++i) `{`
         threads[i] = new Shooting(i);
         threads[i].start();
-      }
+      `}`
       // 指定时间后停止打靶
       Thread.sleep(lasting * 1000);
       stop();
-      for (Thread t : threads) {
+      for (Thread t : threads) `{`
         t.join();
-      }
+      `}`
       Debug.info("Practice finished.");
-    }
-```
+    `}`
+
     
-    public void stop() {
+    public void stop() `{`
       done = true;
-    }
+    `}`
 ```
     
 ```java
-    class Shooting extends Thread {
+    class Shooting extends Thread `{`
         final int index;
     
-        public Shooting(int index) {
+        public Shooting(int index) `{`
           this.index = index;
-        }
+        `}`
     
         @Override
-        public void run() {
+        public void run() `{`
           Soldier soldier;
-          try {
-            while (! done) {
+          try `{`
+            while (! done) `{`
               soldier = rank[nextLine][index];
               // 一排中的士兵必须同时开始射击
               startBarrier.await();
@@ -6691,31 +6687,31 @@ CountDownLatch内部计数器值达到0后其值就恒定不变，后续执行�
               shiftBarrier.await();
     
      // 语句④
-            }
-          } catch (InterruptedException e) {
+            `}`
+          `}` catch (InterruptedException e) `{`
             // 什么也不做
-          } catch (BrokenBarrierException e) {
+          `}` catch (BrokenBarrierException e) `{`
             e.printStackTrace();
-          }
+          `}`
     
-        }// run方法结束
-      }// 类Shooting定义结束
+        `}`// run方法结束
+      `}`// 类Shooting定义结束
     
       // 参与打靶训练的士兵
-      static class Soldier {
+      static class Soldier `{`
         private final int seqNo;
-        public void fire() {
+        public void fire() `{`
           // 完整代码见本书配套下载资源
-        }
+        `}`
         // 完整代码见本书配套下载资源
-      }// 类Soldier定义结束
-    }
+      `}`// 类Soldier定义结束
+    `}`
 ```
 
 我们使用了两个CyclicBarrier实例：startBarrier和shiftBarrier。其中startBarrier用于实现当前排的士兵在同一时刻开始射击，shiftBarrier用于实现当前排的士兵在该排所有士兵射击完毕后同时撤离打靶位置。由于一排中的士兵必须同时开始射击，因此一排中的任意一个士兵在其开始射击前必须等待同排中的其他士兵准备就绪，等到该排中所有士兵准备就绪的时候，该排中的所有士兵都开始射击。这种等待的模拟是通过执行startBarrier.await()实现的（见语句③）。虽然一排中的士兵是同时开始射击的，但是由于不同士兵的熟练程度不同，因此他们的射击结束时间是不同的。一排中先射击完毕的士兵必须等待同排中的其他士兵都射击完毕后才能撤离射击点。因此，先射击完毕的士兵需要原地等待，这种等待的模拟是通过调用shiftBarrier.await()实现的（见语句④）。另外，一排士兵射击结束后撤离射击点时下一排士兵可以进入射击点。这种打靶轮次的转换模拟是在语句①中实现的。CyclicBarrier的其中一个构造器允许我们指定一个被称为barrierAction的任务（Runnable接口实例）。barrierAction会被最后一个线程执行CyclicBarrier.await方法时执行，该任务执行结束后其他等待线程才会被唤醒。语句①就是利用了这一点而被放到了barrierAction.run()之中执行，从而确保了一排士兵射击结束后，下一排进行射击的士兵也随之确定了。
 
 该例子的运行输出类似如下（省略部分输出）：
-
+```java
     [2016-04-18 23:01:05.063][INFO][Thread-1
     
     ]:Soldier-1
@@ -6771,7 +6767,7 @@ CountDownLatch内部计数器值达到0后其值就恒定不变，后续执行�
     Soldier-2 fired.
     Soldier-3 fired.
     Soldier-0 fired.
-
+```
 从以上输出可以看出：其一，一排中的士兵开始射击的时间点非常接近（时间相差仅几毫秒）；其二，执行语句①的线程总是模拟最后一个结束射击的士兵的工作者线程（最后一个线程）；其三，进行射击的排次是从0开始循环递增的。
 
 由于CyclicBarrier内部实现是基于条件变量的，因此CyclicBarrier的开销与条件变量的开销相似，其主要开销在可能产生的上下文切换。
@@ -6816,39 +6812,38 @@ CyclicBarrier往往被滥用，其表现是在没有必要使用CyclicBarrier的
      * @author Viscent Huang
      */
 ```java
-    public class LogReaderThread extends AbstractLogReader {
+    public class LogReaderThread extends AbstractLogReader `{`
       // 线程安全的队列
-      final BlockingQueue<RecordSet> channel = new ArrayBlockingQueue<RecordSet>(2);
+      final BlockingQueue`<`RecordSet`>` channel = new ArrayBlockingQueue`<`RecordSet`>`(2);
 
 
 
-      public LogReaderThread(InputStream in, int inputBufferSize, int batchSize) {
+      public LogReaderThread(InputStream in, int inputBufferSize, int batchSize) `{`
         super(in, inputBufferSize, batchSize);
-      }
+      `}`
     
       @Override
       public RecordSet nextBatch()
-          throws InterruptedException {
+          throws InterruptedException `{`
         RecordSet batch;
         // 从队列中取出一个记录集
         batch = channel.take();
 
 
-        if (batch.isEmpty()) {
+        if (batch.isEmpty()) `{`
           batch = null;
-        }
+        `}`
         return batch;
-      }
+      `}`
     
       @Override
-      protected void publish(RecordSet recordBatch) throws InterruptedException {
+      protected void publish(RecordSet recordBatch) throws InterruptedException `{`
         // 记录集存入队列
       channel.put(recordBatch);
 
 
-    }
-```
-    }
+    `}`
+    `}`
 ```
 
 其中，nextBatch方法的执行线程（统计处理线程，即main线程）相当于消费者线程；publish方法的执行线程（日志文件读取线程，即AbstractLogReader类的实例）相当于生产者线程；ArrayBlockingQueue实例channel相当于传输通道。
@@ -6882,13 +6877,13 @@ CyclicBarrier往往被滥用，其表现是在没有必要使用CyclicBarrier的
 一般而言，一个方法或者操作如果能够导致其执行线程被暂停（生命周期状态为WAITING或者BLOCKED），那么我们就称相应的方法/操作为阻塞方法 （Blocking Method）或者阻塞操作 。可见，阻塞方法/操作能够导致上下文切换。常见的阻塞方法/操作包括InputStream.read()、ReentrantLock.lock()、申请内部锁等。相反，如果一个方法或者操作并不会导致其执行线程被暂停，那么相应的方法/操作就被称为非阻塞方法 （Non-blocking Method）或者非阻塞操作 。
 
 清单5-10　对传输通道的抽象
-
+```java
     /**
      * 对传输通道的抽象
      *
      * @author Viscent Huang
      */
-    public interface Channel<P> {
+    public interface Channel`<`P`>` `{`
         /**
           * 往传输通道中存入一个产品
           *
@@ -6902,7 +6897,7 @@ CyclicBarrier往往被滥用，其表现是在没有必要使用CyclicBarrier的
           * @return 产品
           */
         P take() throws InterruptedException;
-    }
+    `}`
 ```
 
 JDK 1.5中引入的接口java.util.concurrent.BlockingQueue定义了一种线程安全的队列——阻塞队列。该接口相当于上述接口的超集。因此，我们也可以直接使用BlockingQueue的实现类作为传输通道。例如，在上述实战案例中我们就是使用BlockingQueue的实现类ArrayBlockingQueue来充当传输通道（代码参见清单4-9）。BlockingQueue的常用实现类包括ArrayBlockingQueue、LinkedBlockingQueue和SynchronousQueue等。
@@ -6948,18 +6943,18 @@ JDK 1.5中引入的标准库类java.util.concurrent.Semaphore可以用来实现�
 清单5-11展示了一个基于Semaphore和BlockingQueue实现的带流量控制功能的传输通道。
 
 清单5-11　带流量控制功能的传输通道
-
+```java
     /**
      * 基于Semaphore的支持流量控制的传输通道实现
      *
      * @author Viscent Huang
      *
-     * @param <P>
+     * @param `<`P`>`
      *         “产品”类型
      */
-```java
-    public class SemaphoreBasedChannel<P> implements Channel<P> {
-      private final BlockingQueue<P> queue;
+
+    public class SemaphoreBasedChannel`<`P`>` implements Channel`<`P`>` `{`
+      private final BlockingQueue`<`P`>` queue;
       private final Semaphore semaphore;
     
       /**
@@ -6968,45 +6963,45 @@ JDK 1.5中引入的标准库类java.util.concurrent.Semaphore可以用来实现�
       * @param flowLimit
       *         流量限制数
       */
-      public SemaphoreBasedChannel(BlockingQueue<P> queue, int flowLimit) {
+      public SemaphoreBasedChannel(BlockingQueue`<`P`>` queue, int flowLimit) `{`
         this(queue, flowLimit, false);
-      }
+      `}`
     
-      public SemaphoreBasedChannel(BlockingQueue<P> queue, int flowLimit,
-          boolean isFair) {
+      public SemaphoreBasedChannel(BlockingQueue`<`P`>` queue, int flowLimit,
+          boolean isFair) `{`
         this.queue = queue;
         this.semaphore = new Semaphore(flowLimit, isFair);
 
 
-      }
+      `}`
     
       @Override
-      public P take() throws InterruptedException {
+      public P take() throws InterruptedException `{`
         return queue.take();
-      }
+      `}`
     
       @Override
-      public void put(P product) throws InterruptedException {
+      public void put(P product) throws InterruptedException `{`
         semaphore.acquire()
     
     ; // 申请一个配额
-        try {
+        try `{`
 
 
           queue.put(product); // 访问虚拟资源
 
 
-        } finally {
+        `}` finally `{`
 
 
           semaphore.release(); // 返还一个配额
 
 
-        }
+        `}`
 
 
-      }
-    }
+      `}`
+    `}`
 ```
 
 从清单5-11中可以看出，Semaphore的使用需要注意以下几点。
@@ -7036,10 +7031,10 @@ PipedOutputStream相当于生产者，其生产的产品是字节形式的数据
 清单5-12　边下载边解析的RSS阅读器
 
 ```java
-    public class ConcurrentRSSReader {
-      public static void main(String[] args) throws Exception {
+    public class ConcurrentRSSReader `{`
+      public static void main(String[] args) throws Exception `{`
         final int argc = args.length;
-        String url = argc > 0 ? args[0] : "http://lorem-rss.herokuapp.com/feed";
+        String url = argc `>` 0 ? args[0] : "http://lorem-rss.herokuapp.com/feed";
     
         // 从网络加载RSS数据
         InputStream in = loadRSS(url);
@@ -7055,14 +7050,14 @@ PipedOutputStream相当于生产者，其生产的产品是字节形式的数据
         Element eleChannel = (Element) eleRss.getElementsByTagName("channel").item(
           0);
         // 完整代码见本书配套下载资源
-      }
+      `}`
     
       private static Document parseXML(InputStream in)
-          throws ParserConfigurationException, SAXException, IOException {
+          throws ParserConfigurationException, SAXException, IOException `{`
         // 完整代码见本书配套下载资源
-      }
+      `}`
     
-      private static InputStream loadRSS(final String url) throws IOException {
+      private static InputStream loadRSS(final String url) throws IOException `{`
         final PipedInputStream in = new PipedInputStream();
 
 
@@ -7071,34 +7066,34 @@ PipedOutputStream相当于生产者，其生产的产品是字节形式的数据
 
 
 
-        Thread workerThread = new Thread(new Runnable() {
+        Thread workerThread = new Thread(new Runnable() `{`
           @Override
-          public void run() {
-          try {
+          public void run() `{`
+          try `{`
             doDownload(url, pos);
 
 
-          } catch (Exception e) {
+          `}` catch (Exception e) `{`
             // RSS数据下载过程中出现异常时，关闭相关输出流和输入流
             // 注意，此处我们不能像平常那样在finally块中关闭相关输出流
             Tools.silentClose(pos, in);
 
 
             e.printStackTrace();
-          }
-        } // run方法结束
-      }, "rss-loader");
+          `}`
+        `}` // run方法结束
+      `}`, "rss-loader");
     
       workerThread.start();
       return in;
-      }
-      static BufferedInputStream issueRequest(String url) throws Exception {
+      `}`
+      static BufferedInputStream issueRequest(String url) throws Exception `{`
       // 完整代码见本书配套下载资源
-      }
-      static void doDownload(String url, OutputStream os) throws Exception {
+      `}`
+      static void doDownload(String url, OutputStream os) throws Exception `{`
       ReadableByteChannel readChannel = null;
       WritableByteChannel writeChannel = null;
-      try {
+      try `{`
       // 对指定的URL发起HTTP请求
       BufferedInputStream in = issueRequest(url);
       readChannel = Channels.newChannel(in);
@@ -7106,18 +7101,18 @@ PipedOutputStream相当于生产者，其生产的产品是字节形式的数据
       writeChannel = Channels.newChannel(os);
 
 
-      while (readChannel.read(buf) > 0) {
+      while (readChannel.read(buf) `>` 0) `{`
           buf.flip();
           writeChannel.write(buf);
 
 
           buf.clear();
-      }
-      } finally {
+      `}`
+      `}` finally `{`
       Tools.silentClose(readChannel, writeChannel);
-      }
-      }// doDownload结束
-    }
+      `}`
+      `}`// doDownload结束
+    `}`
 ```
 
 在loadRSS方法中，我们创建了一个工作者线程workerThread专门负责下载指定的RSS文件。loadRSS方法会创建并返回一个PipedInputStream实例in。workerThread.run()会创建一个与in关联的PipedOutputStream实例pos，并将该实例作为参数传递给doDownload(String, OutputStream)。doDownload(String, OutputStream)会根据其参数中指定的输出流（即上述的PipedOutputStream实例pos）创建一个WritableByteChannel实例writeChannel，并将下载的RSS数据写入writeChannel。这实际上实现了将下载的RSS数据写入pos。main线程则会从输入流in中读取数据并进行XML解析，而in中的数据来自workerThread的输出，这就实现了一个线程（workerThread）的输出直接作为另外一个线程（main）的输入。从并发的角度来看，这实际上是实现了RSS数据的边下载（workerThread负责下载）和边解析（main线程负责解析）。
@@ -7151,8 +7146,8 @@ JDK 1.5中引入的标准库类java.util.concurrent.Exchanger可以用来实现�
 清单5-13　使用Exchanger作为传输通道实例
 
 ```java
-    public class ExchangerBasedLogReaderThread extends AbstractLogReader {
-      private final Exchanger<RecordSet> exchanger;
+    public class ExchangerBasedLogReaderThread extends AbstractLogReader `{`
+      private final Exchanger`<`RecordSet`>` exchanger;
 
 
       private volatile RecordSet nextToFill;
@@ -7163,38 +7158,38 @@ JDK 1.5中引入的标准库类java.util.concurrent.Exchanger可以用来实现�
 
 
       public ExchangerBasedLogReaderThread(InputStream in, int inputBufferSize,
-          int batchSize) {
+          int batchSize) `{`
         super(in, inputBufferSize, batchSize);
-        exchanger = new Exchanger<RecordSet>();
+        exchanger = new Exchanger`<`RecordSet`>`();
         nextToFill = new RecordSet(batchSize);
 
 
         consumedBatch = new RecordSet(batchSize);
 
 
-      }
+      `}`
     
       @Override
-      protected RecordSet getNextToFill() {
+      protected RecordSet getNextToFill() `{`
         return nextToFill;
-      }
+      `}`
     
       @Override
-      protected void publish(RecordSet recordSet) throws InterruptedException {
+      protected void publish(RecordSet recordSet) throws InterruptedException `{`
         nextToFill = exchanger.exchange(recordSet);
 
 
-      }
+      `}`
     
       @Override
-      protected RecordSet nextBatch() throws InterruptedException {
+      protected RecordSet nextBatch() throws InterruptedException `{`
         consumedBatch = exchanger.exchange(consumedBatch);
-        if (consumedBatch.isEmpty()) {
+        if (consumedBatch.isEmpty()) `{`
           consumedBatch = null;
-        }
+        `}`
         return consumedBatch;
-      }
-    }
+      `}`
+    `}`
 ```
 
 从双缓冲的角度来看，ExchangerBasedLogReaderThread内部维护了两个类型为RecordSet（参见清单4-8）的缓冲区nextToFill和consumedBatch，前者表示待填充的缓冲区，后者表示填充后已被“消费”过的缓冲区。ExchangerBasedLogReaderThread.nextBatch()的执行线程（统计处理线程，参见清单4-7）相当于消费者线程，它提供一个已“消费”过的缓冲区来调用exchanger.exchange(consumedBatch)以获得（交换到）一个新填充的缓冲区。ExchangerBasedLogReaderThread.publish(RecordSet)的执行线程（日志文件读取线程，即ExchangerBasedLogReaderThread实例）相当于生产者线程，它提供一个新填充完毕的缓冲区来调用exchanger.exchange(recordSet)以获得（交换到）一个待填充的缓冲区。
@@ -7212,50 +7207,50 @@ JDK 1.5中引入的标准库类java.util.concurrent.Exchanger可以用来实现�
 清单5-14　通用任务执行器
 
 ```java
-    public class TaskRunner {
-      protected final BlockingQueue<Runnable> channel;
+    public class TaskRunner `{`
+      protected final BlockingQueue`<`Runnable`>` channel;
       protected volatile Thread workerThread;
-      public TaskRunner(BlockingQueue<Runnable> channel) {
+      public TaskRunner(BlockingQueue`<`Runnable`>` channel) `{`
         this.channel = channel;
         this.workerThread = new WorkerThread();
-      }
+      `}`
     
-      public TaskRunner() {
-        this(new LinkedBlockingQueue<Runnable>());
-      }
+      public TaskRunner() `{`
+        this(new LinkedBlockingQueue`<`Runnable`>`());
+      `}`
     
-      public void init() {
+      public void init() `{`
         final Thread t = workerThread;
-        if (null ! = t) {
+        if (null ! = t) `{`
           t.start();
-        }
-      }
+        `}`
+      `}`
     
-      public void submit(Runnable task) throws InterruptedException {
+      public void submit(Runnable task) throws InterruptedException `{`
         channel.put(task);
-      }
+      `}`
     
-      class WorkerThread extends Thread {
+      class WorkerThread extends Thread `{`
         @Override
-        public void run() {
+        public void run() `{`
           Runnable task = null;
-          try {
+          try `{`
           // 注意：下面这种代码写法实际上可能导致工作者线程永远无法终止！
           // 在5.6节中我们将会解决这个问题。
-            for (; ; ) {
+            for (; ; ) `{`
               task = channel.take();
-              try {
+              try `{`
               task.run();
-              } catch (Throwable e) {
+              `}` catch (Throwable e) `{`
               e.printStackTrace();
-              }
-            }// for循环结束
-          } catch (InterruptedException e) {
+              `}`
+            `}`// for循环结束
+          `}` catch (InterruptedException e) `{`
             // 什么也不做
-          }
-        }// run方法结束
-      }// WorkerThread结束
-    }
+          `}`
+        `}`// run方法结束
+      `}`// WorkerThread结束
+    `}`
 ```
 
 ## 5.6　对不起，打扰一下：线程中断机制
@@ -7292,11 +7287,11 @@ Java标准库中的许多阻塞方法对中断的响应方式都是抛出Interru
 | java.nio.channels.InterruptibleChannel              | java.nio.channels.ClosedByInterruptException |
 
 能够响应中断的方法通常是在执行阻塞操作前判断中断标志，若中断标志值为true则抛出InterruptedException。例如，ReentrantLock.lockInterruptibly()的功能与ReentrantLock.lock()类似，二者都能用于申请相应的显式锁，但是ReentrantLock.lockInterruptibly()能够对中断做出响应。ReentrantLock.lockInterruptibly()方法对中断的响应是通过其调用的一个名为acquireInterruptibly的方法实现的。acquireInterruptibly方法会在执行申请锁这个阻塞操作前检查当前线程的中断标记，若中断标记值为true则抛出InterruptedException异常，如清单5-15所示。依照惯例，凡是抛出InterruptedException异常的方法，通常会在其抛出该异常之前将当前线程的线程中断标记重置为false。因此，acquireInterruptibly方法在判断中断标记时调用的是Thread.interrupted ()而非Thread.currentThread().isInterrupted()。
-
+```java
 清单5-15　ReentrantLock.lockInterruptibly()对中断的响应
 
     public final void acquireInterruptibly(int arg)
-              throws InterruptedException {
+              throws InterruptedException `{`
       if (Thread.interrupted())
 
 
@@ -7305,7 +7300,7 @@ Java标准库中的许多阻塞方法对中断的响应方式都是抛出Interru
 
         if (! tryAcquire(arg))
             doAcquireInterruptibly(arg);
-    }
+    `}`
 ```
 
 注意
@@ -7323,20 +7318,20 @@ Java标准库中的许多阻塞方法对中断的响应方式都是抛出Interru
 ●　捕获InterruptedException并在捕获该异常后中断当前线程。这种策略实际上在捕获到InterruptedException后又恢复中断标志，这相当于当前代码告诉其他代码：“我发现了中断，但我并不知道如何处理比较妥当，因此我为你保留了中断标记，你看着办吧！”本书源码所用的工具类Tools的randomPause方法就采用了这种处理策略，如清单5-16所示。
 
 清单5-16　捕获InterruptedException后恢复中断标志
-
-    public final class Tools {
-      public static void randomPause(int maxPauseTime) {
+```java
+    public final class Tools `{`
+      public static void randomPause(int maxPauseTime) `{`
         int sleepTime = rnd.nextInt(maxPauseTime);
-        try {
+        try `{`
           Thread.sleep(sleepTime);
-        } catch (InterruptedException e) {
+        `}` catch (InterruptedException e) `{`
           Thread.currentThread().interrupt();
     
      // 保留线程中断标记
-        }
-      }
+        `}`
+      `}`
       // ...
-    }
+    `}`
 ```
 
 比较危险的一种处理方法是“吞没”（Swallow）InterruptedException，即应用代码在捕获InterruptedException之后既不重新抛出也不保留中断标志。本书在本章之前的所有源码中只要涉及InterruptedException的都采用这种处理策略，这其实只是为了避免讲解上的不便。事实上，这种处理策略只有在线程捕获到InterruptedException就可以终止的情况下才适用，其他情况下使用该策略可能导致目标线程无法被终止。
@@ -7356,29 +7351,29 @@ Java标准库中的许多阻塞方法对中断的响应方式都是抛出Interru
 然而，停止线程却是目标简单但实现并不那么简单的一件事情：首先，Java标准库并没有提供可以直接停止线程的API [\[4\]](#text00010.html#ft4) ；其次，停止线程的时候有一些额外的细节需要考虑（下文会介绍）。
 
 我们不难想到主动停止一个线程的实现思路：为待停止的线程（目标线程）设置一个线程停止标记（布尔型数据），目标线程检测到该标志值为true时则设法让其run方法返回，这样就实现了线程的终止。依照这个思路，乍一看似乎线程中断标记可以作为线程停止标记，而目标线程则可以通过响应中断来实现其停止，但是由于线程中断标记可能会被目标线程所执行的某些方法清空，因此从通用性的角度来看线程中断标记并不能作为线程停止标记！例如，上文的通用任务执行器TaskRunner（参见清单5-14）中维护的工作者workerThread看起来似乎是可以通过workerThread.interrupt()调用来停止的——因为workerThread.run()对channel.take()（BlockingQueue.take()）的调用可能由于其他线程调用workerThread.interrupt()而抛出InterruptedException（响应中断），并且workerThread对该异常的处理方式是捕获并在捕获后使其run方法返回，如下代码片段所示。
-
-    public void run() {
+```java
+    public void run() `{`
       Runnable task = null;
       // 注意：下面这种代码写法实际上可能导致工作者线程永远无法终止！
-      try {
+      try `{`
 
 
-        for (; ; ) {
+        for (; ; ) `{`
           task = channel.take();
-          try {
+          try `{`
           task.run();
-          } catch (Throwable e) {
+          `}` catch (Throwable e) `{`
           e.printStackTrace();
-          }
-        }// for循环结束
-      } catch (InterruptedException e) {
+          `}`
+        `}`// for循环结束
+      `}` catch (InterruptedException e) `{`
 
 
         // 什么也不做
-      }
+      `}`
 
 
-    }
+    `}`
 ```// run方法结束
 
 实际上，由于发起线程在执行workerThread.interrupt()的时候workerThread可能正在执行task.run()，而task.run()中的代码可能会清除（“吞没”）线程中断标记，从而使得workerThread依旧无法终止，如清单5-17所示。
@@ -7386,36 +7381,36 @@ Java标准库中的许多阻塞方法对中断的响应方式都是抛出Interru
 清单5-17　线程中断标记不能作为线程停止标记Demo
 
 ```java
-    public class MayNotBeTerminatedDemo {
-      public static void main(String[] args) throws InterruptedException {
+    public class MayNotBeTerminatedDemo `{`
+      public static void main(String[] args) throws InterruptedException `{`
         TaskRunner tr = new TaskRunner();
         tr.init();
-        tr.submit(new Runnable() {
+        tr.submit(new Runnable() `{`
           @Override
-          public void run() {
+          public void run() `{`
           Debug.info("before doing task");
-          try {
+          try `{`
             Thread.sleep(1000);
-          } catch (InterruptedException e) {
+          `}` catch (InterruptedException e) `{`
             // 什么也不做：这会导致线程中断标记被清除
 
 
-          }
+          `}`
           Debug.info("after doing task");
-          }
-        });
+          `}`
+        `}`);
         tr.workerThread.interrupt();
 
 
-      }
-    }
+      `}`
+    `}`
 ```
 
 运行上述程序，我们可以看到类似如下的输出：
-
+```java
     [2016-08-21 21:42:46.811][INFO][Thread-0]:before doing task
     [2016-08-21 21:42:46.812][INFO][Thread-0]:after doing task
-
+```
 但是，workerThread却依然未终止。由此可见，从通用的角度来看，我们不能使用线程中断标记作为线程停止标记，而需要使用一个专门的实例变量来作为线程停止标记。
 
 但是，光使用专门的实例变量来作为线程停止标记仍然不够，这是由于当线程停止标记置为true（表示目标线程需要被停止）的时候，目标线程可能因为执行了一些阻塞方法（比如CountDownLatch.await()）而被暂停，因此，这时线程停止标记压根儿不会对目标线程产生任何影响！由此可见，为了使线程停止标记的设置能够起作用，我们可能还需要给目标线程发送中断以将其唤醒，使之得以判断线程停止标记。
@@ -7427,8 +7422,8 @@ Java标准库中的许多阻塞方法对中断的响应方式都是抛出Interru
 清单5-18　通用的线程优雅停止办法实例
 
 ```java
-    public class TerminatableTaskRunner implements TaskRunnerSpec {
-      protected final BlockingQueue<Runnable> channel;
+    public class TerminatableTaskRunner implements TaskRunnerSpec `{`
+      protected final BlockingQueue`<`Runnable`>` channel;
       // 线程停止标记
       protected volatile boolean inUse = true;
 
@@ -7438,76 +7433,76 @@ Java标准库中的许多阻塞方法对中断的响应方式都是抛出Interru
 
 
       private volatile Thread workerThread;
-      public TerminatableTaskRunner(BlockingQueue<Runnable> channel) {
+      public TerminatableTaskRunner(BlockingQueue`<`Runnable`>` channel) `{`
         this.channel = channel;
         this.workerThread = new WorkerThread();
-      }
+      `}`
     
-      public TerminatableTaskRunner() {
-        this(new LinkedBlockingQueue<Runnable>());
-      }
+      public TerminatableTaskRunner() `{`
+        this(new LinkedBlockingQueue`<`Runnable`>`());
+      `}`
     
       @Override
-      public void init() {
+      public void init() `{`
         final Thread t = workerThread;
-        if (null ! = t) {
+        if (null ! = t) `{`
           t.start();
-        }
-      }
+        `}`
+      `}`
     
       @Override
-      public void submit(Runnable task) throws InterruptedException {
+      public void submit(Runnable task) throws InterruptedException `{`
         channel.put(task);
         reservations.incrementAndGet();
     
      // 语句①
-      }
+      `}`
     
-      public void shutdown() {
+      public void shutdown() `{`
         Debug.info("Shutting down service...");
         inUse = false;
     
      // 语句②
         final Thread t = workerThread;
-        if (null ! = t) {
+        if (null ! = t) `{`
           t.interrupt();
     
      // 语句③
-        }
-      }
+        `}`
+      `}`
     
-      class WorkerThread extends Thread {
+      class WorkerThread extends Thread `{`
         @Override
-        public void run() {
+        public void run() `{`
           Runnable task = null;
-          try {
-            for (; ; ) {
+          try `{`
+            for (; ; ) `{`
             // 线程不再被需要，且无待处理任务
-            if (! inUse && reservations.get() <= 0) {// 语句④
+            if (! inUse && reservations.get() `<`= 0) `{`// 语句④
 
 
               break;
 
 
-              }
+              `}`
             task = channel.take();
-            try {
+            try `{`
               task.run();
-            } catch (Throwable e) {
+            `}` catch (Throwable e) `{`
               e.printStackTrace();
-            }
+            `}`
             // 使待处理任务数减少1
             reservations.decrementAndGet(); // 语句⑤
 
 
-            }// for循环结束
-          } catch (InterruptedException e) {
+            `}`// for循环结束
+          `}` catch (InterruptedException e) `{`
             workerThread = null;
-          }
+          `}`
           Debug.info("worker thread terminated.");
-        }// run方法结束
-      }// WorkerThread结束
-    }
+        `}`// run方法结束
+      `}`// WorkerThread结束
+    `}`
 ```
 
 这里，我们使用布尔型变量inUse作为线程停止标记，使用原子变量reservations表示目标线程待处理任务的数量（即传输通道中任务的数量）。submit方法每接收到一个提交的任务时便将reservations的值增加1（语句①）。在shutdown方法中，我们在将inUse置为false（语句②）的时候还向目标线程发送中断（语句③）。接着，我们使目标线程的run方法每次从传输通道中取出一个任务前判断线程停止标记和待处理任务的数量（语句④）。若此时客户端不会再提交新的任务（inUse==false）且无待处理任务（reservations.get()≤0），那么目标线程就可以优雅终止了；否则，目标线程从传输通道中取出一个任务执行后，会将待处理任务数减1（语句⑤）。目标线程的run方法还对InterruptedException进行了捕获，并在捕获到该异常后使其返回（线程随之终止）。这里，run方法所捕获的异常只可能是channel.take()调用所抛出的。由于我们不仅仅对中断进行了处理，还在每次取出待处理任务前判断了线程停止标记，因此，即使是客户端代码在调用shutdown方法那一刻，目标线程正在执行task.run()且task.run()中的代码清空了线程中断标记，而使得后续执行的channel.take()调用无法抛出InterruptedException（因为线程中断标记被task.run()中的代码清空了，如清单5-17所示）的情况下，目标线程也还有退路——它能够通过对线程停止标记的判断而实现停止。
@@ -7525,45 +7520,45 @@ Java Web应用中应用代码自身所启动的线程，比如在ServletContextL
 为此，我们可以维护一个线程终止登记表ThreadTerminationRegistry，用于记录哪些线程是需要在Web应用停止时被主动停止的，如清单5-19所示。
 
 清单5-19　线程终止登记表源码
-
+```java
     /**
      * 线程终止登记表
      *
      * @author Viscent Huang
      */
-    public enum ThreadTerminationRegistry {
+    public enum ThreadTerminationRegistry `{`
       INSTANCE;
-      private final Set<Handler> handlers = new HashSet<Handler>();
-      public synchronized void register(Handler handler) {
+      private final Set`<`Handler`>` handlers = new HashSet`<`Handler`>`();
+      public synchronized void register(Handler handler) `{`
         handlers.add(handler);
-      }
+      `}`
     
-      public void clearThreads() {
+      public void clearThreads() `{`
         // 为保障线程安全，在遍历时将handlers复制一份
-        final Set<Handler> handlersSnapshot;
-        synchronized (this) {
-          handlersSnapshot = new HashSet<Handler>(handlers);
-        }
+        final Set`<`Handler`>` handlersSnapshot;
+        synchronized (this) `{`
+          handlersSnapshot = new HashSet`<`Handler`>`(handlers);
+        `}`
     
-        for (Handler handler : handlersSnapshot) {
-          try {
+        for (Handler handler : handlersSnapshot) `{`
+          try `{`
           handler.terminate();
-          } catch (Exception e) {
+          `}` catch (Exception e) `{`
           e.printStackTrace();
-          }
-        }
-      }
+          `}`
+        `}`
+      `}`
       /**
       * 线程终止处理器
-      * <p>
+      * `<`p`>`
       * 封装了有关线程停止的知识
       *
       * @author Viscent Huang
       */
-      public static interface Handler {
+      public static interface Handler `{`
         void terminate();
-      }
-    }
+      `}`
+    `}`
 ```
 
 应用程序每创建一个（或者多个）不会自动终止的工作者线程（这类线程的run方法体通常是一个循环语句）时，就调用ThreadTerminationRegistry.register(Handler)来登记一个线程终止处理器（ThreadTerminationRegistry.Handler实例），如清单5-20中的语句③所示。线程终止处理器的terminate方法封装了相应线程（一个或者多个）的终止逻辑，如清单5-20中的语句②所示。当Web应用停止的时候，我们就通过ThreadTerminationRegistry.clearThreads()调用主动将所有登记过的线程停止，如清单5-20中的语句①所示。
@@ -7571,53 +7566,53 @@ Java Web应用中应用代码自身所启动的线程，比如在ServletContextL
 清单5-20　在Web应用中实现线程停止
 
 ```java
-    public class ThreadManagementContextListener implements ServletContextListener {
+    public class ThreadManagementContextListener implements ServletContextListener `{`
     
       @Override
-      public void contextDestroyed(ServletContextEvent ctxEvt) {
+      public void contextDestroyed(ServletContextEvent ctxEvt) `{`
         // 停止所有登记的线程
         ThreadTerminationRegistry.INSTANCE.clearThreads();
     
      // 语句①
-      }
+      `}`
     
       @Override
-      public void contextInitialized(ServletContextEvent ctxEvt) {
+      public void contextInitialized(ServletContextEvent ctxEvt) `{`
         // 创建并启动一个数据库监控线程
         AbstractMonitorThread databaseMonitorThread;
         databaseMonitorThread = new AbstractMonitorThread(
-          2000) {
+          2000) `{`
           @Override
-          protected void doMonitor() {
+          protected void doMonitor() `{`
           Debug.info("Monitoring database...");
           // ...
     
           // 模拟实际的时间消耗
           Tools.randomPause(100);
-          }
-        };
+          `}`
+        `}`;
         databaseMonitorThread.start();
-      }
+      `}`
     
       /**
       * 抽象监控线程
       *
       * @author Viscent Huang
       */
-      static abstract class AbstractMonitorThread extends Thread {
+      static abstract class AbstractMonitorThread extends Thread `{`
         // 监控周期
         private final long interval;
         // 线程停止标记
         final AtomicBoolean terminationToken = new AtomicBoolean(false);
     
-        public AbstractMonitorThread(long interval) {
+        public AbstractMonitorThread(long interval) `{`
           this.interval = interval;
           // 设置为守护线程！
           setDaemon(true);
           ThreadTerminationRegistry.Handler handler;
-          handler = new ThreadTerminationRegistry.Handler() {
+          handler = new ThreadTerminationRegistry.Handler() `{`
             @Override
-            public void terminate() {
+            public void terminate() `{`
 
 
               terminationToken.set(true);
@@ -7626,32 +7621,32 @@ Java Web应用中应用代码自身所启动的线程，比如在ServletContextL
               AbstractMonitorThread.this.interrupt();
 
 
-            }
+            `}`
 
 
-          }; // 语句②
+          `}`; // 语句②
           ThreadTerminationRegistry.INSTANCE.register(handler);
     
      // 语句③
-        }
+        `}`
     
         @Override
-        public void run() {
-          try {
-            while (! terminationToken.get()) {
+        public void run() `{`
+          try `{`
+            while (! terminationToken.get()) `{`
               doMonitor();
               Thread.sleep(interval);
-            }
-          } catch (InterruptedException e) {
+            `}`
+          `}` catch (InterruptedException e) `{`
             // 什么也不做
-          }
+          `}`
           Debug.info("terminated:%s", Thread.currentThread());
-        }
+        `}`
     
         // 子类覆盖该方法来实现监控逻辑
         protected abstract void doMonitor();
-      }
-    }
+      `}`
+    `}`
 ```
 
 ## 5.8　本章小结
@@ -7706,7 +7701,7 @@ Java线程中断机制相当于Java线程与线程间协作的一套协议框架
 
 [\[5\]](#text00010.html#fn5) 以Tomcat 6.0.37为例，Tomcat最终会调用Thread.stop()这个被废弃的方法来强行停止这些线程。而Thread.stop()不一定就能够将目标线程停止，并且它无法以优雅的方式停止线程。
 
-# 第6章 保障线程安全的设计技术
+## 第6章 保障线程安全的设计技术
 
 第3章更多的是从Java平台本身提供的机制的角度来介绍如何保障线程安全。本章将从面向对象设计的角度出发介绍几种保障线程安全的常用技术。这些技术的使用通常可以使得我们在不必借助锁的情况下保障线程安全，从而既避免锁可能导致的问题以及开销，又有利于提高系统的并发性并简化代码。另外，本章还介绍了常用的线程安全的集合对象。
 
@@ -7729,36 +7724,36 @@ Java线程中断机制相当于Java线程与线程间协作的一套协议框架
 清单6-1　Java运行时空间示例代码
 
 ```java
-    public class JavaMemory {
-      public static void main(String[] args) {
-        String msg = args.length > 0 ? args[0] : null;
+    public class JavaMemory `{`
+      public static void main(String[] args) `{`
+        String msg = args.length `>` 0 ? args[0] : null;
         ObjectX objX = new ObjectX();
         objX.greet(msg);
-      }
-    }
+      `}`
+    `}`
 ```
     
 ```java
-    class ObjectX implements Serializable {
+    class ObjectX implements Serializable `{`
       private static final long serialVersionUID = 8554375271108416940L;
       private static AtomicInteger ID_Generator = new AtomicInteger(0);
       private Date timeCreated = new Date();
       private int id;
     
-      public ObjectX() {
+      public ObjectX() `{`
         this.id = ID_Generator.getAndIncrement();
-      }
+      `}`
     
-      public void greet(String message) {
+      public void greet(String message) `{`
         String msg = toString() + ":" + message;
         Debug.info(msg);
-      }
+      `}`
     
       @Override
-      public String toString() {
+      public String toString() `{`
         return "[" + timeCreated + "] ObjectX [" + id + "]";
-      }
-    }
+      `}`
+    `}`
 ```
 
 提示
@@ -7776,33 +7771,33 @@ Java线程中断机制相当于Java线程与线程间协作的一套协议框架
 清单6-2　无状态对象实例
 
 ```java
-    public class DefaultEndpointComparator implements Comparator<Endpoint>
+    public class DefaultEndpointComparator implements Comparator`<`Endpoint`>`
     
-     {
+     `{`
       @Override
-      public int compare(Endpoint server1, Endpoint server2) {
+      public int compare(Endpoint server1, Endpoint server2) `{`
         int result = 0;
         boolean isOnline1 = server1.isOnline();
         boolean isOnline2 = server2.isOnline();
         // 优先按照服务器是否在线排序
-        if (isOnline1 == isOnline2) {
+        if (isOnline1 == isOnline2) `{`
           // 被比较的两台服务器都在线（或不在线）的情况下进一步比较服务器权重
           result = compareWeight(server1.weight, server2.weight);
-        } else {
+        `}` else `{`
           // 在线的服务器排序靠前
-          if (isOnline1) {
+          if (isOnline1) `{`
           result = -1;
-        }
-      }
+        `}`
+      `}`
       return result;
-    }
+    `}`
 ```
     
-    private int compareWeight(int weight1, int weight2) {
+    private int compareWeight(int weight1, int weight2) `{`
     // ...
-    }
+    `}`
 ```
-    }
+    `}`
 ```
 
 DefaultEndpointComparator的实例就是一个无状态对象：DefaultEndpointComparator.compare方法执行时所产生的瞬时状态仅体现为局部变量以及只有执行线程才能访问的对象（Endpoint实例）。在此基础上我们可以实现排序，如清单6-3所示。一个DefaultEndpointComparator实例可以被EndpointView.retrieveServerList()的多个执行线程共享（通过静态变量DEFAULT_COMPARATOR），而这些线程无须使用锁等同步机制。
@@ -7810,38 +7805,38 @@ DefaultEndpointComparator的实例就是一个无状态对象：DefaultEndpointC
 清单6-3　对服务器节点进行排序
 
 ```java
-    public class EndpointView {
-      static final Comparator<Endpoint> DEFAULT_COMPARATOR;
-      static {
+    public class EndpointView `{`
+      static final Comparator`<`Endpoint`>` DEFAULT_COMPARATOR;
+      static `{`
         DEFAULT_COMPARATOR = new DefaultEndpointComparator();
-      }
+      `}`
     
       // 省略其他代码
     
-      public Endpoint[] retrieveServerList(Comparator<Endpoint> comparator
+      public Endpoint[] retrieveServerList(Comparator`<`Endpoint`>` comparator
     
-    ) {
+    ) `{`
         Endpoint[] serverList = doRetrieveServerList();
         Arrays.sort(serverList, comparator);
 
 
         return serverList;
-      }
+      `}`
     
-      public Endpoint[] retrieveServerList() {
+      public Endpoint[] retrieveServerList() `{`
         return retrieveServerList(DEFAULT_COMPARATOR);
-      }
+      `}`
     
-      private Endpoint[] doRetrieveServerList() {
+      private Endpoint[] doRetrieveServerList() `{`
         // ...
-      }
+      `}`
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
         EndpointView endpointView = new EndpointView();
         Endpoint[] serverList = endpointView.retrieveServerList();
         Debug.info(Arrays.toString(serverList));
-      }
-    }
+      `}`
+    `}`
 ```
 
 无状态对象具有线程安全性，这有两层含义：首先，无状态对象的客户端代码在调用该对象的任何方法时都无须加锁。例如EndpointView.retrieveServerList()在访问DefaultEndpointComparator实例的时候无须加锁。其次，无状态对象自身的方法实现也无须使用锁。例如，DefaultEndpointComparator.compare方法中没有使用任何锁。
@@ -7851,87 +7846,87 @@ DefaultEndpointComparator的实例就是一个无状态对象：DefaultEndpointC
 清单6-4　多个线程访问本身不包含状态的对象也可能存在共享状态示例
 
 ```java
-    public class BrokenStatelessObject {
-      public String doSomething(String s) {
+    public class BrokenStatelessObject `{`
+      public String doSomething(String s) `{`
         UnsafeSingleton us = UnsafeSingleton.INSTANCE;
         int i = us.doSomething(s);
         UnsafeStatefullObject sfo = new UnsafeStatefullObject();
         String str = sfo.doSomething(s, i);
         return str;
-      }
+      `}`
     
-      public String doSomething1(String s) {
+      public String doSomething1(String s) `{`
         UnsafeSingleton us = UnsafeSingleton.INSTANCE;
         UnsafeStatefullObject sfo = new UnsafeStatefullObject();
         String str;
-        synchronized (this) {
+        synchronized (this) `{`
           str = sfo.doSomething(s, us.doSomething(s));
-        }
+        `}`
         return str;
-      }
-    }
+      `}`
+    `}`
 ```
     
 ```java
-    class UnsafeStatefullObject {
-      static Map<String, String> cache = new HashMap<String, String>();
+    class UnsafeStatefullObject `{`
+      static Map`<`String, String`>` cache = new HashMap`<`String, String`>`();
 
 
 
-      public String doSomething(String s, int len) {
+      public String doSomething(String s, int len) `{`
         String result = cache.get(s);
-        if (null == result) {
+        if (null == result) `{`
           result = md5sum(result, len);
           cache.put(s, result);
 
 
-        }
+        `}`
         return result;
-      }
+      `}`
     
-      public String md5sum(String s, int len) {
+      public String md5sum(String s, int len) `{`
         // 生成md5摘要
         // 省略其他代码
         return s;
-      }
-    }
+      `}`
+    `}`
 ```
-    
-    enum UnsafeSingleton {
+```java
+    enum UnsafeSingleton `{`
       INSTANCE;
     
       public int state1;
 
 
 
-      public int doSomething(String s) {
+      public int doSomething(String s) `{`
         // 省略其他代码
     
         // 访问state1
 
 
         return 0;
-      }
-    }
+      `}`
+    `}`
 ```
 
 尽管BrokenStatelessObject类自身不包含任何实例变量或者静态变量，但是BrokenStatelessObjec.doSomething方法的多个执行线程仍然可能存在共享状态。BrokenStatelessObjec.doSomething方法中使用的UnsafeSingleton是一个非线程安全单例类（该类仅有一个实例UnsafeSingleton.INSTANCE）。因此，BrokenStatelessObjec.doSomething方法的多个执行线程其实是在共享同一个UnsafeSingleton实例，而UnsafeSingleton类的实例变量state1就成为这些线程的共享状态。尽管BrokenStatelessObjec.doSomething方法的多个执行线程各自都访问各自的UnsafeStatefullObject实例，但是UnsafeStatefullObject的静态变量cache会成为这些线程的共享状态。因此，即使一个类不包含任何实例变量或者静态变量，执行该类方法的多个线程也仍然可能存在共享状态。此时，这个类在调用其他类的方法时仍然可能需要使用锁。例如，BrokenStatelessObjec.doSomething方法可能需要改写为：
-
-    public String doSomething(String s) {
+```java
+    public String doSomething(String s) `{`
         UnsafeSingleton us = UnsafeSingleton.INSTANCE;
         UnsafeStatefullObject sfo = new UnsafeStatefullObject();
         String str;
-        synchronized(this){
+        synchronized(this)`{`
 
 
             str = sfo.doSomething(s, us.doSomething(s));
 
 
-        }
+        `}`
 
 
         return str;
-    }
+    `}`
 ```
 
 注意
@@ -7954,24 +7949,24 @@ DefaultEndpointComparator的实例就是一个无状态对象：DefaultEndpointC
      * @author Viscent Huang
      */
 ```java
-    public class UnsafeServlet extends HttpServlet {
+    public class UnsafeServlet extends HttpServlet `{`
       private static final long serialVersionUID = -2772996404655982182L;
       private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     
       @Override
       protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-          throws ServletException, IOException {
+          throws ServletException, IOException `{`
     
         String strExpiryDate = req.getParameter("expirtyDate");
-        try {
+        try `{`
           sdf.parse(strExpiryDate);
-        } catch (ParseException e) {
+        `}` catch (ParseException e) `{`
           e.printStackTrace();
-        }
+        `}`
         // 省略其他代码
-      }
+      `}`
     
-    }
+    `}`
 ```
 
 ## 6.3　以“不变”应万变：不可变对象
@@ -7989,12 +7984,12 @@ DefaultEndpointComparator的实例就是一个无状态对象：DefaultEndpointC
 ●　任何字段，若其引用了其他状态可变的对象（如集合、数组等），则这些字段必须是private修饰的，并且这些字段值不能对外暴露。若有相关方法要返回这些字段值，则应该进行防御性复制（Defensive Copy）。
 
 第3章第1个实战案例（负载均衡器）中使用的Candidate类（参见清单3-13）就是一个不可变对象，如下代码片段所示：
-
+```java
     public final
     
-     class Candidate implements Iterable<Endpoint> {
+     class Candidate implements Iterable`<`Endpoint`>` `{`
       // 下游部件节点列表
-      private final Set<Endpoint> endpoints;
+      private final Set`<`Endpoint`>` endpoints;
 
 
       // 下游部件节点的总权重
@@ -8002,28 +7997,28 @@ DefaultEndpointComparator的实例就是一个无状态对象：DefaultEndpointC
 
 
 
-      public Candidate(Set<Endpoint> endpoints) {
+      public Candidate(Set`<`Endpoint`>` endpoints) `{`
         int sum = 0;
-        for (Endpoint endpoint : endpoints) {
+        for (Endpoint endpoint : endpoints) `{`
           sum += endpoint.weight;
-        }
+        `}`
         this.totalWeight = sum;
         this.endpoints = endpoints;
-      }
+      `}`
     
       @Override
-      public final Iterator<Endpoint> iterator() {
+      public final Iterator`<`Endpoint`>` iterator() `{`
         return ReadOnlyIterator.with(endpoints.iterator());
 
 
-      }
+      `}`
       // 省略其他代码
-    }
+    `}`
 ```
 
 Candidate实例的状态包括下游部件的服务器节点列表（endpoints）以及这些节点的总权重（totalWeight）。如果下游部件的服务器节点需要变更，例如要增加一个服务器节点或者有个节点的权重需要调整，那么，我们需要同时更新服务器节点列表以及相应的总权重。这里所谓的“同时”意味着这个更新操作必须是一个原子操作，否则其他线程可能看到总权重与服务器节点列表中各个节点的权重总和不一致的情形。如果Candidate类的状态是可变的，那么为了保障这个操作的原子性，我们往往需要借助锁。而在这个案例中，Candidate是个不可变对象，因此这个更新操作通过创建一个新的Candidate实例并以该实例为参数调用AbstractLoadBalancer.updateCandidate方法（参见清单3-12）即可实现。AbstractLoadBalancer类内部会维护一个volatile实例变量candidate来引用Candidate实例，如下代码片段所示：
-
-    public abstract class AbstractLoadBalancer implements LoadBalancer {
+```java
+    public abstract class AbstractLoadBalancer implements LoadBalancer `{`
     private final static Logger LOGGER = Logger.getAnonymousLogger();
     // 使用volatile变量替代锁（有条件替代）
     protected volatile Candidate candidate;
@@ -8034,19 +8029,19 @@ Candidate实例的状态包括下游部件的服务器节点列表（endpoints�
     private Thread heartbeatThread;
     
     @Override
-    public void updateCandidate(final Candidate candidate) {
-      if (null == candidate || 0 == candidate.getEndpointCount()) {
+    public void updateCandidate(final Candidate candidate) `{`
+      if (null == candidate || 0 == candidate.getEndpointCount()) `{`
         throw new IllegalArgumentException("Invalid candidate " + candidate);
-      }
+      `}`
       // 更新volatile变量candidate
       this.candidate = candidate;
 
 
-    }
-```
+    `}`
+
     
     // 其他代码参见清单3-12
-    }
+    `}`
 ```
 
 这里，candidate实例变量是配置管理线程（负责执行updateCandidate方法）和业务线程所共享的对象。volatile关键字保障了对实例变量candidate的写操作的原子性，从而保障整个更新操作（更新下游部件的节点以及总权重）的原子性。另外，volatile关键字还保障了这种更新的结果对于业务线程的可见性。
@@ -8060,31 +8055,31 @@ Candidate实例的状态包括下游部件的服务器节点列表（endpoints�
 我们也可以采取某些技术来减少不可变对象（尤其是比较大的不可变对象）所占用的内存空间。比如，创建不可变对象的时候尽可能让新的不可变对象与老的不可变对象共享部分内存空间，从而减少内存空间占用。在如清单6-6所示的例子中，BigImmutableObject的其中一个构造器允许我们指定一个现有的BigImmutableObject实例（老的不可变对象）作为创建新实例的“模板”，该构造器会调用BigImmutableObject.createRegistry 方法。BigImmutableObject.createRegistry 方法会对指定的BigImmutableObject实例的registry实例变量进行浅复制（Swallow Copy）得到一个新的HashMap，再对这个新的HashMap中需要更新的条目进行更新。更新后的HashMap实例会被作为新BigImmutableObject实例的registry实例变量的初始值（也是最终值）。由于BigImmutableObject.createRegistry 方法所创建的HashMap实例是老的BigImmutableObject实例的registry变量的一个浅复制对象，因此这两个HashMap实例会共用大部分存储空间（主要是HashMap实例所引用的BigObject所占用的存储空间）。
 
 清单6-6　减少不可变对象所占用的空间
-
+```java
     public final class BigImmutableObject implements
-        Iterable<Map.Entry<String, BigObject>> {
-      private final HashMap<String, BigObject> registry;
+        Iterable`<`Map.Entry`<`String, BigObject`>``>` `{`
+      private final HashMap`<`String, BigObject`>` registry;
     
-      public BigImmutableObject(HashMap<String, BigObject> registry) {
+      public BigImmutableObject(HashMap`<`String, BigObject`>` registry) `{`
         this.registry = registry;
-      }
+      `}`
     
       public BigImmutableObject(BigImmutableObject prototype, String key,
-          BigObject newValue) {
+          BigObject newValue) `{`
         this(createRegistry(prototype, key, newValue));
 
 
-      }
+      `}`
     
       @SuppressWarnings("unchecked")
-      private static HashMap<String, BigObject> createRegistry(
+      private static HashMap`<`String, BigObject`>` createRegistry(
           BigImmutableObject prototype, String key,
-          BigObject newValue) {
+          BigObject newValue) `{`
         // 从现有对象中复制（浅复制）字段
-        HashMap<String, BigObject> newRegistry =
+        HashMap`<`String, BigObject`>` newRegistry =
 
 
-            (HashMap<String, BigObject>) prototype.registry.clone();
+            (HashMap`<`String, BigObject`>`) prototype.registry.clone();
 
 
         // 仅更新需要更新的部分
@@ -8092,34 +8087,34 @@ Candidate实例的状态包括下游部件的服务器节点列表（endpoints�
 
 
         return newRegistry;
-      }
+      `}`
     
       @Override
-      public Iterator<Entry<String, BigObject>> iterator() {
+      public Iterator`<`Entry`<`String, BigObject`>``>` iterator() `{`
         // 对entrySet进行防御性复制
-        final Set<Entry<String, BigObject>> readOnlyEntries = Collections
+        final Set`<`Entry`<`String, BigObject`>``>` readOnlyEntries = Collections
             .unmodifiableSet(registry.entrySet());
     
         // 返回一个只读的Iterator实例
         return ReadOnlyIterator.with(
             readOnlyEntries.iterator());
-      }
+      `}`
     
-      public BigObject getObject(String key) {
+      public BigObject getObject(String key) `{`
         return registry.get(key);
-      }
+      `}`
     
       public BigImmutableObject update(String key,
-          BigObject newValue) {
+          BigObject newValue) `{`
         return new BigImmutableObject(this, key, newValue);
-      }
-    }
+      `}`
+    `}`
 ```
     
 ```java
-    class BigObject {
+    class BigObject `{`
       // 省略其他代码
-    }
+    `}`
 ```
 
 基于上述原因，当被建模对象的状态变更比较频繁时，不可变对象也不见得就不能使用。此时，我们需要综合考虑被建模对象的规模、代码目标运行环境的Java虚拟机堆内存容量、系统对吞吐率和响应性的要求这几个因素。若这几个方面因素综合考虑都能满足要求，那么使用不可变对象建模也未尝不可。
@@ -8173,46 +8168,46 @@ ThreadLocal\<T\>类相当于线程访问其线程特有对象的代理（Proxy�
 清单6-7　使用ThreadLocal实现线程安全示例代码
 
 ```java
-    public class ServletWithThreadLocal extends HttpServlet {
-      final static ThreadLocal<SimpleDateFormat>
+    public class ServletWithThreadLocal extends HttpServlet `{`
+      final static ThreadLocal`<`SimpleDateFormat`>`
 
 
-      SDF = new ThreadLocal<SimpleDateFormat>() {
+      SDF = new ThreadLocal`<`SimpleDateFormat`>`() `{`
 
 
         @Override
 
 
-        protected SimpleDateFormat initialValue() {
+        protected SimpleDateFormat initialValue() `{`
 
 
           return new SimpleDateFormat("yyyy-MM-dd");
 
 
-        }
+        `}`
 
 
-      };
+      `}`;
 
 
 
       @Override
       protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-          throws ServletException, IOException {
+          throws ServletException, IOException `{`
         final SimpleDateFormat sdf = SDF.get();
 
 
         String strExpiryDate = req.getParameter("expirtyDate");
-        try (PrintWriter pwr = resp.getWriter()) {
+        try (PrintWriter pwr = resp.getWriter()) `{`
           sdf.parse(strExpiryDate);
           // 省略其他代码
           pwr.printf("[%s]expirtyDate:%s", Thread.currentThread().getName(),
               strExpiryDate);
-        } catch (ParseException e) {
+        `}` catch (ParseException e) `{`
           throw new ServletException(e);
-        } // try结束
-      }
-    }
+        `}` // try结束
+      `}`
+    `}`
 ```
 
 线程局部变量通常是会被声明为某个类的静态变量，正如清单6-7所示。这是因为：如果把线程局部变量声明为某个类的实例变量，那么每创建该类的一个实例都会导致新的ThreadLocal实例被创建。这就可能导致当前线程中同一个类型的线程特有对象会被多次创建。而这即便不会导致错误，也会导致重复创建对象带来的浪费。
@@ -8226,32 +8221,32 @@ ThreadLocal实例通常会被作为某个类的静态字段使用。
 下面看一个ThreadLocal实战案例。某系统会在用户执行某些关键操作前通过短信验证码（一个6位数字组成的字符串）来验证操作者的身份，以确定是否是用户本人进行操作的（而不是他人冒充进行操作的）。这个验证码是随机生成的，为了尽量保障这个验证码的随机性，我们使用强随机数生成器java.security.SecureRandom（它是Random的一个子类）。尽管SecureRandom是线程安全的，并因此可以被多个线程共享，但是为了避免多个线程共享SecureRandom实例可能导致的对SecureRandom内部所使用锁的争用，我们决定不在多个线程间共享同一SecureRandom实例。另外，考虑到每次生成验证码的时候都创建一个SecureRandom也是不现实的（开销太大），因此我们决定将SecureRandom实例作为一个线程特有对象来使用。该案例中用于生成验证码的随机数生成器如清单6-8所示。
 
 清单6-8　使用ThreadLocal避免锁的争用
-
-    public enum ThreadSpecificSecureRandom {
+```java
+    public enum ThreadSpecificSecureRandom `{`
       INSTANCE;
     
-    final static ThreadLocal<SecureRandom> SECURE_RANDOM
+    final static ThreadLocal`<`SecureRandom`>` SECURE_RANDOM
 
 
-                      = new ThreadLocal<SecureRandom>() {
+                      = new ThreadLocal`<`SecureRandom`>`() `{`
 
 
     @Override
 
 
-    protected SecureRandom initialValue() {
+    protected SecureRandom initialValue() `{`
 
 
       SecureRandom srnd;
 
 
-      try {
+      try `{`
 
 
         srnd = SecureRandom.getInstance("SHA1PRNG");
 
 
-      } catch (NoSuchAlgorithmException e) {
+      `}` catch (NoSuchAlgorithmException e) `{`
 
 
         srnd = new SecureRandom();
@@ -8260,7 +8255,7 @@ ThreadLocal实例通常会被作为某个类的静态字段使用。
         e.printStackTrace();
 
 
-      }
+      `}`
 
 
 
@@ -8269,28 +8264,28 @@ ThreadLocal实例通常会被作为某个类的静态字段使用。
           return srnd;
 
 
-        }
+        `}`
 
 
-      };
+      `}`;
 
 
 
       // 生成随机数
-      public int nextInt(int upperBound) {
+      public int nextInt(int upperBound) `{`
         SecureRandom secureRnd = SECURE_RANDOM.get();
 
 
         return secureRnd.nextInt(upperBound);
-      }
+      `}`
     
-      public void setSeed(long seed) {
+      public void setSeed(long seed) `{`
         SecureRandom secureRnd = SECURE_RANDOM.get();
 
 
         secureRnd.setSeed(seed);
-      }
-    }
+      `}`
+    `}`
 ```
 
 ThreadSpecificSecureRandom通过线程局部变量来引用SecureRandom实例，这使得执行nextInt方法以生成验证码的多个线程各自使用各自的SecureRandom实例，从而避免了锁的争用 [\[4\]](#text00011.html#ft4) 。
@@ -8304,46 +8299,46 @@ JDK 1.7中引入的标准库类java.util.concurrent.ThreadLocalRandom的初衷�
 ●　退化与数据错乱。由于线程和任务之间可以是一对多的关系，即一个线程可以先后执行多个任务，因此线程特有对象就相当于一个线程所执行的多个任务之间的共享对象。如果线程特有对象是个有状态对象且其状态会随着相应线程所执行的任务而改变，那么这个线程所执行的下一个任务可能“看到”来自前一个任务的数据，而这个数据可能与该任务并不匹配，从而导致数据错乱。因此，在一个线程可以执行多个任务的情况下（比如在生产者—消费者模式中）使用线程特有对象，我们需要确保每个任务的处理逻辑被执行前相应的线程特有对象的状态不受前一个被执行的任务影响。这通常可以通过在任务处理逻辑被执行前为线程局部变量重新关联一个线程特有对象（通过调用ThreadLocal.set(T)实现）或者重置线程特有对象的状态来实现。例如，清单6-9中的XAbstractTask子类的多个实例可以由一个线程负责执行（比如使用第5章的TaskRunner来执行，代码参见清单5-14），因此我们在preRun方法中将线程特有对象HashMap的内容清空，以避免前一个任务（XAbstractTask子类实例）执行时更改了线程特有对象的状态对当前执行的任务造成影响。从清单6-9中可以看出，在线程可以被重复使用来执行多个任务的情况下使用线程特有对象即使不会造成数据错乱，也可能导致这种线程特有对象实际上“退化”成为任务特有对象——被执行的任务可能更改了线程特有对象的状态，而这些状态一旦对其他任务可见又可能导致数据错乱，因此每个任务实际上需要的是状态会受该任务影响并且独立于其他任务的一个对象。
 
 清单6-9　避免ThreadLocal可能导致的数据错乱
+```java
+    public abstract class XAbstractTask implements Runnable `{`
+      static ThreadLocal`<`HashMap`<`String, String`>``>` configHolder = new
 
-    public abstract class XAbstractTask implements Runnable {
-      static ThreadLocal<HashMap<String, String>> configHolder = new
 
-
-              ThreadLocal<HashMap<String, String>>() {
+              ThreadLocal`<`HashMap`<`String, String`>``>`() `{`
         @Override
-        protected HashMap<String, String> initialValue() {
-          return new HashMap<String, String>();
-        }
+        protected HashMap`<`String, String`>` initialValue() `{`
+          return new HashMap`<`String, String`>`();
+        `}`
     
-      };
+      `}`;
     
       // 该方法总是会在任务处理逻辑被执行前执行
-      protected void preRun() {
+      protected void preRun() `{`
         // 清空线程特有对象HashMap实例，以保证每个任务执行前HashMap的内容是“干净”的
         configHolder.get().clear();
 
 
-      }
+      `}`
     
-      protected void postRun() {
+      protected void postRun() `{`
         // 什么也不做
-      }
+      `}`
     
       // 暴露给子类用于实现任务处理逻辑
       protected abstract void doRun();
     
       @Override
-      public final void run() {
-        try {
+      public final void run() `{`
+        try `{`
           preRun();
 
 
           doRun();
-        } finally {
+        `}` finally `{`
           postRun();
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 ●　ThreadLocal可能导致内存泄漏、伪内存泄漏。在Web应用中使用ThreadLocal极易导致内存泄漏、伪内存泄漏的问题。下面以Tomcat服务器环境为例分析ThreadLocal可能导致内存泄漏、伪内存泄漏的原因，并在此基础上给出规避措施。
@@ -8372,15 +8367,15 @@ JDK 1.7中引入的标准库类java.util.concurrent.ThreadLocalRandom的初衷�
      */
     @WebServlet("/memoryLeak")
 ```java
-    public class ThreadLocalMemoryLeak extends HttpServlet {
+    public class ThreadLocalMemoryLeak extends HttpServlet `{`
       private static final long serialVersionUID = 4364376277297114653L;
-      final static ThreadLocal<Counter> counterHolder = new ThreadLocal<Counter>() {
+      final static ThreadLocal`<`Counter`>` counterHolder = new ThreadLocal`<`Counter`>`() `{`
 
 
         @Override
 
 
-        protected Counter initialValue() {
+        protected Counter initialValue() `{`
 
 
           Counter tsoCounter = new Counter();
@@ -8389,40 +8384,40 @@ JDK 1.7中引入的标准库类java.util.concurrent.ThreadLocalRandom的初衷�
           return tsoCounter;
 
 
-        }
+        `}`
 
 
-      };
+      `}`;
 
 
 
       @Override
       protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-          throws ServletException, IOException {
+          throws ServletException, IOException `{`
         doProcess(req, resp);
-        try (PrintWriter pwr = resp.getWriter()) {
+        try (PrintWriter pwr = resp.getWriter()) `{`
           pwr.printf("Thread %s, counter:%d",
             Thread.currentThread().getName(),
             counterHolder.get().getAndIncrement());
-        }
-      }
+        `}`
+      `}`
     
     void doProcess(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+        throws ServletException, IOException `{`
         counterHolder.get().getAndIncrement();
         // 省略其他代码
-      }
-    }
+      `}`
+    `}`
 ```
     
     // 非线程安全
 ```java
-    class Counter {
+    class Counter `{`
       private int i = 0;
-      public int getAndIncrement() {
+      public int getAndIncrement() `{`
         return i++;
-      }
-    }
+      `}`
+    `}`
 ```
 
 在Tomcat环境下，Web应用自身定义的类（Custom Class）由类加载器（Class Loader） WebAppClassLoader负责加载，而Java标准库类（例如HashMap）由类加载器StandardClassLoader负责加载。每个类（类本身也是一种对象）都会持有对加载该类的类加载器的强引用，并且类加载器本身又会持有其加载过的所有类的强引用。另外，每个对象（实例）都会持有对其相应类的强引用。由于Servlet类ThreadLocalMemoryLeak及其使用的线程特有对象Counter类都是由WebAppClassLoader负责加载的，并且counterHolder（ThreadLocal\<Counter\>）是ThreadLocalMemoryLeak的一个静态字段，因此我们可以得出图6-4所示的引用关系（图中实线表示强引用）。
@@ -8445,17 +8440,17 @@ JDK 1.7中引入的标准库类java.util.concurrent.ThreadLocalRandom的初衷�
 
     @WebFilter("/memoryLeak")
 ```java
-    public class ThreadLocalCleanupFilter implements Filter {
+    public class ThreadLocalCleanupFilter implements Filter `{`
       @Override
       public void doFilter(ServletRequest request, ServletResponse response,
-          FilterChain chain)throws IOException, ServletException {
+          FilterChain chain)throws IOException, ServletException `{`
         chain.doFilter(request, response);
         ThreadLocalMemoryLeak.counterHolder.remove();
 
 
-      }
+      `}`
       // 省略其他代码
-    }
+    `}`
 ```
 
 在上述Filter.doFilter方法中，我们在FilterChain.doFilter调用之后，即请求处理结束之后调用ThreadLocal.remove()。
@@ -8489,23 +8484,23 @@ java.util.Collections.synchronizedX（其中，X可以是Set、List、Map等）�
 清单6-12　保障对外包装对象的遍历操作的线程安全
 
 ```java
-    public class SyncCollectionSafeTraversal {
-      final List<String> syncList = Collections.synchronizedList(new
-          ArrayList<String>());
+    public class SyncCollectionSafeTraversal `{`
+      final List`<`String`>` syncList = Collections.synchronizedList(new
+          ArrayList`<`String`>`());
     
       // ...
     
-      public void dump() {
-        Iterator<String> iterator = syncList.iterator();
-        synchronized (syncList) {
+      public void dump() `{`
+        Iterator`<`String`>` iterator = syncList.iterator();
+        synchronized (syncList) `{`
 
 
-          while (iterator.hasNext()) {
+          while (iterator.hasNext()) `{`
           System.out.println(iterator.next());
-          }
-        }
-      }
-    }
+          `}`
+        `}`
+      `}`
+    `}`
 ```
 
 从清单6-12中可以看出，对同步集合进行遍历操作的时候，我们需要以被遍历同步集合对象本身作为内部锁。这样做实质上是利用了内部锁的排他性，从而阻止了遍历过程中其他线程改变了同步集合的内部结构。因此，这种遍历是不利于提高并发性的。另外，对遍历操作进行加锁时，我们选用的内部锁必须和相应的同步集合内部用于保障其自身线程安全所使用的锁保持一致。也就是说，这一定程度上要求我们必须知道同步集合对象内部的一些细节，显然这是有悖于面向对象编程中的信息封装（Information Hiding）原则的。
@@ -8590,7 +8585,7 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
 
 [\[11\]](#text00011.html#fn11) 详情参见本书第12章。
 
-# 第7章 线程的活性故障
+## 第7章 线程的活性故障
 
 凡是可能出错的，都会出错！
 
@@ -8622,7 +8617,7 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
 我们不难写出一个模拟哲学家就餐问题的程序来验证上述分析。把该问题中的哲学家看作线程，我们可以使用一个抽象类AbstractPhilosopher对哲学家进行抽象，如清单7-1所示。AbstractPhilosopher类的抽象方法eat抽象了哲学家吃饭的完整动作，包括吃饭本身以及准备动作（拿起筷子）和结束动作（放下筷子）。而AbstractPhilosopher.doEat()则模拟了吃饭这个动作本身。吃饭动作的具体实现，即如何在AbstractPhilosopher.eat()中组织好准备动作、吃饭动作本身以及结束动作这三者之间的关系则由AbstractPhilosopher类的子类来负责。AbstractPhilosopher.run()则代表哲学家总是在思考与吃饭之间反复。
 
 清单7-1　表示哲学家的抽象类AbstractPhilosopher
-
+```java
     /**
      * 对哲学家进行抽象
      *
@@ -8630,25 +8625,25 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
      */
     public abstract class AbstractPhilosopher extends Thread implements Philosopher
     
-     {
+     `{`
       protected final int id;
       protected final Chopstick left;
       protected final Chopstick right;
     
-      public AbstractPhilosopher(int id, Chopstick left, Chopstick right) {
+      public AbstractPhilosopher(int id, Chopstick left, Chopstick right) `{`
         super("Philosopher-" + id);
         this.id = id;
         this.left = left;
         this.right = right;
-      }
+      `}`
     
       @Override
-      public void run() {
-        for (; ; ) {
+      public void run() `{`
+        for (; ; ) `{`
           think();
           eat();
-        }
-      }
+        `}`
+      `}`
     
       /*
        * @see io.github.viscent.mtia.ch7.diningphilosophers.Philosopher#eat()
@@ -8656,80 +8651,80 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
       @Override
       public abstract void eat();
     
-      protected void doEat() {
+      protected void doEat() `{`
         Debug.info("%s is eating...%n", this);
         Tools.randomPause(10);
-      }
+      `}`
     
       /*
        * @see io.github.viscent.mtia.ch7.diningphilosophers.Philosopher#think()
        */
       @Override
-      public void think() {
+      public void think() `{`
         Debug.info("%s is thinking...%n", this);
         Tools.randomPause(10);
-      }
+      `}`
     
       @Override
-      public String toString() {
+      public String toString() `{`
         return "Philosopher-" + id;
-      }
-    }
+      `}`
+    `}`
 ```
 
 由于筷子的数量小于哲学家的人数的两倍，因此筷子可被看作哲学家（线程）的共享资源。这里，我们选择用一个非线程安全的类Chopstick表示筷子，如清单7-2所示。
 
 清单7-2　筷子模型Chopstick类
-
+```java
     /**
      * 筷子
      *
      * @author Viscent Huang
      */
-```java
-    public class Chopstick {
+
+    public class Chopstick `{`
       public final int id;
       private Status status = Status.PUT_DOWN;
     
-      public Chopstick(int id) {
+      public Chopstick(int id) `{`
         super();
         this.id = id;
-      }
+      `}`
     
-      public void pickUp() {
+      public void pickUp() `{`
         status = Status.PICKED_UP;
-      }
+      `}`
     
-      public void putDown() {
+      public void putDown() `{`
         status = Status.PUT_DOWN;
-      }
+      `}`
       // 完整代码见本书配套下载资源
-    }
+    `}`
 ```
 
 接下来我们需要创建一个AbstractPhilosopher类的子类来实现吃饭动作，如清单7-3所示。由于Chopstick是一个非线程安全对象，因此AbstractPhilosopher.eat()在调用Chopstick.pickUp()/putDown()来模拟拿起筷子/放下筷子的时候需要加锁。再加上哲学家总是先拿起其左手边的筷子，然后才拿起其右手边的筷子，因此我们使用了一个嵌套的同步块并在相应的临界区中调用Chopstick.pickUp()。由于哲学家只有在拿到两根筷子的情况下才能够吃饭，因此AbstractPhilosopher.doEat()调用必须放在嵌套同步块的内层同步块的临界区中（这样同时持有两根筷子这个条件才能成立）。
 
 清单7-3　可能产生死锁的AbstractPhilosopher子类DeadlockingPhilosopher
-
+```java
     /**
      * 能导致死锁的哲学家模型
      *
      * @author Viscent Huang
      */
-```java
-    public class DeadlockingPhilosopher extends AbstractPhilosopher {
-      public DeadlockingPhilosopher(int id, Chopstick left, Chopstick right) {
+
+    public class DeadlockingPhilosopher extends AbstractPhilosopher `{`
+      public DeadlockingPhilosopher(int id, Chopstick left, Chopstick right) `{`
         super(id, left, right);
-      }
+      `}`
     
       @Override
-      public void eat() {
-        synchronized (left) {
+      public void eat() `{`
+        synchronized (left) `{`
 
 
           Debug.info("%s is picking up %s on his left...%n", this, left);
           left.pickUp(); // 拿起左手边的筷子
-          synchronized (right) {
+          synchronized (right) `{`
 
 
           Debug.info("%s is picking up %s on his right...%n", this, right);
@@ -8738,11 +8733,11 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
     
      // 同时拿起两根筷子的时候才能够吃饭
           right.putDown();
-          }
+          `}`
           left.putDown();
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 接着，我们便可以写出哲学家就餐问题的模拟程序本身，如清单7-4所示。
@@ -8750,48 +8745,48 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
 清单7-4　哲学家就餐问题模拟程序
 
 ```java
-    public class DiningPhilosopherProblem {
+    public class DiningPhilosopherProblem `{`
     
-      public static void main(String[] args) throws Exception {
+      public static void main(String[] args) throws Exception `{`
         int numOfPhilosopers;
-        numOfPhilosopers = args.length > 0 ? Integer.valueOf(args[0]) : 2;
+        numOfPhilosopers = args.length `>` 0 ? Integer.valueOf(args[0]) : 2;
         // 创建筷子
         Chopstick[] chopsticks = new Chopstick[numOfPhilosopers];
-        for (int i = 0; i < numOfPhilosopers; i++) {
+        for (int i = 0; i `<` numOfPhilosopers; i++) `{`
           chopsticks[i] = new Chopstick(i);
-        }
+        `}`
     
         String philosopherImplClassName = System.getProperty("x.philo.impl");
-        if (null == philosopherImplClassName) {
+        if (null == philosopherImplClassName) `{`
           philosopherImplClassName = "DeadlockingPhilosopher";
-        }
+        `}`
     
-        for (int i = 0; i < numOfPhilosopers; i++) {
+        for (int i = 0; i `<` numOfPhilosopers; i++) `{`
           // 创建哲学家
           createPhilosopher(philosopherImplClassName, i, chopsticks);
-        }
-      }
+        `}`
+      `}`
     
       private static void createPhilosopher(String philosopherImplClassName,
-          int id, Chopstick[] chopsticks) throws Exception {
+          int id, Chopstick[] chopsticks) throws Exception `{`
     
         int numOfPhilosopers = chopsticks.length;
         @SuppressWarnings("unchecked")
-        Class<Philosopher> philosopherClass = (Class<Philosopher>) Class
+        Class`<`Philosopher`>` philosopherClass = (Class`<`Philosopher`>`) Class
           .forName(DiningPhilosopherProblem.class.getPackage().getName() + "."
               + philosopherImplClassName);
-        Constructor<Philosopher> constructor = philosopherClass.getConstructor(
+        Constructor`<`Philosopher`>` constructor = philosopherClass.getConstructor(
           int.class, Chopstick.class, Chopstick.class);
         Philosopher philosopher = constructor.newInstance(id, chopsticks[id],
           chopsticks[(id + 1)
               % numOfPhilosopers]);
         philosopher.start();
-      }
-    }
+      `}`
+    `}`
 ```
 
 在不指定任何参数的情况下运行上述程序，不用多久我们便可以发现程序“卡住”了而没有任何新的输出。此时检查该程序的线程转储（Thread Dump）可以发现该程序出现了死锁 [\[2\]](#text00012.html#ft2) ：
-
+```java
     Found one Java-level deadlock:
 
 
@@ -8817,25 +8812,25 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
     ===================================================
     "Philosopher-1":
         at mtia.DeadlockingPhilosopher.eat(DeadlockingPhilosopher.java:16)
-        - waiting to lock <0x00000000d739e2f0
+        - waiting to lock `<`0x00000000d739e2f0
     
-    > (a mtia.Chopstick)
-        - locked <0x00000000d73a31d0
+    `>` (a mtia.Chopstick)
+        - locked `<`0x00000000d73a31d0
     
-    > (a mtia.Chopstick)
+    `>` (a mtia.Chopstick)
         at mtia.AbstractPhilosopher.run(AbstractPhilosopher.java:21)
     "Philosopher-0":
         at mtia.DeadlockingPhilosopher.eat(DeadlockingPhilosopher.java:16)
-        - waiting to lock <0x00000000d73a31d0
+        - waiting to lock `<`0x00000000d73a31d0
     
-    > (a mtia.Chopstick)
-        - locked <0x00000000d739e2f0
+    `>` (a mtia.Chopstick)
+        - locked `<`0x00000000d739e2f0
     
-    > (a mtia.Chopstick)
+    `>` (a mtia.Chopstick)
         at mtia.AbstractPhilosopher.run(AbstractPhilosopher.java:21)
     
     Found 1 deadlock.
-
+```
 由于本程序默认的哲学家数量为2（相当于模拟简化后的问题），因此这个死锁仅涉及两个线程，它们的名称分别为Philosopher-0和Philosopher-1。这两个线程都是在持有一个对方所申请的锁的情况下去申请对方持有的锁（如表7-1所示），从而产生了死锁。
 
 表7-1　两个哲学家线程互相申请对方持有的锁
@@ -8847,71 +8842,71 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
 清单7-5　可能产生死锁的基于显式锁的AbstractPhilosopher子类BuggyLckBasedPhilosopher
 
 ```java
-    public class BuggyLckBasedPhilosopher extends AbstractPhilosopher {
+    public class BuggyLckBasedPhilosopher extends AbstractPhilosopher `{`
       /**
       * 为确保每个Chopstick实例有且仅有一个显式锁（而不重复创建）与之对应，
     
       * 这里的map必须采用static修饰！
       */
-      protected final static ConcurrentMap<Chopstick, ReentrantLock> LOCK_MAP;
-      static {
-        LOCK_MAP = new ConcurrentHashMap<Chopstick, ReentrantLock>();
-      }
+      protected final static ConcurrentMap`<`Chopstick, ReentrantLock`>` LOCK_MAP;
+      static `{`
+        LOCK_MAP = new ConcurrentHashMap`<`Chopstick, ReentrantLock`>`();
+      `}`
     
-      public BuggyLckBasedPhilosopher(int id, Chopstick left, Chopstick right) {
+      public BuggyLckBasedPhilosopher(int id, Chopstick left, Chopstick right) `{`
         super(id, left, right);
         // 每个筷子对应一个（唯一）锁实例
         LOCK_MAP.putIfAbsent(left, new ReentrantLock());
         LOCK_MAP.putIfAbsent(right, new ReentrantLock());
-      }
+      `}`
     
       @Override
-      public void eat() {
+      public void eat() `{`
         // 先后拿起左手边和右手边的筷子
-        if (pickUpChopstick(left) && pickUpChopstick(right)) {
+        if (pickUpChopstick(left) && pickUpChopstick(right)) `{`
           // 同时拿起两根筷子的时候才能够吃饭
-        try{
+        try`{`
           doEat();
-          } finally {
+          `}` finally `{`
           // 放下筷子
           putDownChopsticks(right, left);
-          }
-        }
-      }
+          `}`
+        `}`
+      `}`
     
-      protected boolean pickUpChopstick(Chopstick chopstick) {
+      protected boolean pickUpChopstick(Chopstick chopstick) `{`
         final ReentrantLock lock = LOCK_MAP.get(chopstick);
         lock.lock();
-        try {
+        try `{`
           Debug.info("%s is picking up %s on his %s...%n",
                         this, chopstick, chopstick == left ? "left" : "right");
           chopstick.pickUp();
-        } catch (Exception e) {
+        `}` catch (Exception e) `{`
           // 不大可能走到这里
           e.printStackTrace();
           lock.unlock();
           return false;
-        }
+        `}`
         return true;
-      }
-      private void putDownChopsticks(Chopstick chopstick1, Chopstick chopstick2) {
-        try {
+      `}`
+      private void putDownChopsticks(Chopstick chopstick1, Chopstick chopstick2) `{`
+        try `{`
           putDownChopstick(chopstick1);
-        } finally {
+        `}` finally `{`
           putDownChopstick(chopstick2);
-        }
-      }
-      protected void putDownChopstick(Chopstick chopstick) {
+        `}`
+      `}`
+      protected void putDownChopstick(Chopstick chopstick) `{`
         final ReentrantLock lock = LOCK_MAP.get(chopstick);
-        try {
+        try `{`
           Debug.info("%s is putting down %s on his %s...%n",
                             this, chopstick, chopstick == left ? "left" : "right");
           chopstick.putDown();
-        } finally {
+        `}` finally `{`
           lock.unlock();
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 使用显式锁实现的AbstractPhilosopher.eat()也同样可能导致死锁！使用如下命令将BuggyLckBasedPhilosopher指定为哲学家实现类来运行本Demo：
@@ -8920,7 +8915,7 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
     io.github.viscent.mtia.ch7.diningphilosophers.DiningPhilosopherProblem
 
 通过获取并查看此时的线程转储我们仍然可以发现死锁 [\[3\]](#text00012.html#ft3) ：
-
+```java
     Found one Java-level deadlock:
 
 
@@ -8935,7 +8930,7 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
     ===================================================
     "Philosopher-1":
           at sun.misc.Unsafe.park(Native Method)
-          - parking to wait for  <0x00000000d716dd68> (a jl.ReentrantLock$NonfairSync)
+          - parking to wait for  `<`0x00000000d716dd68`>` (a jl.ReentrantLock$NonfairSync)
           at jl.LockSupport.park(LockSupport.java:175)
           at jl.AbstractQueuedSynchronizer.parkAndCheckInterrupt(AbstractQueuedSync
     hronizer.java:836)
@@ -8952,7 +8947,7 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
     
     "Philosopher-0":
           at sun.misc.Unsafe.park(Native Method)
-          - parking to wait for  <0x00000000d716de08> (a jl.ReentrantLock$NonfairSync)
+          - parking to wait for  `<`0x00000000d716de08`>` (a jl.ReentrantLock$NonfairSync)
           at jl.LockSupport.park(LockSupport.java:175)
           at jl.AbstractQueuedSynchronizer.parkAndCheckInterrupt(AbstractQueuedSync
     hronizer.java:836)
@@ -8968,7 +8963,7 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
           at mtia.AbstractPhilosopher.run(AbstractPhilosopher.java:26)
     
     Found 1 deadlock.
-
+```
 ### 7.1.2　死锁产生的条件与规避
 
 哲学家就餐问题反映了产生死锁的必要条件，线程一旦产生死锁，那么这些线程及相关的资源将满足如下全部条件 [\[4\]](#text00012.html#ft4) 。
@@ -8979,7 +8974,7 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
 
 ●　占用并等待资源（Hold and Wait）。涉及的线程当前至少持有一个资源（资源A）并申请其他资源（资源B），而这些资源（资源B）恰好被其他线程持有。在这个资源等待的过程中，线程并不释放其已经持有的资源。例如，哲学家就餐问题中一个哲学家（线程）左手拿着筷子（资源A）而等待其右手边的筷子（资源B），这根筷子恰好被其右手边的哲学家（线程）拿起（持有）。并且，等待其他哲学家手上的筷子的哲学家并不放下自己手中的筷子。
 
-●　循环等待资源（Circular Wait）。涉及的线程必须在等待别的线程持有的资源，而这些线程又反过来在等待第1个线程所持有的资源。比如有一组线程{T1 , T2 , …, T N }以及一组资源{R1 , R2 , …, R N }, T1 在等待R2 而R2 被T2 持有，T2 在等待R3 而R3 被T3 持有，……, T N 在等待R1 而R1 被T1 持有，这些线程就满足了循环等待资源这个条件。例如，哲学家就餐问题中第1个哲学家（线程）在等待第2个哲学家左手持有的筷子（资源），第2个哲学家（线程）在等待第3个哲学家左手持有的筷子（资源），……，第5个哲学家在等待第1个哲学家左手持有的筷子。
+●　循环等待资源（Circular Wait）。涉及的线程必须在等待别的线程持有的资源，而这些线程又反过来在等待第1个线程所持有的资源。比如有一组线程``{`T1 , T2 , …, T N `}``以及一组资源``{`R1 , R2 , …, R N `}``, T1 在等待R2 而R2 被T2 持有，T2 在等待R3 而R3 被T3 持有，……, T N 在等待R1 而R1 被T1 持有，这些线程就满足了循环等待资源这个条件。例如，哲学家就餐问题中第1个哲学家（线程）在等待第2个哲学家左手持有的筷子（资源），第2个哲学家（线程）在等待第3个哲学家左手持有的筷子（资源），……，第5个哲学家在等待第1个哲学家左手持有的筷子。
 
 这些条件是死锁产生的必要条件而非充分条件，也就是说只要产生了死锁，那么上面这些条件一定同时成立，但是上述条件即使同时成立也不一定就能产生死锁。因此，死锁和其他的多线程相关的问题（比如可见性问题）类似，它并不是必然出现的！上述几个条件并非完全独立，其中“循环等待资源”就可能蕴含了“占用并等待资源”，而“占用并等待资源”可能是“循环等待资源”的基础，但却不一定意味着“循环等待资源”。
 
@@ -9000,19 +8995,19 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
 ```java
     public class GlobalLckBasedPhilosopher extends AbstractPhilosopher
     
-     {
+     `{`
       // GLOBAL_LOCK必须使用static修饰
      private final static Object GLOBAL_LOCK = new Object();
 
 
      public GlobalLckBasedPhilosopher(int id, Chopstick left,
-        Chopstick right) {
+        Chopstick right) `{`
        super(id, left, right);
-     }
+     `}`
     
      @Override
-     public void eat() {
-       synchronized (GLOBAL_LOCK) {
+     public void eat() `{`
+       synchronized (GLOBAL_LOCK) `{`
 
 
         Debug.info("%s is picking up %s on his left...%n", this, left);
@@ -9022,25 +9017,25 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
         doEat();
         right.putDown();
         left.putDown();
-       }
-     }// eat方法结束
-    }
+       `}`
+     `}`// eat方法结束
+    `}`
 ```
 
 粗锁法的缺点是它明显地降低了并发性并可能导致资源浪费。例如，GlobalLckBasedPhilosopher.eat()采用粗锁法的结果是一次只能够有一个哲学家能够吃饭，一个哲学家在吃饭的时候其他哲学家只能在思考或者等待筷子！而实际上，一个哲学家在吃饭的时候仅占用了两根筷子，剩下的三根筷子其实还够供另外一个哲学家使用！因此，粗锁法的适用范围比较有限。
 
-锁排序法（Lock Ordering）——相关线程使用全局统一的顺序申请锁。假设有多个线程需要申请资源（锁）{Lock1 , Lock2 , …, LockN }，那么我们只需要让这些线程依照一个全局（相对于使用这种资源的所有线程而言）统一的顺序去申请这些资源，就可以消除“循环等待资源”这个条件，从而规避死锁。例如，在哲学家就餐问题中每个哲学家都是依照“先拿起左手边的筷子，再拿起右手边的筷子”这种局部顺序来拿筷子的。之所以称这种顺序为“局部”，是因为一个哲学家右手边的筷子恰恰是另外一个哲学家左手边的筷子。因此，从全局的角度来看这种拿筷子的顺序实际上是各个线程各自为政使用不同的顺序，从而使“循环等待资源”得以成立。为了消除“循环等待资源”这个死锁产生的必要条件，我们可以让所有的哲学家（线程）使用全局统一的顺序去拿起两根筷子，比如先拿编号（id）值较小的，再拿编号值较大的筷子。这种方法实际上是对资源（筷子或者访问筷子所需的锁）进行排序。一般地，我们可以使用对象的身份hashcode（Identity Hash Code，即System.identityHashCode(Object)的返回值）来作为资源的排序依据。依照这个思路，我们可以编写能够规避死锁的AbstractPhilosopher实现类FixedPhilosopher，如清单7-7所示。
+锁排序法（Lock Ordering）——相关线程使用全局统一的顺序申请锁。假设有多个线程需要申请资源（锁）``{`Lock1 , Lock2 , …, LockN `}``，那么我们只需要让这些线程依照一个全局（相对于使用这种资源的所有线程而言）统一的顺序去申请这些资源，就可以消除“循环等待资源”这个条件，从而规避死锁。例如，在哲学家就餐问题中每个哲学家都是依照“先拿起左手边的筷子，再拿起右手边的筷子”这种局部顺序来拿筷子的。之所以称这种顺序为“局部”，是因为一个哲学家右手边的筷子恰恰是另外一个哲学家左手边的筷子。因此，从全局的角度来看这种拿筷子的顺序实际上是各个线程各自为政使用不同的顺序，从而使“循环等待资源”得以成立。为了消除“循环等待资源”这个死锁产生的必要条件，我们可以让所有的哲学家（线程）使用全局统一的顺序去拿起两根筷子，比如先拿编号（id）值较小的，再拿编号值较大的筷子。这种方法实际上是对资源（筷子或者访问筷子所需的锁）进行排序。一般地，我们可以使用对象的身份hashcode（Identity Hash Code，即System.identityHashCode(Object)的返回值）来作为资源的排序依据。依照这个思路，我们可以编写能够规避死锁的AbstractPhilosopher实现类FixedPhilosopher，如清单7-7所示。
 
 清单7-7　使用锁排序规避死锁
 
 ```java
     public class FixedPhilosopher extends AbstractPhilosopher
     
-     {
+     `{`
       private final Chopstick one;
       private final Chopstick theOther;
     
-      public FixedPhilosopher(int id, Chopstick left, Chopstick right) {
+      public FixedPhilosopher(int id, Chopstick left, Chopstick right) `{`
         super(id, left, right);
         // 对资源（锁）进行排序
         int leftHash = System.identityHashCode(left);
@@ -9049,7 +9044,7 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
         int rightHash = System.identityHashCode(right);
 
 
-        if (leftHash < rightHash) {
+        if (leftHash `<` rightHash) `{`
 
 
           one = left;
@@ -9058,7 +9053,7 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
           theOther = right;
 
 
-        } else if (leftHash > rightHash) {
+        `}` else if (leftHash `>` rightHash) `{`
 
 
           one = right;
@@ -9067,7 +9062,7 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
           theOther = left;
 
 
-        } else {
+        `}` else `{`
 
 
           // 两个对象的identityHashCode值相等是可能的，尽管这个概率很小
@@ -9077,36 +9072,36 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
           theOther = null;
 
 
-        }
+        `}`
 
 
-      }
+      `}`
     
       @Override
-      public void eat() {
-        if (null ! = one) {
+      public void eat() `{`
+        if (null ! = one) `{`
           synchronized (one)
     
-     {
+     `{`
           Debug.info("%s is picking up %s on his %s...%n", this, one,
               one == left ? "left" : "right");
           one.pickUp();
           synchronized (theOther)
     
-     {
+     `{`
             Debug.info("%s is picking up %s on his %s...%n", this,
                                 theOther, theOther == left ? "left" : "right");
             theOther.pickUp();
             doEat();
             theOther.putDown();
-          }
+          `}`
           one.putDown();
-          }
-        } else {
+          `}`
+        `}` else `{`
           // 退化为使用粗锁法
           synchronized (FixedPhilosopher.class)
     
-     {
+     `{`
           Debug.info("%s is picking up %s on his left...%n", this, left);
           left.pickUp();
           Debug.info("%s is picking up %s on his right...%n", this, right);
@@ -9115,11 +9110,11 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
           right.putDown();
     
           left.putDown();
-        }
-      }// if语句结束
-    }
+        `}`
+      `}`// if语句结束
+    `}`
 ```// eat方法结束
-    }
+    `}`
 ```
 
 在FixedPhilosopher类中，我们先在该类的构造器中根据Chopstick实例的身份hashcode对左手边的筷子和右手边的筷子进行排序，排序的结果记为一根筷子（one）和另外一根筷子（theOther）。在eat方法中，我们在调用Chopstick.pickUp()/putDown()的时候分别用one和theOther去替代left（左手边筷子）和right（右手边筷子）进行加锁。这样就确保每个哲学家线程都是使用全局统一的顺序去申请资源（Chopstick对应的内部锁），从而消除了“循环等待资源”这个条件而规避了死锁。由于使用不同的对象调用System.identityHashCode(Object)仍然可能返回相同的身份hashcode（尽管这种可能性极低），因此在eat方法中我们仍然考虑到这些情形（即left和right对应的身份hashcode相同）。此时，我们转而使用粗锁法——使用FixedPhilosopher类对象本身（Java平台中的类本身也是一种对象）作为全局锁对Chopstick.pickUp()/putDown()调用进行加锁。
@@ -9130,18 +9125,18 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
 
 ```java
     public class FixedLockBasedPhilosopher extends
-        BuggyLckBasedPhilosopher {
+        BuggyLckBasedPhilosopher `{`
     
       @Override
-      protected boolean pickUpChopstick(Chopstick chopstick) {
+      protected boolean pickUpChopstick(Chopstick chopstick) `{`
         final ReentrantLock lock = LOCK_MAP.get(chopstick);
         boolean pickedUp = false;
         boolean lockAcquired = false;
-        try {
+        try `{`
           lockAcquired = lock.tryLock(50, TimeUnit.MILLISECONDS);
 
 
-          if (! lockAcquired) {
+          if (! lockAcquired) `{`
 
 
             // 锁申请失败
@@ -9151,35 +9146,35 @@ Java运行时空间可分为堆空间、非堆空间以及栈空间。栈空间�
             return false;
 
 
-          }
+          `}`
 
 
-        } catch (InterruptedException e) {
+        `}` catch (InterruptedException e) `{`
           // 若当前线程已经拿起另外一根筷子，则使其放下
           Chopstick theOtherChopstick = chopstick == left ? right : left;
-          if (LOCK_MAP.get(theOtherChopstick).isHeldByCurrentThread()) {
+          if (LOCK_MAP.get(theOtherChopstick).isHeldByCurrentThread()) `{`
             theOtherChopstick.putDown();
             LOCK_MAP.get(theOtherChopstick).unlock();
-          }
+          `}`
           return false;
-        }
+        `}`
     
-        try {
+        try `{`
           Debug.info("%s is picking up %s on his %s...%n",
               this, chopstick, chopstick == left ? "left" : "right");
           chopstick.pickUp();
           pickedUp = true;
-        } catch (Exception e) {
+        `}` catch (Exception e) `{`
           // 不大可能走到这里
-          if (lockAcquired) {
+          if (lockAcquired) `{`
             lock.unlock();
-          }
+          `}`
           pickedUp = false;
           e.printStackTrace();
-        }
+        `}`
         return pickedUp;
-      }
-    }
+      `}`
+    `}`
 ```
 
 FixedLockBasedPhilosopher类覆盖了其父类的pickUpChopstick方法（实现拿起指定的筷子的功能）。这个pickUpChopstick方法会调用指定筷子（chopstick）对应的ReentrantLock实例的tryLock(long, TimeUnit)来申请相应的锁。这里，我们指定一个哲学家（即pickUpChopstick方法的执行线程）在等待其他哲学家放下其手中的（一根）筷子时最多只等待50毫秒，即避免了无限制的等待造成的“占用并等待资源”。
@@ -9202,7 +9197,7 @@ FixedLockBasedPhilosopher类覆盖了其父类的pickUpChopstick方法（实现�
 由清单7-9可见，ConfigurationManager.update方法在持有一个锁（ConfigurationManager当前实例对应的内部锁）的情况下调用了一个外部方法——ConfigEventListener.onConfigUpdated方法。而ConfigurationHelper（见清单7-10）作为ConfigEventListener接口的一个实现类，其onConfigUpdated方法内部又申请另外一个锁（ConfigurationHelper当前实例对应的内部锁）。可见，ConfigurationManager.update方法间接具备了图7-3所示的代码特征。另一方面，我们不难发现ConfigurationHelper.getConfig方法事实上也具备图7-3所示的代码特征：ConfigurationHelper.getConfig方法可能在持有一个锁（ConfigurationHelper当前实例对应的内部锁）的情况下调用外部方法——ConfigurationManager.load方法，而这个方法本身会申请另外一个锁（ConfigurationManager当前实例对应的内部锁）。因此，如清单7-12所示，假如一个业务线程执行ConfigurationHelper.getConfig方法来获取一个配置实体的时候，另外一个线程（配置管理线程）恰好更新了系统的配置数据，该线程通过执行ConfigurationManager.update方法将这种更新“通知”给ConfigurationHelper以及可能的业务模块对象，那么这两个线程就可能产生死锁。
 
 清单7-9　ConfigurationManager源码
-
+```java
     /**
      * 配置管理器
      * 该类可能导致死锁！
@@ -9210,50 +9205,50 @@ FixedLockBasedPhilosopher类覆盖了其父类的pickUpChopstick方法（实现�
      */
     public enum
     
-     ConfigurationManager {
+     ConfigurationManager `{`
       INSTANCE;
     
-      protected final Set<ConfigEventListener> listeners = new
-          HashSet<ConfigEventListener>();
+      protected final Set`<`ConfigEventListener`>` listeners = new
+          HashSet`<`ConfigEventListener`>`();
     
-      public Configuration load(String name) {
+      public Configuration load(String name) `{`
         Configuration cfg = loadConfigurationFromDB(name);
-        synchronized (this) {
-          for (ConfigEventListener listener : listeners) {
+        synchronized (this) `{`
+          for (ConfigEventListener listener : listeners) `{`
           listener.onConfigLoaded(cfg);
-          }
-        }
+          `}`
+        `}`
         return cfg;
-      }
+      `}`
       // 从数据库加载配置实体（数据）
-      private Configuration loadConfigurationFromDB(String name) {
+      private Configuration loadConfigurationFromDB(String name) `{`
       // ...
-      }
+      `}`
     
-      public synchronized void registerListener(ConfigEventListener listener) {
+      public synchronized void registerListener(ConfigEventListener listener) `{`
         listeners.add(listener);
-      }
+      `}`
     
-      public synchronized void removeListener(ConfigEventListener listener) {
+      public synchronized void removeListener(ConfigEventListener listener) `{`
         listeners.remove(listener);
-      }
+      `}`
     
       public synchronized
     
      void update(String name, int newVersion,
-          Map<String, String> properties) {
-        for (ConfigEventListener listener : listeners) {
+          Map`<`String, String`>` properties) `{`
+        for (ConfigEventListener listener : listeners) `{`
           // 这个外部方法调用可能导致死锁！
           listener.onConfigUpdated(name, newVersion, properties);
 
 
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 清单7-10　ConfigurationHelper源码
-
+```java
     /**
      * 配置助手
      *  该类可能导致死锁！
@@ -9261,64 +9256,64 @@ FixedLockBasedPhilosopher类覆盖了其父类的pickUpChopstick方法（实现�
      */
     public enum
     
-     ConfigurationHelper implements ConfigEventListener {
+     ConfigurationHelper implements ConfigEventListener `{`
       INSTANCE;
       final ConfigurationManager configManager;
-      final ConcurrentMap<String, Configuration> cachedConfig;
+      final ConcurrentMap`<`String, Configuration`>` cachedConfig;
     
-      private ConfigurationHelper() {
+      private ConfigurationHelper() `{`
         configManager = ConfigurationManager.INSTANCE;
-        cachedConfig = new ConcurrentHashMap<String, Configuration>();
-      }
+        cachedConfig = new ConcurrentHashMap`<`String, Configuration`>`();
+      `}`
     
-      public Configuration getConfig(String name) {
+      public Configuration getConfig(String name) `{`
         Configuration cfg;
         cfg = getCachedConfig(name);
-        if (null == cfg) {
+        if (null == cfg) `{`
           synchronized (this)
     
-     {
+     `{`
           cfg = getCachedConfig(name);
-          if (null == cfg) {
+          if (null == cfg) `{`
             cfg = configManager.load(name);
 
 
             cachedConfig.put(name, cfg);
-          }
-          }
-        }
+          `}`
+          `}`
+        `}`
         return cfg;
-      }
+      `}`
     
-      public Configuration getCachedConfig(String name) {
+      public Configuration getCachedConfig(String name) `{`
         return cachedConfig.get(name);
-      }
+      `}`
     
-      public ConfigurationHelper init() {
+      public ConfigurationHelper init() `{`
         configManager.registerListener(this);
         return this;
-      }
+      `}`
     
       @Override
-      public void onConfigLoaded(Configuration cfg) {
+      public void onConfigLoaded(Configuration cfg) `{`
         cachedConfig.putIfAbsent(cfg.getName(), cfg);
-      }
+      `}`
     
       @Override
       public void onConfigUpdated(String name, int newVersion,
-          Map<String, String> properties) {
+          Map`<`String, String`>` properties) `{`
         Configuration cachedConfig = getCachedConfig(name);
         // 更新内容和版本这两个操作必须是原子操作
         synchronized (this)
     
-     {
-          if (null ! = cachedConfig) {
+     `{`
+          if (null ! = cachedConfig) `{`
             cachedConfig.update(properties);
             cachedConfig.setVersion(newVersion);
-          }
-        }
-      }
-    }
+          `}`
+        `}`
+      `}`
+    `}`
 ```
 
 清单7-11　Configuration源码
@@ -9330,7 +9325,7 @@ FixedLockBasedPhilosopher类覆盖了其父类的pickUpChopstick方法（实现�
      */
     // 非线程安全
 ```java
-    public class Configuration {
+    public class Configuration `{`
       /**
       * 配置名称
       */
@@ -9340,118 +9335,118 @@ FixedLockBasedPhilosopher类覆盖了其父类的pickUpChopstick方法（实现�
       */
       private volatile int version;
       /**
-      * 存储配置项的Map.每个配置项是一个“属性名”->“属性值”的关联
+      * 存储配置项的Map.每个配置项是一个“属性名”-`>`“属性值”的关联
       */
-      private volatile Map<String, String> configItemMap;
+      private volatile Map`<`String, String`>` configItemMap;
     
-      public Configuration(String name, int version) {
+      public Configuration(String name, int version) `{`
         this.name = name;
         this.version = version;
-        configItemMap = new HashMap<String, String>();
-      }
+        configItemMap = new HashMap`<`String, String`>`();
+      `}`
     
-      public void setProperty(String key, String value) {
+      public void setProperty(String key, String value) `{`
         configItemMap.put(key, value);
-      }
-      public String getProperty(String key) {
+      `}`
+      public String getProperty(String key) `{`
         return configItemMap.get(key);
-      }
+      `}`
     
-      public void update(Map<String, String> properties) {
+      public void update(Map`<`String, String`>` properties) `{`
         configItemMap = properties;
-      }
+      `}`
     
-      public void setVersion(int version) {
+      public void setVersion(int version) `{`
         this.version = version;
-      }
+      `}`
     
       // ...
-    }
+    `}`
 ```
 
 清单7-12　外部方法调用导致的死锁Demo
 
 ```java
-    public class CaseRunner7_1 {
+    public class CaseRunner7_1 `{`
     
      final static ConfigurationHelper configHelper =
           ConfigurationHelper.INSTANCE.init();
     
-      public static void main(String[] args) throws InterruptedException {
+      public static void main(String[] args) throws InterruptedException `{`
         // 模拟业务线程读取配置实体
-        Thread trxThread = new Thread(new Runnable() {
+        Thread trxThread = new Thread(new Runnable() `{`
     
           @Override
-          public void run() {
+          public void run() `{`
           Configuration cfg = configHelper.getConfig("serverInfo");
           String url = cfg.getProperty("url");
           process(url);
-          }
+          `}`
     
-          private void process(String url) {
+          private void process(String url) `{`
           Debug.info("processing %s", url);
           // ...
-          }
+          `}`
     
-        });
+        `}`);
     
         // 模拟系统管理线程更新配置数据
-        Thread updateThread = new Thread(new Runnable() {
+        Thread updateThread = new Thread(new Runnable() `{`
     
           @Override
-          public void run() {
+          public void run() `{`
           // 模拟实际操作所需的时间
           Tools.randomPause(40);
-          Map<String, String> props = new HashMap<String, String>();
+          Map`<`String, String`>` props = new HashMap`<`String, String`>`();
           props.put("property1", "value1");
           props.put("property2", "value2");
           props.put("property3", "value3");
           ConfigurationManager.INSTANCE.update("anotherConfig", 6, props);
-        }
+        `}`
     
-      });
+      `}`);
     
       // 启动并等待指定的线程终止
       Tools.startAndWaitTerminated(trxThread, updateThread);
-    }
+    `}`
 ```
-    }
+    `}`
 ```
 
 本案例中出现的死锁可以使用“开放调用”来规避。所谓开放调用 （Open Call）就是一个方法在调用外部方法（Alien Method，包括其他类的方法以及当前类的可覆盖方法）的时候不持有任何锁。显然，开放调用能够消除死锁产生的必要条件中的“持有并等待资源”。既然通过上面的分析我们已经锁定了本案例中导致死锁的“罪魁祸首”——ConfigurationManager.update方法（参见清单7-9）以及ConfigurationHelper.getConfig方法（参见清单7-10），那么我们只需要将这两个方法对外部方法的调用改为开放调用即可。考虑到将ConfigurationHelper.getConfig方法改造为开放调用比较困难，我们不妨从ConfigurationManager入手——将ConfigurationManager的实例变量listeners改用线程安全的Set接口实现类CopyOnWriteArraySet（参见第6章），这种改造使得我们可以将ConfigurationManager的几个方法，包括update方法和load方法改为无须申请锁的方法，如清单7-13所示。改造后的ConfigurationManager.update方法对外部方法onConfigUpdated的调用已经是开放调用（类似地，load方法对外部方法onConfigLoaded的调用也是开放调用）。尽管改造之后ConfigurationHelper.getConfig方法对ConfigurationManager.load方法的调用仍然不是开放调用，但是由于ConfigurationManager中所有对ConfigurationHelper的方法调用都不持有锁，因此死锁产生的必要条件中的“循环等待”就不会成立，由此我们还是规避了死锁。
-
+```java
 清单7-13　使用开放调用改造ConfigurationManager
-
-    public enum ConfigurationManagerV2 {
+```java
+    public enum ConfigurationManagerV2 `{`
       INSTANCE;
-      protected final Set<ConfigEventListener> listeners;
-      {
-        listeners = new CopyOnWriteArraySet<ConfigEventListener>();
-      }
+      protected final Set`<`ConfigEventListener`>` listeners;
+      `{`
+        listeners = new CopyOnWriteArraySet`<`ConfigEventListener`>`();
+      `}`
       // 省略未改动过的代码……
-      public Configuration load(String name) {
+      public Configuration load(String name) `{`
         Configuration cfg = loadConfigurationFromDB(name);
-        for (ConfigEventListener listener : listeners) {
+        for (ConfigEventListener listener : listeners) `{`
           listener.onConfigLoaded(cfg);
-        }
+        `}`
         return cfg;
-      }
+      `}`
     
-      public void registerConfigEventListener(ConfigEventListener listener) {
+      public void registerConfigEventListener(ConfigEventListener listener) `{`
         listeners.add(listener);
-      }
+      `}`
     
-      public void removeConfigEventListener(ConfigEventListener listener) {
+      public void removeConfigEventListener(ConfigEventListener listener) `{`
         listeners.remove(listener);
-      }
+      `}`
     
       public void update(String name, int newVersion,
-          Map<String, String> properties) {
-        for (ConfigEventListener listener : listeners) {
+          Map`<`String, String`>` properties) `{`
+        for (ConfigEventListener listener : listeners) `{`
           listener.onConfigUpdated(name, newVersion, properties);
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 提示
@@ -9483,59 +9478,59 @@ FixedLockBasedPhilosopher类覆盖了其父类的pickUpChopstick方法（实现�
 清单7-14　死锁检测与恢复线程源码
 
 ```java
-    public class DeadlockDetector extends Thread {
+    public class DeadlockDetector extends Thread `{`
       static final ThreadMXBean tmb = ManagementFactory.getThreadMXBean();
       /**
       * 检测周期（单位为毫秒）
       */
       private final long monitorInterval;
     
-      public DeadlockDetector(long monitorInterval) {
+      public DeadlockDetector(long monitorInterval) `{`
         super("DeadLockDetector");
         setDaemon(true);
         this.monitorInterval = monitorInterval;
-      }
+      `}`
     
-      public DeadlockDetector() {
+      public DeadlockDetector() `{`
         this(2000);
-      }
+      `}`
     
-      public static ThreadInfo[] findDeadlockedThreads() {
+      public static ThreadInfo[] findDeadlockedThreads() `{`
         long[] ids = tmb.findDeadlockedThreads();
         return null == tmb.findDeadlockedThreads() ?
             new ThreadInfo[0] : tmb.getThreadInfo(ids);
-      }
+      `}`
     
-      public static Thread findThreadById(long threadId) {
-        for (Thread thread : Thread.getAllStackTraces().keySet()) {
-          if (thread.getId() == threadId) {
+      public static Thread findThreadById(long threadId) `{`
+        for (Thread thread : Thread.getAllStackTraces().keySet()) `{`
+          if (thread.getId() == threadId) `{`
             return thread;
-          }
-        }
+          `}`
+        `}`
         return null;
-      }
+      `}`
     
-      public static boolean interruptThread(long threadID) {
+      public static boolean interruptThread(long threadID) `{`
         Thread thread = findThreadById(threadID);
-        if (null ! = thread) {
+        if (null ! = thread) `{`
           thread.interrupt();
           return true;
-        }
+        `}`
         return false;
-      }
+      `}`
     
       @Override
-      public void run() {
+      public void run() `{`
         ThreadInfo[] threadInfoList;
         ThreadInfo ti;
         int i = 0;
-        try {
-          for (; ; ) {
+        try `{`
+          for (; ; ) `{`
              // 检测系统中是否存在死锁
             threadInfoList = DeadlockDetector.findDeadlockedThreads();
 
 
-            if (threadInfoList.length > 0) {
+            if (threadInfoList.length `>` 0) `{`
               // 选取一个任意的死锁线程
               ti = threadInfoList[i++ % threadInfoList.length];
 
@@ -9549,18 +9544,18 @@ FixedLockBasedPhilosopher类覆盖了其父类的pickUpChopstick方法（实现�
 
 
               continue;
-            } else {
+            `}` else `{`
               Debug.info("No deadlock found! ");
               i = 0;
-            }// for循环结束
+            `}`// for循环结束
             Thread.sleep(monitorInterval);
-          }
-        } catch (InterruptedException e) {
+          `}`
+        `}` catch (InterruptedException e) `{`
           // 什么也不做
           ;
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads()调用来实现死锁检测的。ThreadMXBean.findDeadlockedThreads()能够返回一组死锁线程的线程编号。ThreadMXBean类是JMX（Java Management Extension）API的一部分，因此其提供的功能也可以通过jconsole、jvisualvm手工调用 [\[7\]](#text00012.html#ft7) 。
@@ -9570,20 +9565,20 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
 清单7-15　支持死锁恢复的AbstractPhilosopher子类RecoverablePhilosopher
 
 ```java
-    public class RecoverablePhilosopher extends BuggyLckBasedPhilosopher {
+    public class RecoverablePhilosopher extends BuggyLckBasedPhilosopher `{`
     
-      public RecoverablePhilosopher(int id, Chopstick left, Chopstick right) {
+      public RecoverablePhilosopher(int id, Chopstick left, Chopstick right) `{`
         super(id, left, right);
-      }
+      `}`
     
       @Override
-      protected boolean pickUpChopstick(Chopstick chopstick) {
+      protected boolean pickUpChopstick(Chopstick chopstick) `{`
         final ReentrantLock lock = LOCK_MAP.get(chopstick);
-        try {
+        try `{`
           lock.lockInterruptibly();
 
 
-        } catch (InterruptedException e) {
+        `}` catch (InterruptedException e) `{`
           // 使当前线程释放其已持有的锁
           Debug.info("%s detected interrupt.", Thread.currentThread().getName());
 
@@ -9600,22 +9595,22 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
           return false;
 
 
-        }
-        try {
+        `}`
+        try `{`
           Debug.info(
             "%s is picking up %s on his %s...%n",
             this, chopstick, chopstick == left ? "left" : "right");
     
           chopstick.pickUp();
-        } catch (Exception e) {
+        `}` catch (Exception e) `{`
           // 不大可能走到这里
           e.printStackTrace();
           lock.unlock();
           return false;
-        }
+        `}`
         return true;
-      }
-    }
+      `}`
+    `}`
 ```
 
 这里，pickUpChopstick方法在捕获到lock.lockInterruptibly()抛出的InterruptedException后，主动将当前线程已持有的锁释放掉（即放下当前哲学家已持有的筷子）。利用这个改造后的哲学家模型，我们就可以再现死锁的自动恢复的效果，如清单7-16所示。
@@ -9623,9 +9618,9 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
 清单7-16　死锁自动恢复Demo
 
 ```java
-    public class DeadlockRecoveryDemo {
+    public class DeadlockRecoveryDemo `{`
     
-      public static void main(String[] args) throws Exception {
+      public static void main(String[] args) throws Exception `{`
         // 创建并启动死锁检测与恢复线程
         new DeadlockDetector().start();
         // 指定RecoverablePhilosopher为哲学家模型实现类
@@ -9633,8 +9628,8 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
           "RecoverablePhilosopher");
         // 启动哲学家就餐问题模拟程序
         DiningPhilosopherProblem.main(args);
-      }
-    }
+      `}`
+    `}`
 ```
 
 运行上述程序，我们可以发现当死锁产生的时候，DeadlockDetector能够自动侦测到并试图进行自动恢复。但是，恢复之后故障又很快重新出现了，接着又是自动恢复……由此可见，死锁自动恢复的实际意义并不大。
@@ -9668,23 +9663,23 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
 清单7-17　嵌套监视器锁死Demo
 
 ```java
-    public class NestedMonitorLockoutDemo {
-      private final BlockingQueue<String> queue = new ArrayBlockingQueue<String>(10);
+    public class NestedMonitorLockoutDemo `{`
+      private final BlockingQueue`<`String`>` queue = new ArrayBlockingQueue`<`String`>`(10);
       private int processed = 0;
       private int accepted = 0;
     
-      public static void main(String[] args) throws InterruptedException {
+      public static void main(String[] args) throws InterruptedException `{`
         NestedMonitorLockoutDemo u = new NestedMonitorLockoutDemo();
         u.start();
         int i = 0;
-        while (i-- < 100000) {
+        while (i-- `<` 100000) `{`
           u.accept("message" + i);
           Tools.randomPause(100);
-        }
+        `}`
     
-      }
+      `}`
     
-      public synchronized void accept(String message) throws InterruptedException {
+      public synchronized void accept(String message) throws InterruptedException `{`
 
 
         // 不要在临界区内调用BlockingQueue的阻塞方法！那样会导致嵌套监视器锁死
@@ -9696,11 +9691,11 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
         accepted++;
 
 
-      }
+      `}`
 
 
 
-      protected synchronized void doProcess() throws InterruptedException {
+      protected synchronized void doProcess() throws InterruptedException `{`
 
 
         // 不要在临界区内调用BlockingQueue的阻塞方法！那样会导致嵌套监视器锁死
@@ -9715,42 +9710,42 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
         processed++;
 
 
-      }
+      `}`
 
 
 
-      public void start() {
+      public void start() `{`
         new WorkerThread().start();
-      }
+      `}`
     
-      public synchronized int[] getStat() {
-        return new int[] { accepted, processed };
-      }
+      public synchronized int[] getStat() `{`
+        return new int[] `{` accepted, processed `}`;
+      `}`
     
-      class WorkerThread extends Thread {
+      class WorkerThread extends Thread `{`
         @Override
-        public void run() {
-          try {
-            while (true) {
+        public void run() `{`
+          try `{`
+            while (true) `{`
               doProcess();
-            }
-          } catch (InterruptedException e) {
+            `}`
+          `}` catch (InterruptedException e) `{`
             ;
-          }
-        }
-      }
-    }
+          `}`
+        `}`
+      `}`
+    `}`
 ```
 
 尽管如此，查看该程序的线程转储我们不难发现，消费者线程Thread-0（WorkerThread的实例）持有一个标识号为0x00000000d72f9b80的内部锁（NestedMonitorLockoutDemo实例）并等待（线程生命周期状态为WAITING）：
-
+```java
     "Thread-0" #9 prio=5 os_prio=0 tid=0x00007fd0fc13f800 nid=0x29ab waiting on
     condition [0x00007fd0dae26000]
       java.lang.Thread.State: WAITING (parking)
 
 
           at sun.misc.Unsafe.park(Native Method)
-          - parking to wait for  <0x00000000d72fb1c0> (a jl.AbstractQueuedSynchroniz
+          - parking to wait for  `<`0x00000000d72fb1c0`>` (a jl.AbstractQueuedSynchroniz
 
 
     er$ConditionObject)
@@ -9764,7 +9759,7 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
 
           at mtia.NestedMonitorLockoutDemo.doProcess(NestedMonitorLockoutDemo.java:
     32)
-          - locked <0x00000000d72f9b80> (a mtia.NestedMonitorLockoutDemo)
+          - locked `<`0x00000000d72f9b80`>` (a mtia.NestedMonitorLockoutDemo)
 
 
           at mtia.NestedMonitorLockoutDemo$WorkerThread.run(NestedMonitorLockoutDemo.
@@ -9772,7 +9767,7 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
     
       Locked ownable synchronizers:
           - None
-
+```
 结合代码来看，不难得知这个等待实际上是等待阻塞队列queue非空（即生产者生产了新的产品），如图7-5所示（图中的notEmpty是一个Condition实例）。
 
 ![](http://www.minio.lookworld.com/001/java-thread/Image00055.jpg)
@@ -9786,21 +9781,21 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
 图7-6　ArrayBlockingQueue.put()源码
 
 再看相应的生产者线程（main线程）的情况，NestedMonitorLockoutDemo.accept方法是一个同步方法，因此生产者在调用该方法将其生产的“产品”存入队列时需要先申请该方法所需的内部锁（NestedMonitorLockoutDemo实例），如下线程转储片段所示：
-
+```java
     "main" #1 prio=5 os_prio=0 tid=0x00007fd0fc00b000 nid=0x2996 waiting for monitor
     entry [0x00007fd10447d000]
       java.lang.Thread.State: BLOCKED (on object monitor)
           at mtia.NestedMonitorLockoutDemo.accept
     
     (NestedMonitorLockoutDemo.java:26)
-          - waiting to lock <0x00000000d72f9b80> (a mtia.NestedMonitorLockoutDemo)
+          - waiting to lock `<`0x00000000d72f9b80`>` (a mtia.NestedMonitorLockoutDemo)
 
 
           at mtia.NestedMonitorLockoutDemo.main(NestedMonitorLockoutDemo.java:18)
     
       Locked ownable synchronizers:
           - None
-
+```
 可见，生产者线程正在等待标识号为0x00000000d72f9b80的内部锁（NestedMonitorLockoutDemo实例），而这个锁恰好被消费者线程Thread-0所持有，因此生产者无法执行queue.put(message)，也就无法将“产品”存入队列（相当于无法生产“产品”），而queue.put(message)无法被执行就意味着消费者线程无法被唤醒（因为队列一直是空的）！
 
 从等待/通知的角度来看，这个生产者线程相当于通知线程，它无法生产“产品”就不会通知等待线程（消费者线程）队列非空，那么等待线程（Thread-0）就会一直处于等待状态，而等待线程一直处于等待状态则会导致其持有的内部锁（0x00000000d72f9b80, NestedMonitorLockoutDemo当前实例对应的内部锁）一直无法被释放。这样，生产者线程便永远无法生产“产品”，而消费者线程也永远处于等待状态。
@@ -9810,30 +9805,30 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
 从死锁产生的必要条件角度出发，我们不难看出嵌套监视器锁死与死锁的区别。尽管上述Demo也存在嵌套锁，但是由于其中的两个线程（main线程和Thread-0）都是按照全局统一的顺序（先申请NestedMonitorLockoutDemo当前实例对应的内部锁，再申请ArrayBlockingQueue实例内部的显式锁）来申请锁的，这相当于采取前文提到的“锁排序法”来规避死锁，因此该Demo不可能出现死锁。尽管如此，该Demo仍然出现锁死。在本质上，嵌套监视器锁死是由于通知线程无法获得锁，导致其无法唤醒等待线程，最终使等待线程永远处于等待状态的活性故障；而死锁是由于所有故障线程都无法获得其所需的锁而导致的活性故障。
 
 在上述Demo中，我们只需要将ArrayBlockingQueue.take()调用挪到doProcess方法之外就可以规避嵌套监视器锁死了，如下代码片段所示：
-
-    protected synchronized void doProcess(String msg) throws InterruptedException {
+```java
+    protected synchronized void doProcess(String msg) throws InterruptedException `{`
       System.out.println("Process:" + msg);
       processed++;
-    }
+    `}`
 ```
     
 ```java
-    class WorkerThread extends Thread {
+    class WorkerThread extends Thread `{`
       @Override
-      public void run() {
-        try {
+      public void run() `{`
+        try `{`
           String msg;
-          while (true) {
+          while (true) `{`
           msg = queue.take();
 
 
           doProcess(msg);
-          }
-        } catch (InterruptedException e) {
+          `}`
+        `}` catch (InterruptedException e) `{`
           ;
-        }
-      }
-    }
+        `}`
+      `}`
+    `}`
 ```
 
 ## 7.3　巧妇难为无米之炊：线程饥饿
@@ -9884,7 +9879,7 @@ DeadlockDetector是通过java.lang.management.ThreadMXBean.findDeadlockedThreads
 
 [\[7\]](#text00012.html#fn7) jvisualvm中需要先安装VisualVM-MBeans插件才支持手工调用JMX API，参见：https://visualvm.java.net/mbeans_tab.html。
 
-# 第8章 线程管理
+## 第8章 线程管理
 
 本章之前的内容我们更加注重的是如何利用线程“做到”我们想要做的事情，而本章的重点则在于如何“做得更好”。在本章中我们会介绍多线程编程实战中所面临以及需要关注的一些重要问题，并提出相应的解决方案。这些问题主要包括：线程在其运行过程中一旦抛出了未捕获异常，我们如何得知并应对的可靠性问题；如何将线程的创建与配置（比如设置线程的优先级）以一种统一的方式管控起来，使这些线程从“散兵游勇”提升为“训练有素”的“正规军”的问题；如何提高线程这种宝贵资源的利用率的问题。
 
@@ -9911,26 +9906,26 @@ uncaughtException方法中的两个参数包括了异常终止的线程本身（
 清单8-1　使用UncaughtExceptionHandler实现线程监控
 
 ```java
-    public class ThreadMonitorDemo {
+    public class ThreadMonitorDemo `{`
       volatile boolean inited = false;
       static int threadIndex = 0;
       final static Logger LOGGER = Logger.getAnonymousLogger();
-      final BlockingQueue<String> channel = new ArrayBlockingQueue<String>(100);
+      final BlockingQueue`<`String`>` channel = new ArrayBlockingQueue`<`String`>`(100);
     
-      public static void main(String[] args) throws InterruptedException {
+      public static void main(String[] args) throws InterruptedException `{`
         ThreadMonitorDemo demo = new ThreadMonitorDemo();
         demo.init();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i `<` 100; i++) `{`
           demo.service("test-" + i);
-        }
+        `}`
         Thread.sleep(2000);
         System.exit(0);
-      }
+      `}`
     
-      public synchronized void init() {
-        if (inited) {
+      public synchronized void init() `{`
+        if (inited) `{`
           return;
-        }
+        `}`
         Debug.info("init...");
         WokrerThread t = new WokrerThread();
         t.setName("Worker0-" + threadIndex++);
@@ -9942,15 +9937,15 @@ uncaughtException方法中的两个参数包括了异常终止的线程本身（
 
         t.start();
         inited = true;
-      }
+      `}`
     
-      public void service(String message) throws InterruptedException {
+      public void service(String message) throws InterruptedException `{`
         channel.put(message);
-      }
+      `}`
     
-      private class ThreadMonitor implements Thread.UncaughtExceptionHandler {
+      private class ThreadMonitor implements Thread.UncaughtExceptionHandler `{`
         @Override
-        public void uncaughtException(Thread t, Throwable e) {
+        public void uncaughtException(Thread t, Throwable e) `{`
           Debug.info("Current thread is 't':%s, it is still alive:%s",
             Thread.currentThread() == t, t.isAlive());
     
@@ -9967,35 +9962,35 @@ uncaughtException方法中的两个参数包括了异常终止的线程本身（
           init();
 
 
-        }
+        `}`
     
-      }// 类ThreadMonitor定义结束
+      `}`// 类ThreadMonitor定义结束
     
-      private class WokrerThread extends Thread {
+      private class WokrerThread extends Thread `{`
         @Override
-        public void run() {
+        public void run() `{`
           Debug.info("Do something important...");
           String msg;
-          try {
-            for (; ; ) {
+          try `{`
+            for (; ; ) `{`
               msg = channel.take();
               process(msg);
-            }
-          } catch (InterruptedException e) {
+            `}`
+          `}` catch (InterruptedException e) `{`
             // 什么也不做
-          }
-        }
+          `}`
+        `}`
     
-        private void process(String message) {
+        private void process(String message) `{`
           Debug.info(message);
           // 模拟随机性异常
-          if ((int) (Math.random() * 100) < 2) {
+          if ((int) (Math.random() * 100) `<` 2) `{`
             throw new RuntimeException("test");
-          }
+          `}`
           Tools.randomPause(100);
-        }
-      }// 类ThreadMonitorDemo定义结束
-    }
+        `}`
+      `}`// 类ThreadMonitorDemo定义结束
+    `}`
 ```
 
 运行上述程序，我们可以看到类似如下的输出（省略部分输出）：
@@ -10047,11 +10042,11 @@ uncaughtException方法中的两个参数包括了异常终止的线程本身（
 清单8-2　在Web应用中使用默认UncaughtExceptionHandler
 
 ```java
-    public class AppListener implements ServletContextListener {
+    public class AppListener implements ServletContextListener `{`
       final static Logger LOGGER = Logger.getAnonymousLogger();
     
       @Override
-      public void contextInitialized(ServletContextEvent contextEvent) {
+      public void contextInitialized(ServletContextEvent contextEvent) `{`
         // 设置默认UncaughtExceptionHandler
         UncaughtExceptionHandler ueh = new LoggingUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(ueh);
@@ -10060,34 +10055,34 @@ uncaughtException方法中的两个参数包括了异常终止的线程本身（
 
         // 启动若干工作者线程
         startServices();
-      }
+      `}`
     
       static class LoggingUncaughtExceptionHandler implements
-          UncaughtExceptionHandler {
+          UncaughtExceptionHandler `{`
         @Override
-        public void uncaughtException(Thread t, Throwable e) {
+        public void uncaughtException(Thread t, Throwable e) `{`
           String threadInfo = "Thread[" + t.getName() + ", " + t.getId() + ", "
             + t.getThreadGroup().getName() + ", @" + t.hashCode() + "]";
     
           // 将线程异常终止的相关信息记录到日志中
           LOGGER.log(Level.SEVERE, threadInfo + " terminated:", e);
-        }
-      }
+        `}`
+      `}`
     
-      protected void startServices() {
+      protected void startServices() `{`
         // 省略其他代码
-      }
+      `}`
     
-      protected void stopServices() {
+      protected void stopServices() `{`
         // 省略其他代码
-      }
+      `}`
     
       @Override
-      public void contextDestroyed(ServletContextEvent contextEvent) {
+      public void contextDestroyed(ServletContextEvent contextEvent) `{`
         Thread.setDefaultUncaughtExceptionHandler(null);
         stopServices();
-      }
-    }
+      `}`
+    `}`
 ```
 
 ## 8.3　有组织有纪律：线程工厂
@@ -10103,26 +10098,26 @@ newThread方法可以用来创建线程，该方法的参数r代表所创建的�
 清单8-3　使用ThreadFactory创建线程
 
 ```java
-    public class XThreadFactory implements ThreadFactory {
+    public class XThreadFactory implements ThreadFactory `{`
       final static Logger LOGGER = Logger.getAnonymousLogger();
       private final UncaughtExceptionHandler ueh;
       private final AtomicInteger threadNumber = new AtomicInteger(1);
       // 所创建的线程的线程名前缀
       private final String namePrefix;
     
-      public XThreadFactory(UncaughtExceptionHandler ueh, String name) {
+      public XThreadFactory(UncaughtExceptionHandler ueh, String name) `{`
         this.ueh = ueh;
         this.namePrefix = name;
-      }
+      `}`
       // ...
-      public XThreadFactory() {
+      public XThreadFactory() `{`
         this(new LoggingUncaughtExceptionHandler(), "thread");
-      }
+      `}`
     
-      protected Thread doMakeThread(final Runnable r) {
-        return new Thread(r) {
+      protected Thread doMakeThread(final Runnable r) `{`
+        return new Thread(r) `{`
           @Override
-          public String toString() {
+          public String toString() `{`
             // 返回对问题定位更加有益的信息
             ThreadGroup group = getThreadGroup();
             String groupName = null == group ? "" : group.getName();
@@ -10136,12 +10131,12 @@ newThread方法可以用来创建线程，该方法的参数r代表所创建的�
 
 
             return threadInfo;
-          }
-        };
-      }
+          `}`
+        `}`;
+      `}`
     
       @Override
-      public Thread newThread(Runnable r) {
+      public Thread newThread(Runnable r) `{`
         Thread t = doMakeThread(r);
         t.setUncaughtExceptionHandler(ueh);
 
@@ -10149,43 +10144,43 @@ newThread方法可以用来创建线程，该方法的参数r代表所创建的�
         t.setName(namePrefix + "-" + threadNumber.getAndIncrement());
 
 
-        if (t.isDaemon()) {
+        if (t.isDaemon()) `{`
 
 
           t.setDaemon(false);
 
 
-        }
+        `}`
 
 
-        if (t.getPriority() ! = Thread.NORM_PRIORITY) {
+        if (t.getPriority() ! = Thread.NORM_PRIORITY) `{`
 
 
           t.setPriority(Thread.NORM_PRIORITY);
 
 
-        }
+        `}`
 
 
-        if (LOGGER.isLoggable(Level.FINE)) {
+        if (LOGGER.isLoggable(Level.FINE)) `{`
 
 
           LOGGER.fine("new thread created" + t);
 
 
-        }
+        `}`
         return t;
-      }
+      `}`
     
       static class LoggingUncaughtExceptionHandler implements
-          UncaughtExceptionHandler {
+          UncaughtExceptionHandler `{`
         @Override
-        public void uncaughtException(Thread t, Throwable e) {
+        public void uncaughtException(Thread t, Throwable e) `{`
           // 将线程异常终止的相关信息记录到日志中
           LOGGER.log(Level.SEVERE, t + " terminated:", e);
-        }
-      }// LoggingUncaughtExceptionHandler类定义结束
-    }
+        `}`
+      `}`// LoggingUncaughtExceptionHandler类定义结束
+    `}`
 ```
 
 ## 8.4　线程的暂挂与恢复
@@ -10195,7 +10190,7 @@ Thread.suspend()、Thread.resume()这两个方法都是已废弃的方法。其�
 清单8-4　控制线程的暂挂与恢复的工具类
 
 ```java
-    public class PauseControl extends ReentrantLock {
+    public class PauseControl extends ReentrantLock `{`
       private static final long serialVersionUID = 176912639934052187L;
       // 线程暂挂标志
       private volatile boolean suspended = false;
@@ -10204,24 +10199,24 @@ Thread.suspend()、Thread.resume()这两个方法都是已废弃的方法。其�
       /**
       * 暂停线程
       */
-      public void requestPause() {
+      public void requestPause() `{`
         suspended = true;
 
 
-      }
+      `}`
     
       /**
       * 恢复线程
       */
-      public void proceed() {
+      public void proceed() `{`
         lock();
-        try {
+        try `{`
           suspended = false;
           condSuspended.signalAll();
-        } finally {
+        `}` finally `{`
           unlock();
-        }
-      }
+        `}`
+      `}`
     
       /**
       * 当前线程仅在线程暂挂标记不为true的情况下才执行指定的目标动作
@@ -10230,22 +10225,22 @@ Thread.suspend()、Thread.resume()这两个方法都是已废弃的方法。其�
       * @throws InterruptedException
       */
      public void pauseIfNeccessary(Runnable targetAction) throws InterruptedException
-    {
+    `{`
        lock();
-       try {
-        while (suspended) {
+       try `{`
+        while (suspended) `{`
 
 
           condSuspended.await();
 
 
-        }
+        `}`
         targetAction.run();
-       } finally {
+       `}` finally `{`
         unlock();
-       }
-     }
-    }
+       `}`
+     `}`
+    `}`
 ```
 
 PauseControl本身继承自ReentrantLock，其volatile实例变量suspended充当线程暂挂标记。PauseControl.requestPause()的作用仅仅是将suspended置为true，而PauseControl.pauseIfNeccessary()则通过Condition.await()确保只有在suspended不为true的情况下指定的目标动作才会被执行。PauseControl.proceed()的作用是将suspended置为false并唤醒所有被暂停的线程。PauseControl.requestPause()、PauseControl.proceed()的作用分别相当于Thread.suspend()、Thread.resume()。
@@ -10255,44 +10250,44 @@ PauseControl本身继承自ReentrantLock，其volatile实例变量suspended充�
 清单8-5　暂停与恢复Demo
 
 ```java
-    public class ThreadPauseDemo {
+    public class ThreadPauseDemo `{`
       final static PauseControl pc = new PauseControl();
 
 
 
-      public static void main(String[] args) {
-        final Runnable action = new Runnable() {
+      public static void main(String[] args) `{`
+        final Runnable action = new Runnable() `{`
           @Override
-          public void run() {
+          public void run() `{`
           Debug.info("Master, I'm working...");
           Tools.randomPause(300);
-          }
-        };
-        Thread slave = new Thread() {
+          `}`
+        `}`;
+        Thread slave = new Thread() `{`
           @Override
-          public void run() {
-          try {
-            for (; ; ) {
+          public void run() `{`
+          try `{`
+            for (; ; ) `{`
               pc.pauseIfNeccessary(action);
 
 
-            }
-          } catch (InterruptedException e) {
+            `}`
+          `}` catch (InterruptedException e) `{`
             // 什么也不做
-          }
-        }
-      };
+          `}`
+        `}`
+      `}`;
       slave.setDaemon(true);
       slave.start();
       askOnBehaveOfSlave();
-    }
-```
+    `}`
+
     
-    static void askOnBehaveOfSlave() {
+    static void askOnBehaveOfSlave() `{`
       String answer;
       int minPause = 2000;
-      try (Scanner sc = new Scanner(System.in)) {
-        for (; ; ) {
+      try (Scanner sc = new Scanner(System.in)) `{`
+        for (; ; ) `{`
           Tools.randomPause(8000, minPause);
           pc.requestPause();
 
@@ -10301,27 +10296,25 @@ PauseControl本身继承自ReentrantLock，其volatile实例变量suspended充�
           Debug.info("%n(1) OK, you may take a rest%n"
               + "(2) No, Keep working! %nPress any other key to quit:%n");
           answer = sc.next();
-          if ("1".equals(answer)) {
+          if ("1".equals(answer)) `{`
             pc.requestPause();
 
 
             Debug.info("Thank you, my master! ");
             minPause = 8000;
-          } else if ("2".equals(answer)) {
+          `}` else if ("2".equals(answer)) `{`
             Debug.info("Yes, my master! ");
             pc.proceed();
 
 
             minPause = 2000;
-          } else {
+          `}` else `{`
             break;
-          }
-        }// for结束
-      }// try结束
+          `}`
+        `}`// for结束
+      `}`// try结束
       Debug.info("Game over! ");
-    }
-```
-    }
+    `}`
 ```
 
 ## 8.5　线程的高效利用：线程池
@@ -10343,11 +10336,11 @@ PauseControl本身继承自ReentrantLock，其volatile实例变量suspended充�
 ![](http://www.minio.lookworld.com/001/java-thread/Image00059.jpg)
 
 图8-2　线程池原理示意图
-
+```java
 java.util.concurrent.ThreadPoolExecutor类就是一个线程池，客户端代码可以调用ThreadPoolExecutor.submit方法向其提交任务，ThreadPoolExecutor.submit方法声明如下：
 
-    public Future<? > submit(Runnable task)
-
+    public Future`<`? `>` submit(Runnable task)
+```
 其中，task参数是一个Runnable实例，它代表客户端需要线程池代为执行的任务。为便于讨论，这里我们先忽略该方法的返回值。
 
 线程池内部维护的工作者线程的数量就被称为该线程池的线程池大小 （Pool Size）。ThreadPoolExecutor的线程池大小有3种形态：当前线程池大小（Current Pool Size）表示线程池中实际工作者线程的数量；最大线程池大小（Maximum Pool Size）表示线程池中允许存在的工作者线程的数量上限，其具体取值可参考第4章的式（4-5）；核心线程大小（Core Pool Size）表示一个不大于最大线程池大小的工作者线程数量上限。它们之间的数量关系如下：
@@ -10359,15 +10352,15 @@ java.util.concurrent.ThreadPoolExecutor类就是一个线程池，客户端代�
 这里，除了当前线程池大小是对线程池中现有的工作者线程进行计数的结果，其他有关线程池大小的概念实际上都是由开发人员或者系统配置数据指定的一个阈值（Threshold）。这些阈值的具体含义下文会介绍。
 
 ThreadPoolExecutor的构造器中包含参数数量最多的一个构造器的声明如下：
-
+```java
     public ThreadPoolExecutor(int corePoolSize,
                     int maximumPoolSize,
                     long keepAliveTime,
                     TimeUnit unit,
-                    BlockingQueue<Runnable> workQueue,
+                    BlockingQueue`<`Runnable`>` workQueue,
                     ThreadFactory threadFactory,
                     RejectedExecutionHandler handler)
-
+```
 其中，workQueue是被称为工作队列 的阻塞队列，它相当于生产者—消费者模式中的传输通道，corePoolSize用于指定线程池核心大小，maximumPoolSize用于指定最大线程池大小。keepAliveTime和unit合在一起用于指定线程池中空闲（Idle）线程的最大存活时间。threadFactory指定用于创建工作者线程的线程工厂。handler参数下面会介绍。
 
 在初始状态下，客户端每提交一个任务线程池就创建一个工作者线程来处理该任务。随着客户端不断地提交任务，当前线程池大小也相应增加。在当前线程池大小达到核心线程池大小的时候，新来的任务会被存入工作队列之中。这些缓存的任务由线程池中的所有工作者线程负责取出进行执行。线程池将任务存入工作队列的时候调用的是BlockingQueue的非阻塞方法offer(E e)，因此工作队列满并不会使提交任务的客户端线程暂停。当工作队列满的时候，线程池会继续创建新的工作者线程，直到当前线程池大小达到最大线程池大小。线程池是通过调用threadFactory.newThread方法来创建工作者线程的。如果我们在创建线程池的时候没有指定线程工厂（即调用了ThreadPoolExecutor的其他构造器），那么ThreadPoolExecutor会使用Executors.defaultThreadFactory ()所返回的默认线程工厂。当线程池饱和 （Saturated）时，即工作者队列满并且当前线程池大小达到最大线程池大小的情况下，客户端试图提交的任务会被拒绝 （Reject）。为了提高线程池的可靠性，Java标准库引入了一个RejectedExecutionHandler接口用于封装被拒绝的任务的处理策略，该接口仅定义了如下方法：
@@ -10399,7 +10392,7 @@ ThreadPoolExecutor.shutdown()/shutdownNow()方法可用来关闭线程池。使�
 ```java
     public class TPBigFileDownloader extends BigFileDownloader
     
-     {
+     `{`
       final static int N_CPU = Runtime.getRuntime().availableProcessors();
       final ThreadPoolExecutor executor = new ThreadPoolExecutor(2, N_CPU * 2, 4,
 
@@ -10407,45 +10400,45 @@ ThreadPoolExecutor.shutdown()/shutdownNow()方法可用来关闭线程池。使�
           TimeUnit.SECONDS,
 
 
-          new ArrayBlockingQueue<Runnable>(N_CPU * 8),
+          new ArrayBlockingQueue`<`Runnable`>`(N_CPU * 8),
 
 
           new ThreadPoolExecutor.CallerRunsPolicy());
 
 
 
-      public TPBigFileDownloader(String file) throws Exception {
+      public TPBigFileDownloader(String file) throws Exception `{`
         super(file);
-      }
+      `}`
     
-      public static void main(String[] args) throws Exception {
+      public static void main(String[] args) throws Exception `{`
         final int argc = args.length;
         TPBigFileDownloader downloader = new TPBigFileDownloader(args[0]);
-        long reportInterval = argc >= 2 ? Integer.valueOf(args[1]) : 10;
+        long reportInterval = argc `>`= 2 ? Integer.valueOf(args[1]) : 10;
     
         // 平均每个处理器执行8个下载子任务
         final int taskCount = N_CPU * 8;
         downloader.download(taskCount, reportInterval * 1000);
-      }
+      `}`
     
       @Override
-      protected void dispatchWork(final DownloadTask dt, int workerIndex) {
-        executor.submit(new Runnable() {
+      protected void dispatchWork(final DownloadTask dt, int workerIndex) `{`
+        executor.submit(new Runnable() `{`
 
 
           @Override
 
 
-          public void run() {
+          public void run() `{`
 
 
-            try {
+            try `{`
 
 
               dt.run();
 
 
-            } catch (Exception e) {
+            `}` catch (Exception e) `{`
 
 
               e.printStackTrace();
@@ -10453,23 +10446,23 @@ ThreadPoolExecutor.shutdown()/shutdownNow()方法可用来关闭线程池。使�
               cancelDownload();
 
 
-            }
+            `}`
 
 
-          }
+          `}`
 
 
-        });
+        `}`);
 
 
-      }
+      `}`
     
       @Override
-      protected void doCleanup() {
+      protected void doCleanup() `{`
         executor.shutdownNow();
         super.doCleanup();
-      }
-    }
+      `}`
+    `}`
 ```
 
 这里，我们以实例变量executor的形式创建了一个线程池，用于负责文件下载子任务（DownloadTask实例）的执行。该线程池的核心线程池大小为2。考虑到该线程池的核心任务属于I/O密集型任务（参见第4章），因此我们将最大线程池大小设置为系统处理器数目的两倍。并且，我们使用ThreadPoolExecutor.CallerRunsPolicy作为线程池饱和处理策略，这意味着如果有下载子任务因线程池饱和而被拒绝，那么这些子任务将由dispatchWork方法的执行线程（即main线程）来执行，从而确保了程序的可靠性。dispatchWork方法会为每个DownloadTask实例都创建一个包装任务，并在该包装中实现子任务下载异常处理逻辑，即在任何一个下载子任务处理失败的情况下都取消整个文件的下载。然后，dispatchWork方法将这个包装任务提交给线程池executor执行。在整个文件下载完毕（即下载进度为100%）后doCleanup方法会被执行（由BigFileDownloader.download(int, long)调用）。由于doCleanup方法被执行的时候所有下载子任务都已经执行结束并且不会有新的子任务被提交，因此在doCleanup方法中我们可以调用executor.shutdownNow()来安全、可靠地将线程池关闭。通过对比上述程序与清单4-1中的程序的运行，我们可以发现使用线程池的方案与清单4-1所采用的直接使用工作者线程的方案相比在文件下载速率方面差别不大，但是前者所使用的线程数量要少得多，即提高了线程资源利用率。
@@ -10479,9 +10472,9 @@ ThreadPoolExecutor.shutdown()/shutdownNow()方法可用来关闭线程池。使�
 ### 8.5.1　任务的处理结果、异常处理与取消
 
 在上述例子中，客户端代码（TPBigFileDownloader）仅向线程池提交任务（文件下载子任务）而不关心这些任务的处理结果数据。如果客户端关心任务的处理结果，那么它可以使用ThreadPoolExecutor的另外一个submit方法来提交任务，该submit方法的声明如下：
-
-    public <T> Future<T> submit(Callable<T> task)
-
+```java
+    public `<`T`>` Future`<`T`>` submit(Callable`<`T`>` task)
+```
 task参数代表客户端需要提交的任务，其类型为java.util.concurrent.Callable。Callable接口定义的唯一方法声明如下：
 
     V call() throws Exception
@@ -10505,65 +10498,65 @@ Future.get()被调用时，如果相应的任务尚未执行完毕，那么Futur
 清单8-7　获取线程池执行的任务处理结果Demo
 
 ```java
-    public class TaskResultRetrievalDemo {
+    public class TaskResultRetrievalDemo `{`
       final static int N_CPU = Runtime.getRuntime().availableProcessors();
       final ThreadPoolExecutor executor = new ThreadPoolExecutor(0, N_CPU * 2, 4,
           TimeUnit.SECONDS,
-          new ArrayBlockingQueue<Runnable>(100),
+          new ArrayBlockingQueue`<`Runnable`>`(100),
           new ThreadPoolExecutor.CallerRunsPolicy());
     
-      public static void main(String[] args) {
+      public static void main(String[] args) `{`
         TaskResultRetrievalDemo demo = new TaskResultRetrievalDemo();
-        Future<String> future = demo.recognizeImage("/tmp/images/0001.png");
+        Future`<`String`>` future = demo.recognizeImage("/tmp/images/0001.png");
         // 执行其他操作
         doSomething();
-        try {
+        try `{`
           // 仅在需要相应任务的处理结果时才调用Future.get()
           Debug.info(future.get());
 
 
-        } catch (InterruptedException e) {
+        `}` catch (InterruptedException e) `{`
           // 什么也不做
-        } catch (ExecutionException e) {
+        `}` catch (ExecutionException e) `{`
           e.printStackTrace();
-        }
-      }
+        `}`
+      `}`
     
-      private static void doSomething() {
+      private static void doSomething() `{`
         Tools.randomPause(200);
-      }
+      `}`
     
-      public Future<String> recognizeImage(final String imageFile) {
-        return executor.submit(new Callable<String>() {
+      public Future`<`String`>` recognizeImage(final String imageFile) `{`
+        return executor.submit(new Callable`<`String`>`() `{`
 
 
           @Override
 
 
-          public String call() throws Exception {
+          public String call() throws Exception `{`
 
 
             return doRecognizeImage(new File(imageFile));
 
 
-          }
+          `}`
 
 
-        });
+        `}`);
 
 
-      }
+      `}`
     
-      protected String doRecognizeImage(File imageFile) {
+      protected String doRecognizeImage(File imageFile) `{`
         String result = null;
         // 模拟实际运行结果
-        String[] simulatedResults = { "苏Z MM518", "苏Z XYZ618", "苏Z 007618" };
+        String[] simulatedResults = `{` "苏Z MM518", "苏Z XYZ618", "苏Z 007618" `}`;
         result = simulatedResults[(int) (Math.random() * simulatedResults.length)];
         Tools.randomPause(100);
         // 省略其他代码
         return result;
-      }
-    }
+      `}`
+    `}`
 ```
 
 Future接口还支持任务的取消。为此，Future接口定义了如下方法：
@@ -10645,7 +10638,7 @@ Thread.UncaughtExceptionHandler接口使得我们能够侦测到线程运行过�
 
 [\[3\]](#text00013.html#fn3) 所谓工厂方法就是用于创建对象的方法。
 
-# 第9章 Java异步编程
+## 第9章 Java异步编程
 
 本章介绍了异步计算的概念以及Java标准库所提供的异步计算相关API。
 
@@ -10690,12 +10683,12 @@ Runnable接口和Callable接口都是对任务处理逻辑的抽象，这种抽�
 清单9-1　使用Executor接口实现任务的同步执行
 
 ```java
-    public class SynchronousExecutor implements Executor {
+    public class SynchronousExecutor implements Executor `{`
         @Override
-        public void execute(Runnable command) {
+        public void execute(Runnable command) `{`
               command.run();
-        }
-    }
+        `}`
+    `}`
 ```
 
 可见，Executor接口一定程度上缩小了同步编程与异步编程的代码编写方式。
@@ -10713,19 +10706,19 @@ ExecutorService接口继承自Executor接口，它解决了上述问题。Execut
 ![](http://www.minio.lookworld.com/001/java-thread/Image00062.jpg)
 
 ●　Executors.newCachedThreadPool ()。该方法的返回值相当于：
-
+```java
     new ThreadPoolExecutor(0, Integer.MAX_VALUE,60L, TimeUnit.SECONDS,
-                                            new SynchronousQueue<Runnable>());
-
+                                            new SynchronousQueue`<`Runnable`>`());
+```
 即一个核心线程池大小为0，最大线程池大小不受限，工作者线程允许的最大空闲时间（keepAliveTime）为60秒，内部以SynchronousQueue为工作队列（以下称之为workerQueue）的一个线程池。这种配置意味着该线程池中的所有工作者线程在空闲了指定的时间后都可以被自动清理掉。由于该线程池的核心线程池大小为0，因此提交给该线程池执行的第一个任务会导致该线程池中的第一个工作者线程被创建并启动。后续继续给该线程池提交任务的时候，由于当前线程池大小已经超过核心线程池大小（0），因此ThreadPoolExecutor此时会将任务缓存到工作队列之中（即调用workerQueue.offer方法）。
 
 SynchronousQueue内部并不维护用于存储队列元素的实际存储空间。一个线程（生产者线程）在执行SynchronousQueue.offer(E)的时候，如果没有其他线程（消费者线程）因执行SynchronousQueue.take()而被暂停，那么SynchronousQueue.offer(E)调用会直接返回false，即入队列失败。因此，在该线程池中的所有工作者线程都在执行任务，即无空闲工作者线程的情况下给其提交任务会导致该任务无法被缓存成功。而ThreadPoolExecutor在任务缓存失败且线程池当前大小未达到最大线程池大小（这里的最大线程池大小实际上相当于不限）的情况下会创建并启动新的工作者线程。在极端的情况下，给该线程池每提交一个任务都会导致一个新的工作者线程被创建并启动，而这最终会导致系统中的线程过多，从而导致过多的上下文切换而使得整个系统被拖慢。因此，Executors.newCachedThreadPool ()所返回的线程池适合于用来执行大量耗时较短且提交频率较高的任务。而提交频率较高且耗时较长的任务（尤其是包含阻塞操作的任务）则不适合用Executors.newCachedThreadPool ()所返回的线程池来执行。
 
 ●　Executors.newFixedThreadPool (int nThreads)。该方法的返回值相当于：
-
+```java
     new ThreadPoolExecutor(nThreads, nThreads,0L, TimeUnit.MILLISECONDS,
-                            new LinkedBlockingQueue<Runnable>());
-
+                            new LinkedBlockingQueue`<`Runnable`>`());
+```
 即一个以无界队列为工作队列，核心线程池大小与最大线程池大小均为nThreads且线程池中的空闲工作者线程不会被自动清理的线程池，这是一种线程池大小一旦达到其核心线程池大小就既不会增加也不会减少工作者线程的固定大小的线程池。因此，这样的线程池实例一旦不再需要，我们必须主动将其关闭。
 
 ●　Executors.newSingleThreadExecutor ()。该方法的返回值基本相当于Executors.newFixedThreadPool (1)所返回的线程池。不过，该线程池并非ThreadPoolExecutor实例，而是一个封装了ThreadPoolExecutor实例且对外仅暴露ExecutorService接口所定义的方法的一个ExecutorService实例。该线程池便于我们实现单（多）生产者—单消费者模式。该线程池确保了在任意一个时刻只有一个任务会被执行，这就形成了类似锁将原本并发的操作改为串行的操作的效果。因此，该线程池适合于用来执行访问了非线程安全对象而我们又不希望因此而引入锁的任务。该线程池也适合于用来执行I/O操作，因为I/O操作往往受限于相应的I/O设备，使用多个线程执行同一种I/O操作（比如多个线程各自读取一个文件）可能并不会提高I/O效率，所以如果使用一个线程执行I/O足以满足要求，那么仅使用一个线程即可，这样可以保障程序的简单性以避免一些不必要的问题（比如死锁）。
@@ -10735,47 +10728,47 @@ SynchronousQueue内部并不维护用于存储队列元素的实际存储空间�
 尽管Future接口使得我们能够方便地获取异步任务的处理结果，但是如果需要一次性提交一批异步任务并获取这些任务的处理结果的话，那么仅使用Future接口写出来的代码将颇为烦琐。java.util.concurrent.CompletionService接口为异步任务的批量提交以及获取这些任务的处理结果提供了便利。
 
 CompletionService接口定义的一个submit方法可用于提交异步任务，该方法的签名与ThreadPoolExecutor的一个submit方法相同：
-
-    Future<V> submit(Callable<V> task)
-
+```java
+    Future`<`V`>` submit(Callable`<`V`>` task)
+```
 task参数代表待执行的异步任务，该方法的返回值可用于获取相应异步任务的处理结果。如果是批量提交异步任务，那么通常我们并不关心该方法的返回值。若要获取批量提交的异步任务的处理结果，那么我们可以使用CompletionService接口专门为此定义的方法，其中的一个方法是：
-
-    Future<V> take() throws InterruptedException
-
+```java
+    Future`<`V`>` take() throws InterruptedException
+```
 该方法与BlockingQueue.take()相似，它是一个阻塞方法，其返回值是一个已经执行结束的异步任务对应的Future实例，该实例就是提交相应任务时submit(Callable\<V\>)调用的返回值。如果take()被调用时没有已执行结束的异步任务，那么take()的执行线程就会被暂停，直到有异步任务执行结束。因此，我们批量提交了多少个异步任务，则多少次连续调用CompletionService.take()便可以获取这些任务的处理结果。
 
 CompletionService也定义了两个非阻塞方法用于获取异步任务的处理结果：
-
-    Future<V> poll()
-    Future<V> poll(long timeout, TimeUnit unit) throws InterruptedException
-
+```java
+    Future`<`V`>` poll()
+    Future`<`V`>` poll(long timeout, TimeUnit unit) throws InterruptedException
+```
 这两个方法与BlockingQueue的poll方法相似，它们的返回值是已执行结束的异步任务对应的Future实例。
 
 Java标准库提供的CompletionService接口的实现类是ExecutorCompletionService。ExecutorCompletionService的一个构造器是：
-
+```java
     ExecutorCompletionService(Executor executor,
-                            BlockingQueue<Future<V>> completionQueue)
-
+                            BlockingQueue`<`Future`<`V`>``>` completionQueue)
+```
 由此可见，ExecutorCompletionService相当于Executor实例与BlockingQueue实例的一个融合体。其中，Executor实例负责接收并执行异步任务，而BlockingQueue实例则用于存储已执行完毕的异步任务对应的Future实例。ExecutorCompletionService会为其客户端提交的每个异步任务（Callable实例或者Runnable实例）都创建一个相应的Future实例，通过该实例其客户端代码便可以获取相应异步任务的处理结果。ExecutorCompletionService每执行完一个异步任务，就将该任务对应的Future实例存入其内部维护的BlockingQueue实例之中，而其客户端代码则可以通过ExecutorCompletionService.take()调用来获取这个Future实例。
-
+```java
 使用ExecutorCompletionService的另外一个构造器ExecutorCompletionService(Executor executor)创建实例相当于：
 
-    new ExecutorCompletionService<V>(executor,
-                                new LinkedBlockingQueue<Future<V>> ());
-
+    new ExecutorCompletionService`<`V`>`(executor,
+                                new LinkedBlockingQueue`<`Future`<`V`>``>` ());
+```
 下面看一个实战案例，该案例中我们使用ExecutorCompletionService以异步方式实现文件的批量FTP上传，如清单9-2所示。FileBatchUploader.uploadFiles方法能够将指定的一批文件以异步方式上传到指定的FTP服务器 [\[3\]](#text00014.html#ft3) ：该方法将这批文件的上传视作一个任务（以下称之为原始任务）并创建一个相应的Runnable实例将其提交给dispatcher（Executor实例）执行。原始任务的执行是通过调用doUploadFiles方法实现的。在doUploadFiles方法中，我们为原始任务中的每个文件都创建一个相应的文件上传任务（UploadTask实例），并将这些任务批量提交给completionService（CompletionService实例）执行。然后，对于原始任务中的每个文件，一旦一个文件上传结束，即completionService.take()调用返回，那么我们就将该文件移动到备份目录并为该文件生成相应的MD5摘要文件 [\[4\]](#text00014.html#ft4) 。接着，我们为每个MD5摘要文件创建一个相应的文件上传任务，并将其提交给completionService执行。这里，对于原始任务中的每个文件，文件的实际上传是在一个线程（即Executor实例es中维护的一个单工作者线程）中执行的，而在该文件上传完毕后将其移动到备份目录以及生成相应的MD5文件这些操作则是在另外一个线程（即Executor实例dispatcher中维护的一个单工作者线程）中执行的，即文件的上传与对上传完毕文件的后续处理是并发的。这种并发得以实现正是得益于CompletionService所支持的批量异步任务提交以及获取执行任务对应的Future实例。
 
 清单9-2　使用ExecutorCompletionService实现文件异步批量上传
 
 ```java
-    public class FileBatchUploader implements Closeable {
+    public class FileBatchUploader implements Closeable `{`
       // 完整代码见本书配套下载资源
-      private final CompletionService<File> completionService;
+      private final CompletionService`<`File`>` completionService;
       private final ExecutorService es;
       private final ExecutorService dispatcher;
     
       public FileBatchUploader(String ftpServer, String userName, String password,
-          String targetRemoteDir) {
+          String targetRemoteDir) `{`
         // 完整代码见本书配套下载资源
         // 使用单工作者线程的线程池
         this.es = Executors.newSingleThreadExecutor();
@@ -10784,55 +10777,55 @@ Java标准库提供的CompletionService接口的实现类是ExecutorCompletionSe
         this.dispatcher = Executors.newSingleThreadExecutor();
 
 
-        this.completionService = new ExecutorCompletionService<File>(es);
+        this.completionService = new ExecutorCompletionService`<`File`>`(es);
 
 
-      }
+      `}`
     
-      public void uploadFiles(final Set<File> files) {
-        dispatcher.submit(new Runnable() {
+      public void uploadFiles(final Set`<`File`>` files) `{`
+        dispatcher.submit(new Runnable() `{`
 
 
           @Override
 
 
-          public void run() {
+          public void run() `{`
 
 
-            try {
+            try `{`
 
 
             doUploadFiles(files);
 
 
-            } catch (InterruptedException ignored) {
+            `}` catch (InterruptedException ignored) `{`
 
 
-            }
+            `}`
 
 
-          }
+          `}`
 
 
-        });
+        `}`);
 
 
-      }
+      `}`
     
-      private void doUploadFiles(Set<File> files) throws InterruptedException {
+      private void doUploadFiles(Set`<`File`>` files) throws InterruptedException `{`
         // 批量提交文件上传任务
-        for (final File file : files) {
+        for (final File file : files) `{`
           completionService.submit(new UploadTask(file));
 
 
-        }
+        `}`
     
-        Future<File> future;
+        Future`<`File`>` future;
         File md5File;
         File uploadedFile;
-        Set<File> md5Files = new HashSet<File>();
-      for (File file : files) {
-        try {
+        Set`<`File`>` md5Files = new HashSet`<`File`>`();
+      for (File file : files) `{`
+        try `{`
           future = completionService.take();
 
 
@@ -10844,98 +10837,98 @@ Java标准库提供的CompletionService接口的实现类是ExecutorCompletionSe
 
 
           md5Files.add(md5File);
-        } catch (ExecutionException | IOException | NoSuchAlgorithmException e) {
+        `}` catch (ExecutionException | IOException | NoSuchAlgorithmException e) `{`
           e.printStackTrace();
           moveToDeadDir(file);
-        }
-      }
-      for (File file : md5Files) {
+        `}`
+      `}`
+      for (File file : md5Files) `{`
         // 上传相应的MD5文件
         completionService.submit(new UploadTask(file));
 
 
-      }
+      `}`
       // 检查MD5文件的上传结果
       int successUploaded = md5Files.size();
-      for (int i = 0; i < successUploaded; i++) {
+      for (int i = 0; i `<` successUploaded; i++) `{`
         future = completionService.take();
-        try {
+        try `{`
           uploadedFile = future.get();
           md5Files.remove(uploadedFile);
-        } catch (ExecutionException e) {
+        `}` catch (ExecutionException e) `{`
           e.printStackTrace();
-        }
-      }
+        `}`
+      `}`
       // 将剩余（即未上传成功）的MD5文件移动到相应的备份目录
-      for (File file : md5Files) {
+      for (File file : md5Files) `{`
         moveToDeadDir(file);
-      }
-      }
+      `}`
+      `}`
     
-      private File generateMD5(File file) throws IOException, NoSuchAlgorithmException {
+      private File generateMD5(File file) throws IOException, NoSuchAlgorithmException `{`
       String md5 = Tools.md5sum(file);
       File md5File = new File(file.getAbsolutePath() + ".md5");
       Files.write(Paths.get(md5File.getAbsolutePath()), md5.getBytes("UTF-8"));
       return md5File;
-      }
+      `}`
     
-      private static File moveToSuccessDir(File file) {
+      private static File moveToSuccessDir(File file) `{`
       File targetFile = null;
-      try {
+      try `{`
         targetFile = moveFile(file, Paths.get(file.getParent(), "..", "backup",
             "success"));
-      } catch (IOException e) {
+      `}` catch (IOException e) `{`
         e.printStackTrace();
-      }
+      `}`
         return targetFile;
-      }
+      `}`
     
-      private static File moveToDeadDir(File file) {
+      private static File moveToDeadDir(File file) `{`
         File targetFile = null;
-        try {
+        try `{`
           targetFile = moveFile(file, Paths.get(file.getParent(), "..", "backup",
               "dead"));
-        } catch (IOException e) {
+        `}` catch (IOException e) `{`
           e.printStackTrace();
-        }
+        `}`
         return targetFile;
-      }
+      `}`
     
-      private static File moveFile(File srcFile, Path destPath) throws IOException {
+      private static File moveFile(File srcFile, Path destPath) throws IOException `{`
         // 完整代码见本书配套下载资源
-      }
+      `}`
     
-      class UploadTask implements Callable<File> {
+      class UploadTask implements Callable`<`File`>` `{`
         private final File file;
     
-        public UploadTask(File file) {
+        public UploadTask(File file) `{`
           this.file = file;
-        }
+        `}`
     
         @Override
-        public File call() throws Exception {
+        public File call() throws Exception `{`
           Debug.info("uploading %s", file.getCanonicalPath());
           // 上传指定的文件
           upload(file);
           return file;
-        }
-      }
+        `}`
+      `}`
     
       // 初始化FTP客户端
-      public void init() throws Exception {
+      public void init() throws Exception `{`
          // 完整代码见本书配套下载资源
-      }
+      `}`
     
       // 将指定的文件上传至FTP服务器
-      protected void upload(File file) throws Exception {
+      protected void upload(File file) throws Exception `{`
         // 完整代码见本书配套下载资源
-      }
+      `}`
     
       @Override
-      public void close() throws IOException {
+      public void close() throws IOException `{`
          // 完整代码见本书配套下载资源
-      }
-    }
+      `}`
+    `}`
 ```
 
 ExecutorService.invokeAll(Collection\<? extends Callable\<T\>\> tasks)也能够用来批量提交异步任务，该方法能够并发执行tasks参数所指定的一批任务，但是该方法只有在tasks参数所指定的一批任务中的所有任务都执行结束之后才返回，其返回值是一个包含各个任务对应的Future实例的列表（List）。因此，使用invokeAll方法提交批量任务的时候，任务提交方等待invokeAll方法返回的时间取决于这批任务中最耗时的任务的执行耗时。
@@ -10945,9 +10938,9 @@ ExecutorService.invokeAll(Collection\<? extends Callable\<T\>\> tasks)也能够�
 无论是Runnable实例还是Callable实例所表示的任务，只要我们将其提交给线程池执行，那么这些任务就是异步任务。采用Runnable实例来表示异步任务，其优点是任务既可以交给一个专门的工作者线程执行（以相应的Runnable实例为参数创建并启动一个工作者线程），也可以交给一个线程池或者Executor的其他实现类来执行；其缺点是我们无法直接获取任务的执行结果。使用Callable实例来表示异步任务，其优点是我们可以通过ThreadPoolExecutor.submit(Callable\<T\>)的返回值获取任务的处理结果；其缺点是Callable实例表示的异步任务只能交给线程池执行，而无法直接交给一个专门的工作者线程或者Executor实现类执行。因此，使用Callable实例来表示异步任务会使任务执行方式的灵活性大为受限。
 
 java.util.concurrent.FutureTask类则融合了Runnable接口和Callable接口的优点：FutureTask是Runnable接口的一个实现类，因此FutureTask表示的异步任务可以交给专门的工作者线程执行，也可以交给Executor实例（比如线程池）执行；FutureTask还能够直接返回其代表的异步任务的处理结果。ThreadPoolExecutor.submit(Callable\<T\> task)的返回值就是一个FutureTask实例。FutureTask是java.util.concurrent.RunnableFuture接口的一个实现类。由于RunnableFuture接口继承了Future接口和Runnable接口，因此FutureTask既是Runnable接口的实现类也是Future接口的实现。FutureTask的一个构造器可以将Callable实例转换为Runnable实例，该构造器的声明如下：
-
-    public FutureTask(Callable<V> callable)
-
+```java
+    public FutureTask(Callable`<`V`>` callable)
+```
 该构造器使得我们能够方便地创建一个能够返回处理结果的异步任务。我们可以将任务的处理逻辑封装在一个Callable实例中，并以该实例为参数创建一个FutureTask实例。由于FutureTask类实现了Runnable接口，因此上述构造器的作用就相当于将Callable实例转换为Runnable实例，而FutureTask实例本身也代表了我们要执行的任务。我们可以用FutureTask实例（Runnable实例）为参数来创建并启动一个工作者线程以执行相应的任务，也可以将FutureTask实例交给Executor执行（通过Executor.execute(Runnable task)调用）。FutureTask类还实现了Future接口，这使得我们在调用Executor.execute(Runnable task)这样只认Runnable接口的方法来执行任务的情况下依然能够获取任务的执行结果：一个工作者线程（可以是线程池中的一个工作者线程）负责调用FutureTask.run()执行相应的任务，另外一个线程则调用FutureTask.get()来获取任务的执行结果。因此，FutureTask实例可被看作一个异步任务，它使得任务的执行和对任务执行结果的处理得以并发执行，从而有利于提高系统的并发性。
 
 ThreadPoolExecutor.submit(Callable\<T\> task)方法继承自AbstractExecutorService.submit(Callable\<T\> task)。AbstractExecutorService.submit(Callable\<T\> task)内部实现就是借助FutureTask的，如图9-2所示。submit方法会根据指定的Callable实例task创建一个FutureTask实例ftask，并通过Executor.execute(Runnable)调用异步执行ftask所代表的任务，然后返回ftask，以便该方法的调用方能够获取任务的执行结果。
@@ -10970,166 +10963,168 @@ Java标准库所提供的XML文档解析器javax.xml.parsers.DocumentBuilder仅�
      * @author Viscent Huang
      */
 ```java
-    public class XMLDocumentParser {
+    public class XMLDocumentParser `{`
     
-      public static ParsingTask newTask(InputStream in) {
+      public static ParsingTask newTask(InputStream in) `{`
         return new ParsingTask(in);
-      }
+      `}`
     
-      public static ParsingTask newTask(URL url) throws IOException {
+      public static ParsingTask newTask(URL url) throws IOException `{`
         return newTask(url, 30000, 30000);
-      }
+      `}`
     
       // 完整代码见本书配套下载资源
     
       // 封装对XML解析结果进行处理的回调方法
-      public abstract static class ResultHandler {
+      public abstract static class ResultHandler `{`
         abstract void onSuccess(Document document);
     
-        void onError(Throwable e) {
+        void onError(Throwable e) `{`
           e.printStackTrace();
-        }
-      }
+        `}`
+      `}`
     
-      public static class ParsingTask {
+      public static class ParsingTask `{`
         private final InputStream in;
         private volatile Executor executor;
         private volatile ResultHandler resultHandler;
     
         public ParsingTask(InputStream in, Executor executor, ResultHandler
-            resultHandler) {
+            resultHandler) `{`
           this.in = in;
           this.executor = executor;
           this.resultHandler = resultHandler;
-        }
+        `}`
     
-        public ParsingTask(InputStream in) {
+        public ParsingTask(InputStream in) `{`
           this(in, null, null);
-        }
-    public Future<Document> execute() throws Exception {
-      FutureTask<Document> ft;
-      final Callable<Document> task = new Callable<Document>() {
+        `}`
+    public Future`<`Document`>` execute() throws Exception `{`
+      FutureTask`<`Document`>` ft;
+      final Callable`<`Document`>` task = new Callable`<`Document`>`() `{`
         @Override
-        public Document call() throws Exception {
+        public Document call() throws Exception `{`
           return doParse(in);
-        }
-      };
+        `}`
+      `}`;
 
 
       final Executor theExecutor = executor;
       // 解析模式：异步/同步
       final boolean isAsyncParsing = (null ! = theExecutor);
       final ResultHandler rh;
-      if (isAsyncParsing && null ! = (rh = resultHandler)) {
-        ft = new FutureTask<Document>(task) {
+      if (isAsyncParsing && null ! = (rh = resultHandler)) `{`
+        ft = new FutureTask`<`Document`>`(task) `{`
 
 
           @Override
 
 
-          protected void done() {
+          protected void done() `{`
 
 
             // 回调ResultHandler的相关方法对XML解析结果进行处理
             callbackResultHandler(this, rh);
 
 
-          }
+          `}`
 
 
-        };
+        `}`;
     
      // FutureTask匿名类结束
-      } else {
-        ft = new FutureTask<Document>(task);
+      `}` else `{`
+        ft = new FutureTask`<`Document`>`(task);
 
 
-      }
-      if (isAsyncParsing) {
+      `}`
+      if (isAsyncParsing) `{`
         theExecutor.execute(ft);
     
      // 交给Executor执行，以支持异步执行
-      } else {
+      `}` else `{`
         ft.run();
     
      // 直接（同步）执行
-      }
+      `}`
       return ft;
-    }
+    `}`
 ```
-    
-    void callbackResultHandler(FutureTask<Document> ft, ResultHandler rh) {
+```java
+    void callbackResultHandler(FutureTask`<`Document`>` ft, ResultHandler rh) `{`
       // 获取任务处理结果前判断任务是否被取消
-      if (ft.isCancelled()) {
+      if (ft.isCancelled()) `{`
         Debug.info("parsing cancelled.%s", ParsingTask.this);
         return;
-      }
-      try {
+      `}`
+      try `{`
         Document doc = ft.get();
         rh.onSuccess(doc);
 
 
-      } catch (InterruptedException ignored) {
+      `}` catch (InterruptedException ignored) `{`
         Debug.info("retrieving result cancelled.%s", ParsingTask.this);
-      } catch (ExecutionException e) {
+      `}` catch (ExecutionException e) `{`
         rh.onError(e.getCause());
 
 
-      }
-    }
+      `}`
+    `}`
 ```
-        static Document doParse(InputStream in) throws Exception {
+```java
+        static Document doParse(InputStream in) throws Exception `{`
           Document document = null;
-          try {
+          try `{`
             DocumentBuilder db = DocumentBuilderFactory.newInstance()
               .newDocumentBuilder();
             document = db.parse(in);
-          } finally {
+          `}` finally `{`
             Tools.silentClose(in);
-          }
+          `}`
           return document;
-        }
+        `}`
     
-        public ParsingTask setExecutor(Executor executor) {
+        public ParsingTask setExecutor(Executor executor) `{`
           this.executor = executor;
           return this;
-        }
+        `}`
     
-        public ParsingTask setResultHandler(ResultHandler resultHandler) {
+        public ParsingTask setResultHandler(ResultHandler resultHandler) `{`
           this.resultHandler = resultHandler;
           return this;
-        }
-      }// ParsingTask定义结束
-    }
+        `}`
+      `}`// ParsingTask定义结束
+    `}`
 ```
 
 XMLDocumentParser不仅支持异步方式解析，还支持同步方式解析。利用XMLDocumentParser，每次解析意味着创建一个ParsingTask实例并执行该实例的execute()方法。在ParsingTask.execute()中，我们先创建一个Callable\<Document\>实例task来表示针对指定输入流 （InputStream）进行的XML解析任务。接着，我们设定XML文档的解析模式：如果客户端代码为当前ParsingTask实例关联了一个Executor实例（即ParsingTask.setExecutor方法被执行过），那么我们就将解析模式设置为异步解析，否则就将解析模式设置为同步解析。然后，我们以task为参数创建相应的FutureTask实例ft：在异步解析模式下，我们创建一个FutureTask的匿名子类，并在该子类的done()中实现XML解析结果的回调（Callback）处理——若解析成功则以解析结果（org.w3c.dom.Document）为参数调用ResultHandler.onSuccess方法，若解析失败则调用ResultHandler.onError方法；在同步解析模式下，我们直接通过new创建一个FutureTask实例。接下来便是安排ft的执行：在异步解析模式下，我们会将ft交给指定的Executor实例来执行；在同步解析模式下，我们直接调用ft.run()来执行XML解析任务。此后，ParsingTask.execute()直接返回ft。
 
 使用XMLDocumentParser以异步方式进行XML解析，我们只需要：
-
+```java
     private Executor executor=...
     // ...
     URL url = "http://yourhost/data/feed.xml";
     XMLDocumentParser.newTask(url).setExecutor(executor).setResultHandler(
-        new ResultHandler() {
+        new ResultHandler() `{`
           @Override
-          public void onSuccess(Document document) {
+          public void onSuccess(Document document) `{`
           process(document);
-          }
-    }
+          `}`
+    `}`
 ```).execute();
 
 这里我们指定了一个ResultHandler以回调的方式来处理XML解析结果。同样是异步解析，我们也可以不指定ResultHandler，而是在程序需要XML解析结果的时候自己通过Future.get()调用来获取：
 
-    Future<Document> future = XMLDocumentParser.newTask(url).setExecutor(es).execute();
+    Future`<`Document`>` future = XMLDocumentParser.newTask(url).setExecutor(es).execute();
     doSomething(); // 执行其他操作
     process(future.get());
 
 如果要采用同步方式解析XML解析，我们只需要：
 
-    Future<Document> future;
+    Future`<`Document`>` future;
     future = XMLDocumentParser.newTask(url).execute();
     process(future.get()); // 直接获取解析结果进行处理
+```
 
 由此可见，在不使用ResultHandler的情况下，异步解析方式和同步解析方式的客户端代码编写方式几乎是一样的：异步解析方式比同步方式多了一个ParsingTask.setExecutor方法调用；在异步解析方式下，客户端代码在ParsingTask.execute()调用与Future.get()调用之间往往会执行其他操作，以减少因XML异步解析未完成而导致Future.get()调用造成等待的可能性。
 
@@ -11146,86 +11141,86 @@ AsyncTask抽象类同时实现了Runnable接口和Callable接口。AsyncTask子�
 FutureTask所代表的任务无法被多次执行，除非相应的任务是通过调用FutureTask.runAndReset()方法执行的。
 
 清单9-4　支持重复执行的异步任务抽象类
-
+```java
     /**
      * 能够被重复执行的抽象异步任务
      *
      * @author Viscent Huang
      */
-    public abstract class AsyncTask<V> implements Runnable,
-        Callable<V> {
+    public abstract class AsyncTask`<`V`>` implements Runnable,
+        Callable`<`V`>` `{`
       protected final Executor executor;
     
-      public AsyncTask(Executor executor) {
+      public AsyncTask(Executor executor) `{`
         this.executor = executor;
-      }
+      `}`
     
-      public AsyncTask() {
-        this(new Executor() {
+      public AsyncTask() `{`
+        this(new Executor() `{`
           @Override
-          public void execute(Runnable command) {
+          public void execute(Runnable command) `{`
           command.run();
-        }
-      });
-    }
+        `}`
+      `}`);
+    `}`
 ```
-    
+```java
     @Override
-    public void run() {
+    public void run() `{`
       Exception exp = null;
       V r = null;
-      try {
+      try `{`
         r = call();
 
 
-      } catch (Exception e) {
+      `}` catch (Exception e) `{`
         exp = e;
-      }
+      `}`
     
       final V result = r;
-      if (null == exp) {
-        executor.execute(new Runnable() {
+      if (null == exp) `{`
+        executor.execute(new Runnable() `{`
 
 
           @Override
 
 
-          public void run() {
+          public void run() `{`
 
 
             onResult(result);
 
 
-          }
+          `}`
 
 
-        });
+        `}`);
 
 
-      } else {
+      `}` else `{`
         final Exception exceptionCaught = exp;
-        executor.execute(new Runnable() {
+        executor.execute(new Runnable() `{`
 
 
           @Override
 
 
-          public void run() {
+          public void run() `{`
 
 
             onError(exceptionCaught);
 
 
-          }
+          `}`
 
 
-        });
+        `}`);
 
 
-      }
-    }
-```// run结束
-    
+      `}`
+    `}`
+// run结束
+
     /**
     * 留给子类实现任务执行结果的处理逻辑
     *
@@ -11240,10 +11235,10 @@ FutureTask所代表的任务无法被多次执行，除非相应的任务是通�
     * @param e
     *         任务执行过程中抛出的异常
     */
-      protected void onError(Exception e) {
+      protected void onError(Exception e) `{`
         e.printStackTrace();
-      }
-    }
+      `}`
+    `}`
 ```
 
 清单9-6展示了AsyncTask的使用场景。
@@ -11253,25 +11248,25 @@ FutureTask所代表的任务无法被多次执行，除非相应的任务是通�
 在有些情况下，我们可能需要事先提交一个任务，这个任务并不是立即被执行的，而是要在指定的时间或者周期性地被执行，这种任务就被称为计划任务 （Scheduled Task）。典型的计划任务包括清理系统垃圾数据、系统监控、数据备份等。
 
 ExecutorService接口的子类ScheduledExecutorService接口定义了一组方法用于执行计划任务。ScheduledExecutorService接口的默认实现类是java.util.concurrent.ScheduledThreadPoolExecutor类，它是ThreadPoolExecutor的一个子类。Executors除了提供创建ExecutorService实例的便捷工厂方法之外，它还提供了两个静态工厂方法用于创建ScheduledExecutorService实例：
-
+```java
     public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)
     public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize,
     ThreadFactory threadFactory)
-
+```
 ScheduledExecutorService接口定义的方法按其功能可分为以下两种。
 
 ●　延迟执行提交的任务。这包括以下两个方法：
-
-    <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit)
-    ScheduledFuture<? > schedule(Runnable command, long delay, TimeUnit unit)
-
+```java
+    `<`V`>` ScheduledFuture`<`V`>` schedule(Callable`<`V`>` callable, long delay, TimeUnit unit)
+    ScheduledFuture`<`? `>` schedule(Runnable command, long delay, TimeUnit unit)
+```
 上述两个方法使得我们可以采用Callable实例或者Runnable实例来表示任务。delay参数和unit参数一起用来表示被提交的任务自其提交的那一刻到其开始执行之间的时间差，即延时。上述方法的返回值类型ScheduledFuture继承自Future接口，因此我们也可以利用上述方法的返回值来获取所提交的计划任务的处理结果。
 
 ●　周期性地执行提交的任务。这包括以下两个方法：
-
-    ScheduledFuture<? > scheduleAtFixedRate(Runnable command, long initialDelay,
+```java
+    ScheduledFuture`<`? `>` scheduleAtFixedRate(Runnable command, long initialDelay,
                                       long period, TimeUnit unit)
-
+```
 约定
 
 同一个任务任意两次执行的开始时间之间的时间差被称为该任务的执行周期， 记为Interval。
@@ -11285,10 +11280,10 @@ ScheduledExecutorService接口定义的方法按其功能可分为以下两种�
 图9-3　scheduleAtFixedRate方法执行任务的周期示意图
 
 scheduleWithFixedDelay方法则能够以一定的时间间隔不断地执行command所指定的任务。
-
-    ScheduledFuture<? > scheduleWithFixedDelay(Runnable command, long initialDelay,
+```java
+    ScheduledFuture`<`? `>` scheduleWithFixedDelay(Runnable command, long initialDelay,
                                         long delay, TimeUnit unit)
-
+```
 其中，initialDelay参数和unit参数一起指定了一个时间偏移，任务首次执行的开始时间就是任务提交时间加上这个偏移。提交给scheduleWithFixedDelay方法执行的计划任务的执行周期Interval=Execution Time+delay，其中delay是一个固定值，因此任务的执行周期实际上也不是固定的而是随Execution Time的变化而变化，如图9-4所示。
 
 ![](http://www.minio.lookworld.com/001/java-thread/Image00065.jpg)
@@ -11300,21 +11295,21 @@ scheduleWithFixedDelay方法则能够以一定的时间间隔不断地执行comm
 清单9-5　ScheduledExecutorService使用Demo
 
 ```java
-    public class ScheduledTaskDemo {
+    public class ScheduledTaskDemo `{`
       static ScheduledExecutorService ses = Executors.newScheduledThreadPool(2);
     
-      public static void main(String[] args) throws InterruptedException {
+      public static void main(String[] args) throws InterruptedException `{`
         final int argc = args.length;
         // 任务执行最大耗时
         int maxConsumption;
         // 任务执行最小耗时
         int minConsumption;
-        if (argc >= 2) {
+        if (argc `>`= 2) `{`
           minConsumption = Integer.valueOf(args[0]);
           maxConsumption = Integer.valueOf(args[1]);
-        } else {
+        `}` else `{`
           maxConsumption = minConsumption = 1000;
-        }
+        `}`
         ses.scheduleAtFixedRate(new SimulatedTask(minConsumption, maxConsumption,
           "scheduleAtFixedRate"), 0, 2, TimeUnit.SECONDS);
         ses.scheduleWithFixedDelay(new SimulatedTask(minConsumption,
@@ -11323,34 +11318,33 @@ scheduleWithFixedDelay方法则能够以一定的时间间隔不断地执行comm
         Thread.sleep(20000);
     
         ses.shutdown();
-      }
+      `}`
     
-      static class SimulatedTask implements Runnable {
+      static class SimulatedTask implements Runnable `{`
         private String name;
         // 模拟任务执行耗时
         private final int maxConsumption;
         private final int minConsumption;
         private final AtomicInteger seq = new AtomicInteger(0);
     
-        public SimulatedTask(int minConsumption, int maxConsumption, String name) {
+        public SimulatedTask(int minConsumption, int maxConsumption, String name) `{`
           this.maxConsumption = maxConsumption;
           this.minConsumption = minConsumption;
           this.name = name;
-        }
+        `}`
     
         @Override
-        public void run() {
-          try {
+        public void run() `{`
+          try `{`
           // 模拟任务执行耗时
           Tools.randomPause(maxConsumption, minConsumption);
           Debug.info(name + " run-" + seq.incrementAndGet());
-        } catch (Exception e) {
+        `}` catch (Exception e) `{`
           e.printStackTrace();
-        }
-      }// run结束
-    }
-```
-    }
+        `}`
+      `}`// run结束
+    `}`
+    `}`
 ```
 
 在Execution Time始终不长于delay或者period所代表的时间的情况下，scheduleAtFixedRate和scheduleWithFixedDelay能够实现同样的效果——按照固定的时间间隔不断地执行任务。例如，使用如下命令运行清单9-5所示的程序：
@@ -11358,7 +11352,7 @@ scheduleWithFixedDelay方法则能够以一定的时间间隔不断地执行comm
     java io.github.viscent.mtia.ch9.ScheduledTaskDemo 1000 1000
 
 上述命令的输出类似如下：
-
+```java
     [2016-06-23 20:29:33.959][INFO][pool-1-thread-2]:scheduleWithFixedDelay run-1
     [2016-06-23 20:29:33.959][INFO][pool-1-thread-1]:scheduleAtFixedRate run-1
     [2016-06-23 20:29:35.878][INFO][pool-1-thread-1]:scheduleAtFixedRate run-2
@@ -11367,7 +11361,7 @@ scheduleWithFixedDelay方法则能够以一定的时间间隔不断地执行comm
     [2016-06-23 20:29:37.962][INFO][pool-1-thread-2]:scheduleWithFixedDelay run-3
     [2016-06-23 20:29:39.878][INFO][pool-1-thread-1]:scheduleAtFixedRate run-4
     [2016-06-23 20:29:39.963][INFO][pool-1-thread-2]:scheduleWithFixedDelay run-4
-
+```
 可见，两个计划任务都是每2秒执行一次。
 
 在Execution Time长于delay或者period所代表的时间的情况下，scheduleAtFixedRate和scheduleWithFixedDelay都无法保证计划任务以固定的周期被执行。例如，使用如下命令运行如清单9-5所示的程序：
@@ -11375,7 +11369,7 @@ scheduleWithFixedDelay方法则能够以一定的时间间隔不断地执行comm
     java io.github.viscent.mtia.ch9.ScheduledTaskDemo 1000 3000
 
 上述命令的输出类似如下：
-
+```java
     [2016-06-23 20:06:19.417][INFO][pool-1-thread-1]:scheduleWithFixedDelay run-1
 
 
@@ -11391,7 +11385,7 @@ scheduleWithFixedDelay方法则能够以一定的时间间隔不断地执行comm
     [2016-06-23 20:06:26.097][INFO][pool-1-thread-2]:scheduleAtFixedRate run-4
     [2016-06-23 20:06:27.214][INFO][pool-1-thread-2]:scheduleAtFixedRate run-5
     [2016-06-23 20:06:28.863][INFO][pool-1-thread-1]:scheduleWithFixedDelay run-4
-
+```
 可见，两个任务的执行周期分别在1～3和2～4之间变化。从以上输出中还可以看出，一个任务的执行耗时超过period或者delay所表示的时间只会导致该任务的下一次执行时间被相应地推迟，而不会导致该任务在同一个时间内被运行多次（并发执行）。
 
 注意
@@ -11409,48 +11403,48 @@ scheduleWithFixedDelay方法则能够以一定的时间间隔不断地执行comm
 清单9-6　周期性任务的执行结果处理Demo
 
 ```java
-    public class PeriodicTaskResultHandlingDemo {
+    public class PeriodicTaskResultHandlingDemo `{`
       final static ScheduledExecutorService ses = Executors.newScheduledThreadPool(2);
     
-      public static void main(String[] args) throws InterruptedException {
+      public static void main(String[] args) throws InterruptedException `{`
         final String host = args[0];
-        final AsyncTask<Integer> asyncTask = new AsyncTask<Integer>(ses) {
+        final AsyncTask`<`Integer`>` asyncTask = new AsyncTask`<`Integer`>`(ses) `{`
           final Random rnd = new Random();
           final String targetHost = host;
     
           @Override
-          public Integer call() throws Exception {
+          public Integer call() throws Exception `{`
             return pingHost();
-          }
+          `}`
     
-          private Integer pingHost() throws Exception {
+          private Integer pingHost() throws Exception `{`
             // 模拟实际操作耗时
             Tools.randomPause(2000);
             // 模拟的探测结果码
             Integer r = Integer.valueOf(rnd.nextInt(4));
             return r;
-          }
+          `}`
     
           @Override
-          protected void onResult(Integer result) {
+          protected void onResult(Integer result) `{`
             // 将结果保存到数据库
             saveToDatabase(result);
-          }
+          `}`
     
-          private void saveToDatabase(Integer result) {
+          private void saveToDatabase(Integer result) `{`
             Debug.info(targetHost + " status:" + String.valueOf(result));
             // 省略其他代码
-          }
+          `}`
     
           @Override
-          public String toString() {
+          public String toString() `{`
             return "Ping " + targetHost + ", " + super.toString();
-          }
-        };
+          `}`
+        `}`;
     
         ses.scheduleAtFixedRate(asyncTask, 0, 3, TimeUnit.SECONDS);
-      }
-    }
+      `}`
+    `}`
 ```
 
 提交给ScheduledExecutorService执行的计划任务在其执行过程中如果抛出未捕获的异常（Uncaught Exception），那么该任务后续就不会再被执行。即使我们在创建ScheduledExecutorService实例的时候指定一个线程工厂，并使线程工厂为其创建的线程关联一个UncaughtExceptionHandler，当计划任务抛出未捕获异常的时候该UncaughtExceptionHandler也不会被ScheduledExecutorService实例调用。因此，我们必须确保周期性执行的任务在其执行过程中不会抛出任何未捕获异常。
@@ -11489,7 +11483,7 @@ FutureTask是Java标准库提供的Future接口实现类，它还实现了Runnab
 
 [\[6\]](#text00014.html#fn6) 周期性执行的任务会不断地被执行，因此获取这种计划任务任意一次执行的结果意义不大，而获取全部次执行的结果又有些困难——只有当相应的计划任务不会再被执行的情况下我们才能够获取这样的结果。
 
-# 第10章 Java多线程程序的调试与测试
+## 第10章 Java多线程程序的调试与测试
 
 本章将介绍多线程程序的常用调试技巧。多线程程序的测试相比单线程程序的测试要复杂得多，本章分析了这种复杂性的原因并在此基础上介绍相应的应对措施，包括提高代码的可测试性、使用静态检查工具、代码复审以及使用简单有效的多线程测试工具。本章默认IDE为Eclipse。
 
@@ -11563,12 +11557,12 @@ Eclipse断点默认使用的暂挂策略（Suspend Policy）是暂挂线程（Su
 | AbstractLogReader   | 对日志读取逻辑进行抽象。该抽象便于我们对AbstractStatTask实现类进行单元测试                                                                              | LogReaderThread                                               | 提高可测试性         |
 
 ●　数据与数据来源分离。程序所处理的数据可以来自用户输入、文件、数据库以及网络等，而对数据的处理逻辑代码应该只关心数据本身，而不应该关心数据的来源。这种数据与其来源的分离可被看作抽象与实现分离的一个具体应用，它可以降低耦合性（Coupling），并提高代码的灵活性和可测试性。例如，在第4章的第2个实战案例（响应延时统计）中，尽管该程序的输入数据来自文件（接口日志文件），但是负责读取日志文件记录的实现类LogReaderThread（代码参见清单4-10）本身并不直接使用File或者FileInputStream而是使用InputStream来表示其输入，如下代码片段所示：
-
+```java
     public LogReaderThread(InputStream in,
     
-     int inputBufferSize, int batchSize) {
+     int inputBufferSize, int batchSize) `{`
       super(in, inputBufferSize, batchSize);
-    }
+    `}`
 ```
 
 这使得在对LogReaderThread进行单元测试的时候，我们可以根本不借助文件而是直接使用一个普通对象来表示输入数据（一组日志记录），如清单10-1所示。
@@ -11576,12 +11570,12 @@ Eclipse断点默认使用的暂挂策略（Suspend Policy）是暂挂线程（Su
 清单10-1　LogReaderThread单元测试示例JUnit代码
 
 ```java
-    public class LogReaderThreadTest {
+    public class LogReaderThreadTest `{`
       private LogReaderThread logReader;
       private StringBuilder sdb;
     
       @Before
-      public void setUp() throws Exception {
+      public void setUp() throws Exception `{`
         sdb = new StringBuilder();
         sdb.append("2016-03-30 09:33:04.644|SOAP|request|SMS|sendSms|OSG|ESB|0020000
     0000|192.168.1.102|13612345678|136712345670");
@@ -11599,27 +11593,27 @@ Eclipse断点默认使用的暂挂策略（Suspend Policy）是暂挂线程（Su
 
 
         logReader.start();
-      }
+      `}`
     
       @After
-      public void tearDown() throws Exception {
+      public void tearDown() throws Exception `{`
         logReader.interrupt();
-      }
+      `}`
     
       @Test
-      public void testNextBatch() {
-        try {
+      public void testNextBatch() `{`
+        try `{`
           RecordSet rs = logReader.nextBatch();
           StringBuilder contents = new StringBuilder();
           String record;
-          while (null ! = (record = rs.nextRecord())) {
+          while (null ! = (record = rs.nextRecord())) `{`
           contents.append(record).append("\n");
-          }
+          `}`
           assertTrue(contents.toString().equals(sdb.toString()));
-        } catch (InterruptedException ignored) {
-        }
-      }
-    }
+        `}` catch (InterruptedException ignored) `{`
+        `}`
+      `}`
+    `}`
 ```
 
 ●　依赖注入（Dependency Injection）。在抽象与实现分离的基础上我们可以进一步实现依赖注入。所谓依赖注入 就是指一个对象关联（通常是通过实例变量）另外一个对象（依赖）的时候，该对象并不直接创建其依赖对象，而是通过第三方向其提供（注入）相应对象而实现的。依赖注入使得我们对一个对象进行单元测试时可以使用一个测试桩（Stub）对象来替代该对象的真实依赖，从而简化了单元测试。例如，在第4章的第2个实战案例（响应延时统计）中，AbstractStatTask类（参见清单4-5）的一个构造器允许我们在创建实例时指定其依赖StatProcessor实例，该构造器使得我们在单元测试时可以不使用StatProcessor接口的现有实现类RecordProcessor而是指定一个测试桩对象。
@@ -11637,13 +11631,13 @@ MultithreadedStatTask.createLogReader()会创建MultithreadedStatTask读取日�
 清单10-2　MultithreadedStatTask单元测试JUnit源码
 
 ```java
-    public class MultithreadedStatTaskTest {
+    public class MultithreadedStatTaskTest `{`
       private MultithreadedStatTask mst;
       private int recordCount = 0;
       private String[] records;
     
       @Before
-      public void setUp() throws Exception {
+      public void setUp() throws Exception `{`
         records = new String[4];
         records[0] = "2016-03-30 09:33:04.644|SOAP|request|SMS|sendSms|OSG|ESB|00200
     000000|192.168.1.102|13612345678|136712345670";
@@ -11654,86 +11648,86 @@ MultithreadedStatTask.createLogReader()会创建MultithreadedStatTask读取日�
         records[3] = "2016-03-30 09:33:04.772|SOAP|response|SMS|sendSmsRsp|NIG|ESB|0
     0210000004|192.168.1.102|13612345678|136712345670";
         mst = createTask(10, 3, "sendSms", "*");
-      }
+      `}`
     
       @After
-      public void tearDown() throws Exception {
+      public void tearDown() throws Exception `{`
         recordCount = 0;
-      }
+      `}`
     
       @Test
-      public void testRun() {
+      public void testRun() `{`
         // 只关心MultithreadedStatTask本身（与多线程有关）
         mst.run();
         assertTrue(records.length == recordCount);
-      }
+      `}`
     
       private MultithreadedStatTask createTask(
         int sampleInterval,
         int traceIdDiff, String expectedOperationName,
-        String expectedExternalDeviceList) throws Exception {
+        String expectedExternalDeviceList) throws Exception `{`
               // Stub对象
               final AbstractLogReader logReader = new AbstractLogReader(
-                  new ByteArrayInputStream(new byte[] {}), 1024, 4) {
+                  new ByteArrayInputStream(new byte[] `{``}`), 1024, 4) `{`
                 boolean eof = false;
                 RecordSet consumedBatch = new RecordSet(super.batchSize);
     
                 @Override
-                protected RecordSet getNextToFill() {
+                protected RecordSet getNextToFill() `{`
                   return null;
-                }
+                `}`
     
                 @Override
-                protected RecordSet nextBatch() {
-                  if (eof) {
+                protected RecordSet nextBatch() `{`
+                  if (eof) `{`
                     return null;
-                  }
-                  for (String r : records) {
+                  `}`
+                  for (String r : records) `{`
                     consumedBatch.putRecord(r);
-                  }
+                  `}`
                   eof = true;
                   return consumedBatch;
-                }
+                `}`
     
                 @Override
-                protected void publish(RecordSet recordBatch) {
+                protected void publish(RecordSet recordBatch) `{`
                   // 什么也不做
-                }
+                `}`
     
                 @Override
-                public void run() {
+                public void run() `{`
                   // 什么也不做
-                }
-              };
+                `}`
+              `}`;
     
               // 返回MultithreadedStatTask的匿名子类
               return new MultithreadedStatTask(sampleInterval, new FakeProcessor()
     
-    ) {
+    ) `{`
                 @Override
-                protected AbstractLogReader createLogReader() {
+                protected AbstractLogReader createLogReader() `{`
                   // 并不返回AbstractLogReader类的真实实现类LogReaderThread，而是一个Stub类实例
                   return logReader;
 
 
-                }
-              }; // 不使用StatProcessor的真实实现类RecordProcessor，而是使用Stub类FakeProcessor
-            }// createTask结束
+                `}`
+              `}`; // 不使用StatProcessor的真实实现类RecordProcessor，而是使用Stub类FakeProcessor
+            `}`// createTask结束
     
           // Stub类
-          class FakeProcessor implements StatProcessor {
+          class FakeProcessor implements StatProcessor `{`
             @Override
-        public void process(String record) {
+        public void process(String record) `{`
           recordCount++;
-        }
+        `}`
     
         @Override
-        public Map<Long, DelayItem> getResult() {
+        public Map`<`Long, DelayItem`>` getResult() `{`
           // 不关心该方法，故返回空的Map
           return Collections.emptyMap();
-        }
-      }// FakeProcessor结束
-    }
+        `}`
+      `}`// FakeProcessor结束
+    `}`
 ```
 
 ●　使工作者线程数可以配置。多线程Bug的触发往往与程序的并发程度有关，因此使程序中的工作者线程数量可以配置，便于我们在测试中动态调整线程数以提高或者降低并发程度。
@@ -11763,21 +11757,21 @@ FindBugs是一款基于字节码（Byte Code）检查的开源免费静态检查
 ●　线程池与网络I/O超时时间限制问题。如果线程池执行的任务涉及网络I/O，那么为这些任务的网络I/O操作设置一个合理的等待超时时间限制（包括网络连接超时、网络读取超时等）非常重要。这些网络I/O操作如果没有等待超时时间限制，那么极端情况下可能出现线程池中的所有工作者线程都处于无限制的网络等待，从而使得线程池无法接受新提交的任务。这种问题在“正常”的条件下往往很难被发现，而有一定经验的代码复审人员则很容易发现这类问题。
 
 ●　用作内部锁句柄的变量未采用final关键字修饰的问题。这种问题可能导致访问同一组共享数据的多个线程实际上同步在多个内部锁之上，从而造成竞态而违背了使用锁的初衷。例如，Tomcat早期版本有段代码就有这个问题 [\[7\]](#text00015.html#ft7) ，如下代码所示：
-
-    public void addInstanceListener(InstanceListener listener) {
+```java
+    public void addInstanceListener(InstanceListener listener) `{`
       synchronized (listeners
     
-    ) {
+    ) `{`
           InstanceListener results[] =
           new InstanceListener[listeners.length + 1];
-          for (int i = 0; i < listeners.length; i++)
+          for (int i = 0; i `<` listeners.length; i++)
             results[i] = listeners[i];
           results[listeners.length] = listener;
           listeners = results;
 
 
-      }
-    }
+      `}`
+    `}`
 ```
 
 上述代码中的内部锁句柄对应的是一个数组变量listeners，并且listeners变量值本身还可以被修改，因此使用listeners作为内部锁可能导致多个线程同步在不同的数组对象之上！上述代码即便没有重新对listeners进行赋值，只要listeners变量本身没有采用final修饰，我们就无法排除后续的代码变更不会出现对listeners进行赋值的情况。然而，静态检测工具（例如FindBugs）可能并不能检查出这种错误。
@@ -11813,18 +11807,18 @@ JCStress是OpenJDK下的一个试验性项目，它可以用来编写多线程�
 清单10-3　一个非线程安全的计数器
 
 ```java
-    public class Counter {
+    public class Counter `{`
       private volatile long count;
     
-      public long vaule() {
+      public long vaule() `{`
         return count;
-      }
+      `}`
     
-      public void increment() {
+      public void increment() `{`
         // 此处特意不加锁，以便测试代码能够报告相应的错误
         count++;
-      }
-    }
+      `}`
+    `}`
 ```
 
 清单10-4　计数器Counter的JCStress测试用例
@@ -11834,27 +11828,27 @@ JCStress是OpenJDK下的一个试验性项目，它可以用来编写多线程�
     @Outcome(id = "[2]", expect = Expect.ACCEPTABLE, desc = "OK")
     @Outcome(id = "[1]", expect = Expect.FORBIDDEN, desc = "丢失更新或者读脏数据")
 ```java
-    public class CounterTest {
+    public class CounterTest `{`
       @State
-      public static class StateObject {
+      public static class StateObject `{`
         final Counter counter = new Counter();
-      }
+      `}`
     
       @Actor
-      public void actor1(StateObject sh) {
+      public void actor1(StateObject sh) `{`
         sh.counter.increment();
-      }
+      `}`
     
       @Actor
-      public void actor2(StateObject sh) {
+      public void actor2(StateObject sh) `{`
         sh.counter.increment();
-      }
+      `}`
     
       @Arbiter
-      public void actor3(LongResult1 r, StateObject sh) {
+      public void actor3(LongResult1 r, StateObject sh) `{`
         r.r1 = sh.counter.vaule();
-      }
-    }
+      `}`
+    `}`
 ```
 
 在上述测试用例中，我们用@State来注解类StateObject，这表示该类包含了该测试用例所访问的共享状态——测试目标对象Counter类的实例。我们用@Actor来注解actor1、actor2方法，这表示这些方法要对共享状态进行并发操作。用@Actor注解的方法可以声明类型为代表共享状态的对象的参数。此外，这些方法还可以声明代表测试结果数据（比如LongResult1）的参数用于向JCStress报告结果数据。JCStress会采用一个线程池来执行这些并发操作，并且为了提高触发多线程Bug的概率，默认情况下每个并发操作会被执行5轮。一个测试用例内所有用@Actor注解的方法都被执行一遍算一轮并发操作执行结束，每轮并发操作执行结束之后该测试用例内所有用@Arbiter注解的方法就会被执行一次。因此，通常我们会在@Arbiter所注解的方法中收集测试结果数据。例如在上述代码中，我们在actor3方法中声明了一个LongResult1参数用于向JCStress提供测试结果数据 [\[9\]](#text00015.html#ft9) 。由于JCStress所提供的表示测试结果的工具类仅支持int、double、boolean这类基础数据类型，因此在收集测试结果数据的时候我们可能需要将结果数据转换为基础类型数据。而JCStress则根据测试用例中@Outcome注解的内容来对测试结果进行解读，即判定并记录相应的结果是否可以接受。
@@ -11862,7 +11856,7 @@ JCStress是OpenJDK下的一个试验性项目，它可以用来编写多线程�
 有了上述基础，我们就能够将上述测试用例进一步简化：直接采用@State来注解测试用例类本身，如清单10-5所示。
 
 清单10-5　计数器Counter的JCStress测试用例简化版
-
+```java
     @JCStressTest
     @State
 
@@ -11870,24 +11864,24 @@ JCStress是OpenJDK下的一个试验性项目，它可以用来编写多线程�
     @Description("测试Counter的线程安全性")
     @Outcome(id = "[2]", expect = Expect.ACCEPTABLE, desc = "OK")
     @Outcome(id = "[1]", expect = Expect.FORBIDDEN, desc = "丢失更新或者读脏数据")
-```java
-    public class CounterTestV2 {
+
+    public class CounterTestV2 `{`
       final Counter counter = new Counter();
       @Actor
-      public void actor1() {
+      public void actor1() `{`
         counter.increment();
-      }
+      `}`
     
       @Actor
-      public void actor2() {
+      public void actor2() `{`
         counter.increment();
-      }
+      `}`
     
       @Arbiter
-      public void actor3(LongResult1 r) {
+      public void actor3(LongResult1 r) `{`
         r.r1 = counter.vaule();
-      }
-    }
+      `}`
+    `}`
 ```
 
 并发操作多轮执行结束后，JCStress能够生成测试报告，如图10-7所示。从该报告中可以看出某些情况下测试的结果为1而不是我们所期望的2，可见Counter类并非线程安全。
@@ -11948,13 +11942,13 @@ JCStress的缺点表现在以下几个方面。
 
 [\[9\]](#text00015.html#fn9) 从JCStress的角度来说，这个过程就是收集结果数据。
 
-# 第二部分　多线程编程进阶
+## 第二部分　多线程编程进阶
 
 →　第11章　多线程编程的硬件基础与Java内存模型
 
 →　第12章　Java多线程程序的性能调校
 
-# 第11章 多线程编程的硬件基础与Java内存模型
+## 第11章 多线程编程的硬件基础与Java内存模型
 
 本章介绍与多线程编程紧密相关的硬件基础知识，这些知识是本书后续章节也是全书的基础知识。本章介绍的许多硬件部件都有这样一个特点——硬件设计者引入一个部件是为了解决某些问题，然而这些部件自身又会引入新的问题。为了解决这些新的问题，硬件设计者又引入了其他部件。因此，掌握这些部件之间的这种关系有助于我们更好地理解相关部件。Java内存模型是对Java多线程程序的正确性进行推理的理论基础，了解Java内存模型有助于编写正确的多线程程序以及进行代码复审。
 
@@ -11986,7 +11980,7 @@ JCStress的缺点表现在以下几个方面。
     WelcomeApp
 
 其输出类似如下（省略部分输出）：
-
+```java
     Performance counter stats for 'java io.github.viscent.mtia.ch1.WelcomeApp':
     
           3,186,985 cache-references
@@ -11995,7 +11989,7 @@ JCStress的缺点表现在以下几个方面。
                 #   14.955 % of all cache refs
     
           0.109473235 seconds time elapsed
-
+```
 现代处理器一般具有多个层次的高速缓存，如图11-4所示。在这个层级中，相应的高速缓存通常被称为一级缓存（L1 Cache）、二级缓存（L2 Cache）、三级缓存（L3 Cache）等。一级缓存可能直接被集成在处理器的内核（Core）里，因此其访问效率非常高，典型的情况是一级缓存的访问操作可以在2～4个处理器时钟循环（Clock Cycle）内完成。一级缓存通常包括两部分，其中一部分用于存储指令（L1i），另外一部分用于存储数据（L1d）。距离处理器越近的高速缓存，其存取速率越快，制造成本越高，因此其容量也越小。距离处理器越远（即距离主内存越近）的高速缓存，其存储速率会越慢，而存储容量则相应地增大。
 
 ![](http://www.minio.lookworld.com/001/java-thread/Image00078.jpg)
@@ -12224,7 +12218,7 @@ Java虚拟机也会在monitorexit对应的指令（相当于写操作）之后�
     sharedRef = new HTTPRangeRequest("http://xyz.com/download/big.tar",0,1048576);
 
 在JIT编译器的内联（Inline）优化的作用下可能会被编译成与如下伪代码等效的指令（伪代码表示）：
-
+```java
     objRef = allocate(HTTPRangeRequest.class); // 子操作①：分配对象所需的存储空间
     objRef.url= "http://xyz.com/download/big.tar"; // 子操作②：初始化普通字段
     objRange = allocate(Range.class);
@@ -12232,7 +12226,7 @@ Java虚拟机也会在monitorexit对应的指令（相当于写操作）之后�
     objRange.upperBound = 1048576; // 子操作④：初始化objRange
     objRef.range= objRange; // 子操作⑤：初始化final字段range
     sharedRef = objRef; // 子操作⑥：将对象引用写入共享变量sharedRef
-
+```
 子操作①到子操作⑥之间的操作为HTTPRangeRequest类的构造器中的内容（指令）。Java虚拟机会在子操作⑤（final字段初始化）之后插入一个StoreStore屏障以禁止子操作⑤（final字段初始化）以及该操作前的所有写操作和子操作⑥（对象发布）之间的重排序（包括指令重排序和内存重排序），从而使得HTTPRangeRequest实例引用objRef对外可见的时候，该实例的final字段以及这些final字段（引用型字段）所引用的对象已经初始化完毕。而Java虚拟机（JIT编译器）在插入StoreStore屏障前可能将非final字段的初始化操作（子操作②）重排序（指令重排序）到子操作⑥之后，因此包含final字段的对象引用对外可见的时候该对象的非final字段仍然可能是未初始化完毕的。
 
 由于某些处理器（比如x86处理器）可能不支持StoreStore重排序，因此运行在这种处理器上的Java虚拟机只需要保障其JIT编译器不将final字段的初始化操作重排序（指令重排序）到其构造器结束之后（即构造器之外，相当于上述的子操作⑥之后），而无须插入相应的StoreStore屏障。从性能的角度来说，在这些处理器平台上final关键字的开销并不大：相对于非final字段而言，final字段的开销在于它阻止了JIT编译器可能做的一些优化（指令重排序）。
@@ -12292,7 +12286,7 @@ happens-before关系的传递性使得可见性保障具有累积的效果。假
 
 图11-8　happens-before关系与可见性保障的累积
 
-如果一组动作（{A1 , A2 , A3 }）中的每个动作与另外一组动作（{B1 , B2 , B3 }）中的任意一个动作都具有happens-before关系，那么我们可以称前一组动作与后一组动作之间存在happen-before关系，记为{A1 , A2 , A3 }→{B1 , B2 , B3 }。因此，happen-before关系与happens-before关系本质上是一回事：从数学上的集合角度来看，happen-before关系可以理解为两个集合（两组动作）之间的关系，而happens-before关系也可以被看作两个集合之间的关系，只不过这两个集合各自都只包含一个元素。
+如果一组动作（`{`A1 , A2 , A3 `}`）中的每个动作与另外一组动作（`{`B1 , B2 , B3 `}`）中的任意一个动作都具有happens-before关系，那么我们可以称前一组动作与后一组动作之间存在happen-before关系，记为`{`A1 , A2 , A3 `}`→`{`B1 , B2 , B3 `}`。因此，happen-before关系与happens-before关系本质上是一回事：从数学上的集合角度来看，happen-before关系可以理解为两个集合（两组动作）之间的关系，而happens-before关系也可以被看作两个集合之间的关系，只不过这两个集合各自都只包含一个元素。
 
 Java内存模型定义了一些关于happens-before关系的规则，这些规则规定了两个动作在什么情况下具有happens-before关系。其中常用的规则如下。
 
@@ -12347,7 +12341,7 @@ Java内存模型作为一个模型，它只会从“什么”（What）而不会
 根据Java内存模型以及Java标准库类定义的happen(s)-before规则，我们便可以知道任意两个动作之间是否存在happens-before关系。由此，我们便可以推断出两个线程所执行的操作之间的可见性和有序性是否有保障。例如，在第4章的第2个实战案例（响应延时统计程序）中，有个RecordSet类（日志记录集，完整代码参见清单4-8），如下代码片段所示：
 
 ```java
-    public class RecordSet {
+    public class RecordSet `{`
       public final int capacity;
       final String[] records;
       int readIndex = 0;
@@ -12355,31 +12349,31 @@ Java内存模型作为一个模型，它只会从“什么”（What）而不会
 
 
 
-      public RecordSet(int capacity) {
+      public RecordSet(int capacity) `{`
         this.capacity = capacity;
         records = new String[capacity];
-      }
+      `}`
     
-      public String nextRecord() {
+      public String nextRecord() `{`
         String record = null;
-        if (readIndex < writeIndex) {
+        if (readIndex `<` writeIndex) `{`
 
 
           record = records[readIndex++];
-        }
+        `}`
         return record;
-      }
-      public boolean putRecord(String line) {
-        if (writeIndex == capacity) {
+      `}`
+      public boolean putRecord(String line) `{`
+        if (writeIndex == capacity) `{`
           return true;
-        }
+        `}`
         records[writeIndex++
     
     ] = line;
         return false;
-      }
+      `}`
       // ...
-    }
+    `}`
 ```
 
 约定
@@ -12395,7 +12389,7 @@ RecordSet实例会被日志文件读取线程（参见清单4-10）和统计处�
 由于volatile变量规则与内部锁规则相似，因此借助一个volatile变量也能够实现对象的安全发布。例如，第3章我们在介绍基于双重检查锁定法的单例类的正确实现时强调静态变量instance必须使用volatile关键字修饰，如下代码所示：
 
 ```java
-    public class DCLSingleton {
+    public class DCLSingleton `{`
       /*
       * 保存该类的唯一实例，使用volatile关键字修饰instance
       */
@@ -12404,31 +12398,31 @@ RecordSet实例会被日志文件读取线程（参见清单4-10）和统计处�
       /*
       * 私有构造器使其他类无法直接通过new创建该类的实例
       */
-      private DCLSingleton() {
+      private DCLSingleton() `{`
         // 什么也不做
-      }
+      `}`
     
       /**
-      * 创建并返回该类的唯一实例 <BR>
+      * 创建并返回该类的唯一实例 `<`BR`>`
       * 即只有该方法被调用时该类的唯一实例才会被创建
       *
       * @return
       */
-     public static DCLSingleton getInstance() {
-       if (null == instance) {// 操作①：第1次检查
-        synchronized (DCLSingleton.class) {
-          if (null == instance) {// 操作②：第2次检查
+     public static DCLSingleton getInstance() `{`
+       if (null == instance) `{`// 操作①：第1次检查
+        synchronized (DCLSingleton.class) `{`
+          if (null == instance) `{`// 操作②：第2次检查
             instance = new DCLSingleton(); // 操作③
-          }
-        }
-       }
+          `}`
+        `}`
+       `}`
        return instance;
-     }
+     `}`
     
-     public void someService() {
+     public void someService() `{`
        // 省略其他代码
-     }
-    }
+     `}`
+    `}`
 ```
 
 这里，假设线程T1 刚刚执行完操作③并退出临界区的时候，线程T2 恰好执行到操作①，尽管对instance的赋值以及对应对象的初始化是在临界区中执行的，但是T2 此时读取instance变量（操作①）并不是在临界区中进行的，故而T1 和T2 这时执行的两个动作之间并无happens-before关系，因此T1 所执行的动作对T2 来说可见性和有序性均无法得以保障。相反，如果我们用volatile修饰instance，那么T1 对instance进行的操作与T2 对instance的读取操作之间借助于volatile所建立的happen-before关系（volatile变量规则）便有了happen-before关系。这就相当于T1 将instance所引用的对象安全地发布到T2 ，从而使T2 一旦读取到instance值不为null，那么该变量所引用的对象必然已经是初始化完毕的（即构造器中的操作都已经执行结束，保障这一点才能使延迟加载的单例模式得以正确实现）。
@@ -12521,7 +12515,7 @@ Java内存模型从“什么”（What）的角度来回答线程安全有关问
 
 [\[22\]](#text00017.html#fn22) 详情参见：https://www.cs.umd.edu/～pugh/java/memoryModel/jsr-133-faq.html。
 
-# 第12章 Java多线程程序的性能调校
+## 第12章 Java多线程程序的性能调校
 
 本章结合实战案例介绍与多线程程序紧密相关的常用性能调校方法与技术。
 
@@ -12542,19 +12536,19 @@ Java标准库中的有些类（比如StringBuffer）虽然是线程安全的，�
 清单12-1　可进行锁消除优化的示例代码
 
 ```java
-    public class LockElisionExample {
+    public class LockElisionExample `{`
     
-      public static String toJSON(ProductInfo productInfo) {
+      public static String toJSON(ProductInfo productInfo) `{`
         StringBuffer sbf = new StringBuffer();
-        sbf.append("{\"productID\":\"").append(productInfo.productID);
+        sbf.append("`{`\"productID\":\"").append(productInfo.productID);
         sbf.append("\", \"categoryID\":\"").append(productInfo.categoryID);
         sbf.append("\", \"rank\":").append(productInfo.rank);
         sbf.append(", \"inventory\":").append(productInfo.inventory);
-        sbf.append('}');
+        sbf.append('`}`');
     
         return sbf.toString();
-      }
-    }
+      `}`
+    `}`
 ```
 
 锁消除优化所依赖的逃逸分析技术自Java SE 6u23起默认是开启的，但是锁消除优化是在Java 7开始引入的 [\[3\]](#text00018.html#ft3) 。
@@ -12580,27 +12574,27 @@ Java标准库中的有些类（比如StringBuffer）虽然是线程安全的，�
 清单12-2　可进行锁粗化优化的示例代码
 
 ```java
-    public class LockCoarseningExample {
+    public class LockCoarseningExample `{`
       private final Random rnd = new Random();
     
-      public void simulate() {
+      public void simulate() `{`
         int iq1 = randomIQ();
         int iq2 = randomIQ();
         int iq3 = randomIQ();
         act(iq1, iq2, iq3);
-      }
+      `}`
     
-      private void act(int... n) {
+      private void act(int... n) `{`
         // ...
-      }
+      `}`
     
      // 返回随机的智商值
-      public int randomIQ() {
+      public int randomIQ() `{`
         // 人类智商的标准差是15，平均值是100
         return (int) Math.round(rnd.nextGaussian() * 15 + 100);
-      }
+      `}`
       // ...
-    }
+    `}`
 ```
 
 锁粗化默认是开启的。如果要关闭这个特性，我们可以在Java程序的启动命令行中添加虚拟机参数“-XX:-EliminateLocks”（开启则可以使用虚拟机参数“-XX:+EliminateLocks”）。
@@ -12620,7 +12614,7 @@ Java标准库中的有些类（比如StringBuffer）虽然是线程安全的，�
 存在锁争用的情况下，一个线程申请一个锁的时候如果这个锁恰好被其他线程持有，那么这个线程就需要等待该锁被其持有线程释放。实现这种等待的一种保守方法我们在前面章节中已经介绍过——将这个线程暂停（线程的生命周期状态变为非Runnable状态）。由于暂停线程会导致上下文切换，因此对于一个具体锁实例来说，这种实现策略比较适合于系统中绝大多数线程对该锁的持有时间较长的场景，这样才能够抵消上下文切换的开销。另外一种实现方法就是采用忙等（Busy Wait）。所谓忙等相当于如下代码所示的一个循环体为空的循环语句：
 
     // 当锁被其他线程持有时一直循环
-    while (lockIsHeldByOtherThread){}
+    while (lockIsHeldByOtherThread)`{``}`
 
 可见，忙等是通过反复执行空操作（什么也不做）直到所需的条件成立为止而实现等待的。这种策略的好处是不会导致上下文切换，缺点是比较耗费处理器资源——如果所需的条件在相当长时间内未能成立，那么忙等的循环就会一直被执行。因此，对于一个具体的锁实例来说，忙等策略比较适合于绝大多数线程对该锁的持有时间较短的场景，这样能够避免过多的处理器时间开销。
 
@@ -12653,66 +12647,66 @@ Java标准库中的有些类（比如StringBuffer）虽然是线程安全的，�
 清单12-3　锁争用Demo
 
 ```java
-    public class LockContentionDemo {
+    public class LockContentionDemo `{`
       // 用于模拟锁的持有时间跨度
       static long lockDuration = 100;
       static SharedResource sr = new SharedResource();
       // 用于模拟锁申请频率
       static long lockAccessFrequency = 50;
     
-      public static void main(String[] args) throws InterruptedException {
+      public static void main(String[] args) throws InterruptedException `{`
         int argc = args.length;
-        if (argc > 0) {
+        if (argc `>` 0) `{`
           lockDuration = Long.valueOf(args[0]);
-          if (argc > 1) {
+          if (argc `>` 1) `{`
           lockAccessFrequency = Long.valueOf(args[1]);
-          }
-        }
+          `}`
+        `}`
         int N = Runtime.getRuntime().availableProcessors();
         Thread[] threads = new Thread[N];
-        for (int i = 0; i < threads.length; i++) {
-          threads[i] = new Thread() {
+        for (int i = 0; i `<` threads.length; i++) `{`
+          threads[i] = new Thread() `{`
           @Override
-          public void run() {
-            for (; ; ) {
+          public void run() `{`
+            for (; ; ) `{`
               sr.access();
-              try {
+              try `{`
                 Thread.sleep(lockAccessFrequency);
 
 
-              } catch (InterruptedException ignored) {
-              }
-            }
-          }// run结束
-          };
+              `}` catch (InterruptedException ignored) `{`
+              `}`
+            `}`
+          `}`// run结束
+          `}`;
     
-        }// for结束
+        `}`// for结束
     
         // 启动所有线程
         Tools.startThread(threads);
-        Tools.delayedAction("The program will be terminated", new Runnable() {
+        Tools.delayedAction("The program will be terminated", new Runnable() `{`
           @Override
-          public void run() {
+          public void run() `{`
           System.exit(0);
-          }
-        }, 120);
-      }
+          `}`
+        `}`, 120);
+      `}`
     
-      static class SharedResource {
+      static class SharedResource `{`
         public synchronized
     
-     void access() {
+     void access() `{`
           // 模拟实际操作耗时
-          try {
+          try `{`
           Thread.sleep(lockDuration);
 
 
-          } catch (InterruptedException ignored) {
+          `}` catch (InterruptedException ignored) `{`
     
-          }
-        }
-      }
-    }
+          `}`
+        `}`
+      `}`
+    `}`
 ```
 
 在不指定任何参数的情况下直接运行上述Demo，并使用JMC（Java Mission Control）可监视到此时该Demo对锁的争用情况，如图12-3所示。
@@ -12736,7 +12730,7 @@ Java标准库中的抽象类java.io.Writer就使用了可参数化的锁。Write
 清单12-4　可改用可参数化锁的实例代码
 
 ```java
-    public class LogPrinterV1 {
+    public class LogPrinterV1 `{`
       final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
           "yyMMddHHmm");
       final static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("00");
@@ -12745,10 +12739,10 @@ Java标准库中的抽象类java.io.Writer就使用了可参数化的锁。Write
       private int recordsInFile = MAX_RECORDS_PER_FILE;
       private int fileSeq = 0;
     
-      public void print(String record) {
+      public void print(String record) `{`
         PrintWriter writer;
-        try {
-          synchronized (this) {
+        try `{`
+          synchronized (this) `{`
 
 
             writer = getPrintWriter();
@@ -12760,49 +12754,47 @@ Java标准库中的抽象类java.io.Writer就使用了可参数化的锁。Write
             recordsInFile++;
 
 
-          }
+          `}`
     
-        } catch (Exception e) {
+        `}` catch (Exception e) `{`
           e.printStackTrace();
-        }
-      }
+        `}`
+      `}`
     
-      public synchronized void shutdown() {
-        if (null ! = pwr) {
+      public synchronized void shutdown() `{`
+        if (null ! = pwr) `{`
           pwr.close();
           pwr = null;
-        }
-      }
+        `}`
+      `}`
     
-      private PrintWriter getPrintWriter() throws IOException {
+      private PrintWriter getPrintWriter() throws IOException `{`
         PrintWriter writer = null;
-        if (MAX_RECORDS_PER_FILE == recordsInFile) {
+        if (MAX_RECORDS_PER_FILE == recordsInFile) `{`
           String newFileName = retrieveFileName();
           writer = new PrintWriter(newFileName);
           recordsInFile = 0;
-          if (null ! = pwr) {
+          if (null ! = pwr) `{`
           pwr.flush();
           pwr.close();
-          }
+          `}`
           pwr = writer;
-        } else {
+        `}` else `{`
         writer = pwr;
-      }
+      `}`
       return writer;
-    }
-```
+    `}`
     
-    protected String retrieveFileName() {
+    protected String retrieveFileName() `{`
       String fileName;
       fileName = "/home/viscent/tmp/logs/" + DATE_FORMAT.format(new Date())
           + DECIMAL_FORMAT.format(fileSeq) + ".log";
-      if (++fileSeq > 99) {
+      if (++fileSeq `>` 99) `{`
         fileSeq = 0;
-      }
+      `}`
       return fileName;
-    }
-```
-    }
+    `}`
+    `}`
 ```
 
 显然，一个日志文件在还没有被写满（即记录中的文件条数达到最大记录条数）的时候，任何一个线程都可以往其中写入记录（通过执行上述print方法）。因此，上述print方法使用的PrintWriter实例实际上是共享的。尽管如此，但由于这个PrintWriter实例只能够通过print和shutdown方法来访问，因此即便PrintWriter类不是线程安全的（实际上它是线程安全的），我们只需要让print和shutdown方法使用同一个锁（正如清单12-4那样）实例也就可以保障线程安全了。然而，PrintWriter内部又确确实实地使用了另外一个锁实例——PrintWriter类的当前实例。为了减少锁的开销，此时我们可以将上述PrintWriter实例所使用的锁实例指定为print和shutdown方法自身所使用的锁实例——LogPrinterV1类的当前实例。这样一来，print、shutdown以及PrintWriter实例的各个方法（println、flush和close）仅使用一个锁实例，如清单12-5所示。
@@ -12810,7 +12802,7 @@ Java标准库中的抽象类java.io.Writer就使用了可参数化的锁。Write
 清单12-5　使用可参数化锁的实例代码
 
 ```java
-    public class LogPrinterV2 {
+    public class LogPrinterV2 `{`
       final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
           "yyMMddHHmm");
       final static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("00");
@@ -12819,68 +12811,68 @@ Java标准库中的抽象类java.io.Writer就使用了可参数化的锁。Write
       private int recordsInFile = MAX_RECORDS_PER_FILE;
       private int fileSeq = 0;
     
-      public void print(String record) {
+      public void print(String record) `{`
         PrintWriter writer;
-        try {
-          synchronized (this) {
+        try `{`
+          synchronized (this) `{`
 
 
           writer = getPrintWriter();
           writer.println(record);
           recordsInFile++;
-        }
+        `}`
     
-      } catch (Exception e) {
+      `}` catch (Exception e) `{`
         e.printStackTrace();
-      }
-    }
-```
+      `}`
+    `}`
+
     public synchronized
     
-     void shutdown() {
-      if (null ! = pwr) {
+     void shutdown() `{`
+      if (null ! = pwr) `{`
         pwr.close();
         pwr = null;
-      }
-    }
-```
+      `}`
+    `}`
+
     
-    private PrintWriter getPrintWriter() throws IOException {
+    private PrintWriter getPrintWriter() throws IOException `{`
       PrintWriter writer = null;
-      if (MAX_RECORDS_PER_FILE == recordsInFile) {
+      if (MAX_RECORDS_PER_FILE == recordsInFile) `{`
         String newFileName = retrieveFileName();
-        writer = new PrintWriter(newFileName) {
-          {
+        writer = new PrintWriter(newFileName) `{`
+          `{`
 
 
             lock = this;
 
 
-          }
+          `}`
 
 
-        };
+        `}`;
         recordsInFile = 0;
-        if (null ! = pwr) {
+        if (null ! = pwr) `{`
           pwr.flush();
           pwr.close();
-        }
+        `}`
         pwr = writer;
-      } else {
+      `}` else `{`
         writer = pwr;
-      }
+      `}`
       return writer;
-    }
-```
+    `}`
+
     
-    protected String retrieveFileName() {
+    protected String retrieveFileName() `{`
       // ......
-    }
-```
-    }
+    `}`
+
+    `}`
 ```
 
-在优化后的代码中，在getPrintWriter方法中我们不直接创建PrintWriter实例，而是创建一个PrintWriter类的匿名子类并在该子类的实例初始化块（{}）中将该实例所使用的锁实例lock设置为this（LogPrinterV2类的当前实例）。经过这种改造，print方法执行过程中只需要申请一个锁——this关键字所代表的LogPrinterV2类当前实例，而不再像清单12-4那样需要申请两个锁（print方法所属的实例自身以及PrintWriter实例）。此时，尽管print方法执行过程中调用的PrintWriter.flush/close/println等方法仍然是带同步块的方法，但是由于锁的可重入性，print方法的执行线程在已经持有this所代表的锁的情况下重新申请/释放这个锁的开销已经降低了不少。
+在优化后的代码中，在getPrintWriter方法中我们不直接创建PrintWriter实例，而是创建一个PrintWriter类的匿名子类并在该子类的实例初始化块（`{``}`）中将该实例所使用的锁实例lock设置为this（LogPrinterV2类的当前实例）。经过这种改造，print方法执行过程中只需要申请一个锁——this关键字所代表的LogPrinterV2类当前实例，而不再像清单12-4那样需要申请两个锁（print方法所属的实例自身以及PrintWriter实例）。此时，尽管print方法执行过程中调用的PrintWriter.flush/close/println等方法仍然是带同步块的方法，但是由于锁的可重入性，print方法的执行线程在已经持有this所代表的锁的情况下重新申请/释放这个锁的开销已经降低了不少。
 
 从面向对象编程的角度来看，使用可参数化锁一定程度上破坏了封装性。假如指定的锁实例被其他代码不恰当地使用了，那么可参数化锁的使用可能会增加锁的争用。
 
@@ -12895,22 +12887,22 @@ Java标准库中的抽象类java.io.Writer就使用了可参数化的锁。Write
 清单12-6　临界区长度可减小的实例代码
 
 ```java
-    public class SectionBasedStorageV1 {
-      private Deque<String> sectionNames = new LinkedList<String>();
-      // Key->value: 存储子目录名->子目录下缓存文件计数器
-      private Map<String, AtomicInteger> sectionFileCountMap = new HashMap<>();
+    public class SectionBasedStorageV1 `{`
+      private Deque`<`String`>` sectionNames = new LinkedList`<`String`>`();
+      // Key-`>`value: 存储子目录名-`>`子目录下缓存文件计数器
+      private Map`<`String, AtomicInteger`>` sectionFileCountMap = new HashMap`<``>`();
       private int maxFilesPerSection = 2000;
       private int maxSectionCount = 100;
       private String storageBaseDir = System.getProperty("java.io.tmpdir") + "/vpn";
-    public SectionBasedStorageV1() {
+    public SectionBasedStorageV1() `{`
       File dir = new File(storageBaseDir);
-      if (! dir.exists()) {
+      if (! dir.exists()) `{`
         dir.mkdirs();
-      }
-    }
-```
+      `}`
+    `}`
+
     
-    public synchronized String[] apply4Filename() {
+    public synchronized String[] apply4Filename() `{`
       String sectionName;
       int iFileCount;
       String[] fileName = new String[2];
@@ -12920,8 +12912,8 @@ Java标准库中的抽象类java.io.Writer就使用了可参数化的锁。Write
       fileCount = sectionFileCountMap.get(sectionName);
       iFileCount = fileCount.get();
       // 当前存储子目录已满
-      if (iFileCount >= maxFilesPerSection) {
-        if (sectionNames.size() >= maxSectionCount) {
+      if (iFileCount `>`= maxFilesPerSection) `{`
+        if (sectionNames.size() `>`= maxSectionCount) `{`
           // 删除最老的存储子目录
           String oldestSectionName = sectionNames.removeFirst();
 
@@ -12929,62 +12921,62 @@ Java标准库中的抽象类java.io.Writer就使用了可参数化的锁。Write
           removeSection(oldestSectionName);
 
 
-        }
+        `}`
         // 创建新的存储子目录
         sectionName = makeNewSectionDir();
         fileCount = sectionFileCountMap.get(sectionName);
-      }
+      `}`
       iFileCount = fileCount.incrementAndGet();
       fileName[0] = storageBaseDir + "/" + sectionName + "/"
           + new DecimalFormat("0000").format(iFileCount) + "-"
           + new Date().getTime() / 1000 + ".rq";
       fileName[1] = sectionName;
       return fileName;
-    }
-```
+    `}`
+
     
-    public void decrementSectionFileCount(String sectionName) {
+    public void decrementSectionFileCount(String sectionName) `{`
       AtomicInteger fileCount = sectionFileCountMap.get(sectionName);
-      if (null ! = fileCount) {
+      if (null ! = fileCount) `{`
         fileCount.decrementAndGet();
-      }
-    }
-```
+      `}`
+    `}`
+
     
-    private boolean removeSection(String sectionName) {
+    private boolean removeSection(String sectionName) `{`
       boolean result = true;
       File dir = new File(storageBaseDir + "/" + sectionName);
-      for (File file : dir.listFiles()) {
+      for (File file : dir.listFiles()) `{`
         result = result && file.delete();
-        }
+        `}`
         result = result && dir.delete();
         return result;
-      }
+      `}`
     
-      private String getSectionName() {
+      private String getSectionName() `{`
         String sectionName;
-        if (sectionNames.isEmpty()) {
+        if (sectionNames.isEmpty()) `{`
           sectionName = makeNewSectionDir();
-        } else {
+        `}` else `{`
           sectionName = sectionNames.getLast();
-        }
+        `}`
         return sectionName;
-      }
+      `}`
     
-      private String makeNewSectionDir() {
+      private String makeNewSectionDir() `{`
         String sectionName;
         SimpleDateFormat sdf = new SimpleDateFormat("MMddHHmmss");
         sectionName = sdf.format(new Date());
         File dir = new File(storageBaseDir + "/" + sectionName);
-        if (dir.mkdir()) {
+        if (dir.mkdir()) `{`
           sectionNames.addLast(sectionName);
           sectionFileCountMap.put(sectionName, new AtomicInteger(0));
-        } else {
+        `}` else `{`
           throw new RuntimeException("Cannot create section dir " + sectionName);
-        }
+        `}`
         return sectionName;
-      }
-    }
+      `}`
+    `}`
 ```
 
 apply4Filename方法所执行的操作可以分解为这样一个操作：其预处理操作为空；其共享变量访问操作为获取待写文件的目标子目录名（sectionName)以及目标子目录中的现有文件个数；其后处理操作为构造文件名并在目标目录满（子目录个数达到M）时删除最老的子目录。
@@ -12994,20 +12986,20 @@ apply4Filename方法所执行的操作可以分解为这样一个操作：其预
 清单12-7　减小apply4Filename方法的临界区长度
 
 ```java
-    public class SectionBasedStorageV2 {
-      private Deque<String> sectionNames = new LinkedList<String>();
-      // Key->value: 存储子目录名->子目录下缓存文件计数器
-      private Map<String, AtomicInteger> sectionFileCountMap = new HashMap<>();
+    public class SectionBasedStorageV2 `{`
+      private Deque`<`String`>` sectionNames = new LinkedList`<`String`>`();
+      // Key-`>`value: 存储子目录名-`>`子目录下缓存文件计数器
+      private Map`<`String, AtomicInteger`>` sectionFileCountMap = new HashMap`<``>`();
       private int maxFilesPerSection = 2000;
       private int maxSectionCount = 100;
       private String storageBaseDir = System.getProperty("java.io.tmpdir") + "/vpn";
     
-      public String[] apply4Filename() {
+      public String[] apply4Filename() `{`
         String sectionName;
         int iFileCount;
         String[] fileName = new String[2];
         String oldestSectionName = null;
-        synchronized (this) {
+        synchronized (this) `{`
 
 
           // 获取当前的存储子目录名
@@ -13016,16 +13008,16 @@ apply4Filename方法所执行的操作可以分解为这样一个操作：其预
           fileCount = sectionFileCountMap.get(sectionName);
           iFileCount = fileCount.get();
           // 当前存储子目录已满
-          if (iFileCount >= maxFilesPerSection) {
-            if (sectionNames.size() >= maxSectionCount) {
+          if (iFileCount `>`= maxFilesPerSection) `{`
+            if (sectionNames.size() `>`= maxSectionCount) `{`
             oldestSectionName = sectionNames.removeFirst();
-            }
+            `}`
             // 创建新的存储子目录
             sectionName = makeNewSectionDir();
             fileCount = sectionFileCountMap.get(sectionName);
-          }
+          `}`
           iFileCount = fileCount.incrementAndGet();
-        }
+        `}`
     
     // 临界区结束
         fileName[0] = storageBaseDir + "/" + sectionName + "/"
@@ -13040,7 +13032,7 @@ apply4Filename方法所执行的操作可以分解为这样一个操作：其预
         fileName[1] = sectionName;
 
 
-        if (null ! = oldestSectionName) {
+        if (null ! = oldestSectionName) `{`
 
 
           // 删除最老的存储子目录
@@ -13049,20 +13041,20 @@ apply4Filename方法所执行的操作可以分解为这样一个操作：其预
           removeSection(oldestSectionName);
 
 
-        }
+        `}`
 
 
         return fileName;
-      }
+      `}`
     
-      public void decrementSectionFileCount(String sectionName) {
+      public void decrementSectionFileCount(String sectionName) `{`
         AtomicInteger fileCount = sectionFileCountMap.get(sectionName);
-        if (null ! = fileCount) {
+        if (null ! = fileCount) `{`
           fileCount.decrementAndGet();
-        }
-      }
+        `}`
+      `}`
      // 省略与清单12-6相同的方法
-    }
+    `}`
 ```
 
 相比于清单12-6中的apply4Filename方法，新的apply4Filename方法在临界区中仅判断并记录（通过局部变量oldestSectionName）是否需要删除最老的子目录，而具体删除最老的子目录这个I/O操作则是在临界区外执行的。另外，构造目标文件的文件名也是放在临界区之外进行的。当然，将最老的子目录删除这个操作移动到临界区之外，会导致在某一个瞬间目标目录中的子目录个数可能超过M（允许的子目录的最大个数），不过这一点在该系统中是可接受的。
@@ -13082,28 +13074,28 @@ apply4Filename方法所执行的操作可以分解为这样一个操作：其预
 ```java
     public class NaiveRequestRegistry implements RequestRegistry
     
-     {
-      @SuppressWarnings({ "rawtypes" })
-      private final Map/* <String, RequestMessage> */requests = new HashMap();
+     `{`
+      @SuppressWarnings(`{` "rawtypes" `}`)
+      private final Map/* `<`String, RequestMessage`>` */requests = new HashMap();
     
       // 注册请求消息
       @SuppressWarnings("unchecked")
       @Override
       public synchronized
     
-     void registerRequest(RequestMessage request) {
+     void registerRequest(RequestMessage request) `{`
         String requestID = request.getID();
         requests.put(requestID, request);
-      }
+      `}`
     
       // 取消请求消息注册
       @Override
       public synchronized
     
-     void unregisterRequest(RequestMessage request) {
+     void unregisterRequest(RequestMessage request) `{`
         String requestID = request.getID();
         requests.remove(requestID);
-      }
+      `}`
     
       // 请求发送线程可调用该方法等待指定请求消息对应的响应消息
       @Override
@@ -13111,42 +13103,42 @@ apply4Filename方法所执行的操作可以分解为这样一个操作：其预
     
      ResponseMessage
           waitForResponse(RequestMessage request, long timeOut)
-            throws TimeoutException, InterruptedException {
+            throws TimeoutException, InterruptedException `{`
         ResponseMessage res = null;
         long start = System.currentTimeMillis();
         long waitTime;
         long now;
         boolean isTimedout = false;
-        while (null == (res = request.getResponse())) {
+        while (null == (res = request.getResponse())) `{`
           now = System.currentTimeMillis();
           // 计算剩余等待时间
           waitTime = timeOut - (now - start);
-          if (waitTime <= 0) {
+          if (waitTime `<`= 0) `{`
           // 等待超时退出
           isTimedout = true;
           break;
-        }
+        `}`
         wait(waitTime);
 
 
-      }// while循环结束
-      if (isTimedout) {
+      `}`// while循环结束
+      if (isTimedout) `{`
         unregisterRequest(request);
         throw new TimeoutException(timeOut, request.toString());
-      }
+      `}`
       return res;
-    }
-```
+    `}`
+
     
     // 响应消息接收线程接收到消息后会调用该方法
     @Override
     public synchronized
     
-     void responseReceived(ResponseMessage response) {
+     void responseReceived(ResponseMessage response) `{`
       String requestID = response.getRequestID();
       RequestMessage request = (RequestMessage) requests.get(requestID);
       // request为null，说明响应没有在规定的时间内到达当前系统
-      if (null ! = request) {
+      if (null ! = request) `{`
         requests.remove(requestID);
         request.setResponse(response);
 
@@ -13154,10 +13146,10 @@ apply4Filename方法所执行的操作可以分解为这样一个操作：其预
         notifyAll();
 
 
-      }
-    }
-```
-    }
+      `}`
+    `}`
+
+    `}`
 ```
 
 RequestRegistry.registerRequest方法用于注册指定的请求消息。请求消息发送线程可通过调用RequestRegistry.waitForResponse方法来获取指定请求消息对应的响应消息。响应消息接收线程在接收到下游部件发送过来的响应消息后，会调用RequestRegistry.responseReceived方法将相应的响应消息关联到对应的请求消息上，并通知请求发送线程。
@@ -13169,89 +13161,89 @@ NaiveRequestRegistry类中的所有方法都是同步方法。这就意味着当
 ```java
     public class FineRequestRegistry implements RequestRegistry
     
-     {
-      @SuppressWarnings({ "rawtypes" })
-      private final Map/* <String, RequestMessage> */requests = new HashMap<>();
+     `{`
+      @SuppressWarnings(`{` "rawtypes" `}`)
+      private final Map/* `<`String, RequestMessage`>` */requests = new HashMap`<``>`();
       @SuppressWarnings("unchecked")
       @Override
       public synchronized
     
-     void registerRequest(RequestMessage request) {
+     void registerRequest(RequestMessage request) `{`
         String requestID = request.getID();
         requests.put(requestID, request);
-      }
+      `}`
     
       @Override
       public synchronized
     
-     void unregisterRequest(RequestMessage request) {
+     void unregisterRequest(RequestMessage request) `{`
         String requestID = request.getID();
         requests.remove(requestID);
-      }
+      `}`
     
       @Override
       public ResponseMessage waitForResponse
     
     (RequestMessage request, long timeOut)
-          throws TimeoutException, InterruptedException {
+          throws TimeoutException, InterruptedException `{`
         ResponseMessage res = null;
         long start = System.currentTimeMillis();
         long waitTime;
         long now;
         boolean isTimedout = false;
-        synchronized (request) {
+        synchronized (request) `{`
 
 
-          while (null == (res = request.getResponse())) {
+          while (null == (res = request.getResponse())) `{`
             now = System.currentTimeMillis();
             // 计算剩余等待时间
             waitTime = timeOut - (now - start);
-            if (waitTime <= 0) {
+            if (waitTime `<`= 0) `{`
             // 等待超时退出
             isTimedout = true;
             break;
-            }
+            `}`
             request.wait(waitTime);
 
 
-          }// while循环结束
-        }
+          `}`// while循环结束
+        `}`
     
     // synchronized结束
-        if (isTimedout) {
+        if (isTimedout) `{`
           unregisterRequest(request);
           throw new TimeoutException(timeOut, request.toString());
-        }
+        `}`
         return res;
-      }
+      `}`
     
       @Override
-      public void responseReceived(ResponseMessage response) {
+      public void responseReceived(ResponseMessage response) `{`
         String requestID = response.getRequestID();
         RequestMessage request = null;
-        synchronized (this) {
+        synchronized (this) `{`
 
 
           request = (RequestMessage) requests.get(requestID);
-          if (null == request) {
+          if (null == request) `{`
             return;
-          }
+          `}`
           requests.remove(requestID);
-        }
+        `}`
 
 
-        synchronized (request) {
+        synchronized (request) `{`
 
 
           request.setResponse(response);
           request.notify();
 
 
-        }
+        `}`
 
 
-      }
-    }
+      `}`
+    `}`
 ```
 
 在优化后的代码中，waitForResponse方法在等待响应消息的时候不再调用RequestRegistry.wait(long)而是调用Request.wait(long)，因此该方法内部使用一个由Request实例引导的同步块即可，而无须将方法本身定义为同步方法。这个更改使得responseReceived方法也无须是同步方法：responseReceived方法内部有一个由Request实例引导的同步块，我们在该同步块中调用Request.notify()即可实现通知请求消息发送线程。而registerRequest/unregisterRequest方法仍然是同步方法。此时registerRequest/unregisterRequest方法使用的锁是FineRequestRegistry的当前实例，该锁所保护的共享数据是实例变量requests（HashMap），而waitForResponse/responseReceived方法使用的锁主要是Request实例，该锁所保护的共享数据是具体的请求消息。而原来的代码（清单12-8）中使用的锁（NaiveRequestRegistry的当前实例）所保护的共享数据既包含实例变量requests也包含具体的请求消息，因此，相比原先使用的一个粒度较粗的锁（它保护两种共享数据），现在使用的两个粒度更细的锁（这两个锁各自仅保护一种共享数据）相当于减小了原先锁的粒度，从而降低了锁被争用的概率，即降低了registerRequest/unregisterRequest方法的执行线程（请求消息发送线程）和waitForResponse/responseReceived方法的执行线程（响应消息接收线程）争用同一个锁的概率，这有利于提高这两种线程的并发性，从而提高各自的吞吐率。
@@ -13283,37 +13275,37 @@ NaiveRequestRegistry类中的所有方法都是同步方法。这就意味着当
 清单12-10　控制Executors.newCachedThreadPool()返回的线程池的工作者线程数示例代码
 
 ```java
-    public class ImplicitControlThreadsCount {
+    public class ImplicitControlThreadsCount `{`
       final ExecutorService executorSerivice = Executors.newCachedThreadPool();
 
 
       final Semaphore semaphore = new Semaphore(Runtime.getRuntime()
           .availableProcessors() * 2);
     
-      public void doSomething(final String data) throws InterruptedException {
+      public void doSomething(final String data) throws InterruptedException `{`
         semaphore.acquire();
 
 
-        Runnable task = new Runnable() {
+        Runnable task = new Runnable() `{`
           @Override
-          public void run() {
-          try {
+          public void run() `{`
+          try `{`
             process(data);
-          } finally {
+          `}` finally `{`
             semaphore.release();
 
 
-          }
-          }
-        };
+          `}`
+          `}`
+        `}`;
     
         executorSerivice.submit(task);
-      }
+      `}`
     
-      private void process(String data) {
+      private void process(String data) `{`
         // ......
-      }
-    }
+      `}`
+    `}`
 ```
 
 这里，我们使用一个Semaphore来控制任务task的提交并发程度，从而限制了线程池中的工作者线程数。
@@ -13428,73 +13420,73 @@ Java对象在内存中的存储包括对象头（Object Header）和实例字段
      * @author Viscent Huang
      */
 ```java
-    public class FalseSharingDemo extends Thread {
+    public class FalseSharingDemo extends Thread `{`
       final CountingTask task;
     
-      public FalseSharingDemo(CountingTask task) {
+      public FalseSharingDemo(CountingTask task) `{`
         this.task = task;
-      }
+      `}`
     
       @Override
-    public void run() {
+    public void run() `{`
       final CountingTask t = task;
       final long count = t.getIterations();
-      for (long i = 0; i < count; i++) {
+      for (long i = 0; i `<` count; i++) `{`
         t.setValue(t.getValue() + i);
-      }
-    }
-```
+      `}`
+    `}`
+
     
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception `{`
       int argc = args.length;
       int N; // 工作者线程数
-      N = argc > 0 ? Integer.valueOf(args[0]) : Runtime.getRuntime()
+      N = argc `>` 0 ? Integer.valueOf(args[0]) : Runtime.getRuntime()
           .availableProcessors();
       long iterations;
-      iterations = argc > 1 ? Long.valueOf(args[1])
+      iterations = argc `>` 1 ? Long.valueOf(args[1])
           : 400 * 1000 * 1000L;
     
       String taskImplClassName;
       taskImplClassName = System.getProperty("x.task.impl");
-      if (null == taskImplClassName) {
+      if (null == taskImplClassName) `{`
         taskImplClassName = "DefaultCountingTask";
-      }
+      `}`
     
       CountingTask[] tasks = createTasks(taskImplClassName, N, iterations);
       Thread[] demoThreads = new Thread[N];
-      for (int i = 0; i < N; i++) {
+      for (int i = 0; i `<` N; i++) `{`
         demoThreads[i] = new FalseSharingDemo(tasks[i]);
-      }
+      `}`
       long start = System.currentTimeMillis();
       // 启动并等待指定的线程终止
       Tools.startAndWaitTerminated(demoThreads);
       System.out
           .printf("Duration: %, d ms %n", System.currentTimeMillis() - start);
-    }
-```
+    `}`
+
     
     private static CountingTask[] createTasks(String taskImplClassName, int N,
-        long iterations) {
+        long iterations) `{`
       CountingTask[] tasks = new CountingTask[N];
       // 这里必须连续创建多个XXCountingTask实例，
       // 创建这些实例期间不能创建其他实例以提高Java虚拟机为这些对象分配连续的内存空间的概率。
-      if ("DefaultCountingTask".equals(taskImplClassName)) {
-        for (int i = 0; i < N; i++) {
+      if ("DefaultCountingTask".equals(taskImplClassName)) `{`
+        for (int i = 0; i `<` N; i++) `{`
           tasks[i] = new DefaultCountingTask(iterations);
-        }
-      } else if ("AutoPaddedCountingTask".equals(taskImplClassName)) {
-        for (int i = 0; i < N; i++) {
+        `}`
+      `}` else if ("AutoPaddedCountingTask".equals(taskImplClassName)) `{`
+        for (int i = 0; i `<` N; i++) `{`
           tasks[i] = new AutoPaddedCountingTask(iterations);
-        }
-      } else {
-        for (int i = 0; i < N; i++) {
+        `}`
+      `}` else `{`
+        for (int i = 0; i `<` N; i++) `{`
           tasks[i] = new ManuallyPaddedCountingTask(iterations);
-        }
-      }
+        `}`
+      `}`
       return tasks;
-    }
-```
-    }
+    `}`
+
+    `}`
 ```
 
 FalseSharingDemo默认情况下创建的CountingTask实例是DefaultCountingTask（源码见清单12-12）实例。
@@ -13502,33 +13494,33 @@ FalseSharingDemo默认情况下创建的CountingTask实例是DefaultCountingTask
 清单12-12　DefaultCountingTask源码
 
 ```java
-    public class DefaultCountingTask implements CountingTask {
+    public class DefaultCountingTask implements CountingTask `{`
       private final long iterations;
       private volatile long value;
     
-      public DefaultCountingTask() {
+      public DefaultCountingTask() `{`
         this(100_0000);
-      }
+      `}`
     
-      public DefaultCountingTask(long iterations) {
+      public DefaultCountingTask(long iterations) `{`
         this.iterations = iterations;
-      }
+      `}`
     
       @Override
-      public long getIterations() {
+      public long getIterations() `{`
         return iterations;
-      }
+      `}`
     
       @Override
-      public void setValue(long value) {
+      public void setValue(long value) `{`
         this.value = value;
-      }
+      `}`
     
       @Override
-      public long getValue() {
+      public long getValue() `{`
         return value;
-      }
-    }
+      `}`
+    `}`
 ```
 
 通过指定不同的工作者线程数，我们可以看到如表12-1所示的运行结果 [\[18\]](#text00018.html#ft18) 。可见，随着工作者线程数的增加，所有工作者线程的总耗时也随之增加。由于该Demo中的工作者线程的任务处理逻辑非常简单——在循环中进行简单的字段读取和更新，并且各个工作者线程间也不存在共同的共享变量；因此，只要指定的工作者线程数量不超过系统的总处理器数目，那么这些工作者线程就应该可以并行（或者几乎并行）。也就是说这些工作者线程的总耗时应该仍然与一个工作者线程的情况相近，而实际则不然：此时工作者线程的总耗时却是原来的6.7（=19377/2880）倍之多！
@@ -13590,7 +13582,7 @@ FalseSharingDemo默认情况下创建的CountingTask实例是DefaultCountingTask
 清单12-13　ManuallyPaddedCountingTask源码
 
 ```java
-    public class ManuallyPaddedCountingTask implements CountingTask {
+    public class ManuallyPaddedCountingTask implements CountingTask `{`
       private final long iterations;
       public volatile long value;
       // 填充
@@ -13599,7 +13591,7 @@ FalseSharingDemo默认情况下创建的CountingTask实例是DefaultCountingTask
 
 
       // ......
-    }
+    `}`
 ```
 
 为谨慎起见，我们还是再次使用jol确认一下ManuallyPaddedCountingTask实例的内存布局是否符合我们的期望：
@@ -13678,7 +13670,7 @@ Java 8根据JDK第142号增强提案（JEP142, http://openjdk.java.net/jeps/142�
 清单12-14　AutoPaddedCountingTask源码
 
 ```java
-    public class AutoPaddedCountingTask implements CountingTask {
+    public class AutoPaddedCountingTask implements CountingTask `{`
       private final long iterations;
     
       @sun.misc.Contended
@@ -13688,7 +13680,7 @@ Java 8根据JDK第142号增强提案（JEP142, http://openjdk.java.net/jeps/142�
 
 
       // ......
-    }
+    `}`
 ```
 
 由于目前默认情况下@sun.misc.Contended仅开放给JDK内部的类，因此，应用自身的类要使用该注解时需要开启Java虚拟机的开关“-XX:-RestrictContended”。所以，要使用如清单12-14所示的CountingTask实现类来消除伪共享，我们需要使用如下命令来运行本Demo：
@@ -13699,20 +13691,20 @@ Java 8根据JDK第142号增强提案（JEP142, http://openjdk.java.net/jeps/142�
 自动填充避免了手动填充存在的一些问题（可移植性等问题）和不便，但是它比手动填充更耗空间——JDK 1.8在@sun.misc.Contended注释的字段（或者类的实例）前和后各自填充大小为缓存行宽度的2倍的填充空间。因此，依照性能优化“避免过早优化”的原则，我们应该只在确认存在伪共享问题的情况下才考虑使用填充。
 
 减少共享变量的访问频率有助于降低伪共享问题出现的频率。例如，针对本Demo中的工作者线程的run方法（见清单12-12），我们可以在不改变程序语义的前提下通过优先使用局部变量来减少共享变量的访问频率，从而降低伪共享问题出现的频率，如下代码片段所示：
-
-    public void run() {
+```java
+    public void run() `{`
         final CountingTask t = task;
         final long count = t.getIterations();
         long sum = 0;
-        for (long i = 0; i < count; i++) {
+        for (long i = 0; i `<` count; i++) `{`
           sum += i;
-        }
+        `}`
         // 仅访问一次共享变量
         t.setValue(sum);
 
 
-     }
-
+     `}`
+```
 经过上面的调整本Demo的伪共享问题几乎不存在，并且volatile变量（CountingTask中的value实例变量）访问的开销也极大地被降低了，因此程序的运行持续时间可以降低到几百毫秒。
 
 虽然降低共享变量的访问频率所带来的效果可能比较明显，但是由于它可能涉及程序算法的调整，因此其运用比较受限。
@@ -13781,7 +13773,7 @@ Java虚拟机自Java 6开始对内部锁进行了若干优化：锁消除、锁�
 
 [\[19\]](#text00018.html#fn19) @sun.misc.Contended并不对静态字段起作用。
 
-# Web参考资源
+## Web参考资源
 
 #### 第1章　走近Java世界中的线程
 
@@ -14009,7 +14001,7 @@ https://www.infoq.com/articles/Java_Garbage_Collection_Distilled
 
 http://openjdk.java.net/jeps/142
 
-# 参考文献
+## 参考文献
 
 1．Brian Göetz et al. Java Concurrency In Practice. Addison Wesley, 2006.
 

@@ -35,9 +35,9 @@ Creating shortcut for WinVNC (winvnc.exe)
 'UltraVNC' (1.4.2.0) was installed successfully!
 ```
 
-<div><img src="https://img-blog.csdnimg.cn/20200425112223169.png" width=50% height=300 align ="left" />
-<img src="https://img-blog.csdnimg.cn/20200425112340400.png" width=50% height=300/>
-</div>
+![](https://img-blog.csdnimg.cn/20200425112223169.png)
+1[](https://img-blog.csdnimg.cn/20200425112340400.png)
+
 
 ### 3.安装 websockify
 #### 3.1 cmd 执行下载
