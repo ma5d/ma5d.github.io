@@ -111,5 +111,18 @@ npm login –registry=http://172.16.92.74:9998/nexus/repository/npm-hosted
 npm publish –registry=http://172.16.92.74:9998/nexus/repository/npm-hosted/
 
 ```
+## 6. npm仓库
+```sh
+    // 查询源
+    npm config get registry
 
+    // 更换国内源
+    npm config set registry https://registry.npmmirror.com
+
+    // 恢复官方源
+    npm config set registry https://registry.npmjs.org
+
+    // 删除注册表
+    npm config delete registry
+```
 本文转自 https://blog.csdn.net/qq_31635851/article/details/109333231，如有侵权，请联系删除。
