@@ -11,6 +11,9 @@
 name: Deploy to GitHub Pages
 
 on:
+  repository_dispatch:
+    types:
+      - update_docs
   push:
     branches:
       - main
