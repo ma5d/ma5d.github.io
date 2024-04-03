@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# 教程介绍(test normoal)
+# 教程介绍
 
 Let's discover **Docusaurus in less than 5 minutes**.
 
