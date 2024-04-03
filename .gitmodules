@@ -1,0 +1,3 @@
+[submodule "docs/jvm"]
+	path = docs/jvm
+	url = https://github.com/ma5d/NOTE_JVM.git
