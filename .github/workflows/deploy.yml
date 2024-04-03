@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
 
       - name: pull jvm
-        run: git -b main clone https://github.com/ma5d/NOTE_JVM.git docs/jvm
+        run: git clone -b main https://github.com/ma5d/NOTE_JVM.git docs/jvm
       
       - uses: actions/setup-node@v4
         with:
