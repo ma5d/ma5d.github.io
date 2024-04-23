@@ -1247,3 +1247,180 @@ public class CountDownLatchDemo {
     }
 } 
 ```
+
+## 7.2 循环栅栏CyclicBarrier 
+
+>CyclicBarrier 看英文单词可以看出大概就是循环阻塞的意思，在使用中 CyclicBarrier 的构造方法第一个参数是目标障碍数，每次执行 CyclicBarrier 一次障碍数会加一，如果达到了目标障碍数，才会执行 cyclicBarrier.await()之后的语句。可以将 CyclicBarrier 理解为加 1 操作
+
+**场景: 集齐 7 颗龙珠就可以召唤神龙**
+
+CyclicBarrierDemo
+
+```java
+package com.atguigu.test;
+
+import java.util.concurrent.CyclicBarrier;
+
+/**
+ * CyclicBarrierDemo 案列
+ */
+public class CyclicBarrierDemo {
+
+    // 定义神龙召唤需要的龙珠总数 
+    private final static int NUMBER = 7;
+
+    /**
+     * 集齐 7 颗龙珠就可以召唤神龙
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        // 定义循环栅栏 
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(NUMBER, () -> {
+            System.out.println("集齐" + NUMBER + "颗龙珠,现在召唤神龙!!!!!!!!!");
+        });
+        // 定义 7 个线程分别去收集龙珠 
+        for (int i = 1; i <= 7; i++) {
+            new Thread(() -> {
+                try {
+                    if (Thread.currentThread().getName().equals("龙珠 3 号")) {
+                        System.out.println("龙珠 3 号抢夺战开始,孙悟空开启超级赛亚人模式!");
+                        Thread.sleep(5000);
+                        System.out.println("龙珠 3 号抢夺战结束,孙悟空打赢了,拿到了龙珠 3 号!");
+                    } else {
+                        System.out.println(Thread.currentThread().getName() + "收集到了!!!!");
+                    }
+                    cyclicBarrier.await();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }, "龙珠" + i + "号").start();
+        }
+    }
+} 
+
+```
+
+## 7.3 信号灯Semaphore 
+
+Semaphore 的构造方法中传入的第一个参数是最大信号量（可以看成最大线程池），每个信号量初始化为一个最多只能分发一个许可证。使用 acquire 方法获得许可证，release 方法释放许可场景: 抢车位, 6 部汽车 3 个停车位
+```java
+package com.atguigu.test; 
+ 
+import java.util.concurrent.Semaphore; 
+ 
+/** 
+ * Semaphore 案列 
+ */ 
+public class SemaphoreDemo {
+ 
+    /** 
+*	抢车位, 10 部汽车 1 个停车位 
+*	@param args 
+     */ 
+    public static void main(String[] args) throws Exception{
+        //定义 3 个停车位 
+        Semaphore semaphore = new Semaphore(1); 
+        //模拟 6 辆汽车停车 
+        for (int i = 1; i <= 10; i++) { 
+            Thread.sleep(100); 
+            //停车             
+            new Thread(() ->{ 
+                try { 
+                    System.out.println(Thread.currentThread().getName() + "找车位 ing");                     semaphore.acquire(); 
+                    System.out.println(Thread.currentThread().getName() + "汽车停车成功!"); 
+                    Thread.sleep(10000); 
+                }catch (Exception e){ 
+                    e.printStackTrace(); 
+                }finally { 
+                    System.out.println(Thread.currentThread().getName() + "溜了溜了");                     semaphore.release(); 
+                } 
+            }, "汽车" + i).start(); 
+        } 
+    } 
+}
+```
+
+# 8 读写锁 
+
+## 8.1 读写锁介绍 
+
+现实中有这样一种场景：对共享资源有读和写的操作，且写操作没有读操作那么频繁。在没有写操作的时候，多个线程同时读一个资源没有任何问题，所以应该允许多个线程同时读取共享资源；但是如果一个线程想去写这些共享资源，就不应该允许其他线程对该资源进行读和写的操作了。针对这种场景，**JAVA 的并发包提供了读写锁 ReentrantReadWriteLock，它表示两个锁，一个是读操作相关的锁，称为共享锁；一个是写相关的锁，称为排他锁**
+
+1. 线程进入读锁的前提条件：
+- 没有其他线程的写锁
+- 没有写请求, 或者==有写请求，但调用线程和持有锁的线程是同一个(可重入锁)。==
+
+2. 线程进入写锁的前提条件：
+- 没有其他线程的读锁
+- 没有其他线程的写锁
+
+而读写锁有以下三个重要的特性：
+1.  公平选择性：支持非公平（默认）和公平的锁获取方式，吞吐量还是非公平优于公平。
+2.  重进入：读锁和写锁都支持线程重进入。
+3.  锁降级：遵循获取写锁、获取读锁再释放写锁的次序，写锁能够降级成为读锁。
+
+## 8.2 ReentrantReadWriteLock 
+
+ReentrantReadWriteLock 类的整体结构
+```java
+package com.atguigu.sync;
+
+import java.util.concurrent.locks.AbstractQueuedSynchronizer;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+
+public class ReentrantReadWriteLock implements ReadWriteLock, java.io.Serializable {
+
+    /**
+     * 读锁
+     */
+    private final ReentrantReadWriteLock.ReadLock readerLock;
+
+    /**
+     * 写锁
+     */
+    private final ReentrantReadWriteLock.WriteLock writerLock;
+
+    final Sync sync;
+
+    /**
+     * 使用默认（非公平）的排序属性创建一个新的
+     * ReentrantReadWriteLock
+     */
+    public ReentrantReadWriteLock() {
+        this(false);
+    }
+
+    /**
+     * 使用给定的公平策略创建一个新的 ReentrantReadWriteLock
+     */
+    public ReentrantReadWriteLock(boolean fair) {
+        sync = fair ? new FairSync() : new NonfairSync();
+        readerLock = new ReadLock(this);
+        writerLock = new WriteLock(this);
+    }
+
+    /**
+     * 返回用于写入操作的锁
+     */
+    public ReentrantReadWriteLock.WriteLock writeLock() {
+        return writerLock;
+    }
+
+    /**
+     * 返回用于读取操作的锁
+     */
+    public ReentrantReadWriteLock.ReadLock readLock() {
+        return readerLock;
+    }
+    abstract static class Sync extends AbstractQueuedSynchronizer {}
+    static final class NonfairSync extends Sync {}
+    static final class FairSync extends Sync {}
+    public static class ReadLock implements Lock, java.io.Serializable {}
+    public static class WriteLock implements Lock, java.io.Serializable {}
+}
+
+```
+
+可以看到，ReentrantReadWriteLock 实现了 ReadWriteLock 接口，ReadWriteLock 接口定义了获取读锁和写锁的规范，具体需要实现类去实现；同时其还实现了 Serializable 接口，表示可以进行序列化，在源代码中可以看到 ReentrantReadWriteLock 实现了自己的序列化逻辑。
