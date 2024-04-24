@@ -1971,7 +1971,7 @@ public class ThreadPoolDemo1 {
 
 ### 10.5 线程池底层工作原理(重要)
 
-![](media/image19.jpg)
+`![](media/image19.jpg)`
 
 1. 在创建了线程池后，线程池中的线程数为零
 
@@ -2080,3 +2080,69 @@ pushTask 方法把当前任务存放在 ForkJoinTask 数组队列里。然后再
             }
         }
 ```
+
+### 11.3 join 方法
+
+Join 方法的主要作用是阻塞当前线程并等待获取结果。让我们一起看看
+
+> ForkJoinTask 的 join 方法的实现，代码如下：
+
+```java
+public final V join() { 
+        int s; 
+        if ((s = doJoin() & DONE_MASK) != NORMAL) 
+            reportException(s);         
+            return getRawResult(); 
+    } 
+
+```
+
+> 它首先调用 doJoin 方法，通过 doJoin()方法得到当前任务的状态来判断返回什么结果，任务状态有 4 种：
+
+已完成（NORMAL）、被取消（CANCELLED）、信号（SIGNAL）和出现异常（EXCEPTIONAL）
+- 如果任务状态是已完成，则直接返回任务结果。
+- 如果任务状态是被取消，则直接抛出 CancellationException
+- 如果任务状态是抛出异常，则直接抛出对应的异常
+
+让我们分析一下 doJoin 方法的实现
+
+```java
+    private int doJoin() {
+        int s; Thread t; ForkJoinWorkerThread wt; ForkJoinPool.WorkQueue w;
+        return (s = status) < 0 ? s :
+            ((t = Thread.currentThread()) instanceof ForkJoinWorkerThread) ?
+            (w = (wt = (ForkJoinWorkerThread)t).workQueue).
+            tryUnpush(this) && (s = doExec()) < 0 ? s :
+            wt.pool.awaitJoin(w, this, 0L) :
+            externalAwaitDone();
+    }
+```
+
+在 doJoin()方法流程如下:
+
+1.  首先通过查看任务的状态，看任务是否已经执行完成，如果执行完成，则直接返回任务状态；
+
+2.  如果没有执行完，则从任务数组里取出任务并执行。
+
+3.  如果任务顺利执行完成，则设置任务状态为 NORMAL，如果出现异常，则记录异常，并将任务状态设置为 EXCEPTIONAL。
+
+### 11.4 Fork/Join 框架的异常处理
+
+ForkJoinTask 在执行的时候可能会抛出异常，但是我们没办法在主线程里直接捕获异常，所以 ForkJoinTask 提供了  isCompletedAbnormally() 方法来检查任务是否已经抛出异常或已经被取消了，并且可以通过 ForkJoinTask 的 getException 方法获取异常。
+
+getException 方法返回 Throwable 对象，如果任务被取消了则返回 CancellationException。如果任务没有完成或者没有抛出异常则返回 null。
+
+
+### 11.5 入门案例
+
+场景: 生成一个计算任务，计算 1+2+3.........+1000, 每 100 个数切分一个子任务
+
+
+
+
+
+
+
+
+
+
