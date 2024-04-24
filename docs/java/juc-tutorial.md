@@ -2029,13 +2029,10 @@ Fork/Join 它可以将一个大的任务拆分成多个子任务进行并行处�
 
 - **ForkJoinTask**:我们要使用 Fork/Join 框架，首先需要创建一个 ForkJoin 任务。该类提供了在任务中执行 fork 和 join 的机制。通常情况下我们不需要直接集成 ForkJoinTask 类，只需要继承它的子类，Fork/Join 框架提供了两个子类：
 
- a.RecursiveAction：用于没有返回结果的任务
-
- b.RecursiveTask:用于有返回结果的任务
-
-- **ForkJoinPool**:ForkJoinTask 需要通过 ForkJoinPool 来执行
-
-- **RecursiveTask**: 继承后可以实现递归(自己调自己)调用的任务
+1. RecursiveAction：用于没有返回结果的任务
+2. RecursiveTask:用于有返回结果的任务
+3. ForkJoinPool:ForkJoinTask 需要通过 ForkJoinPool 来执行
+4. RecursiveTask: 继承后可以实现递归(自己调自己)调用的任务
 
 #### Fork/Join 框架的实现原理
 
@@ -2136,6 +2133,102 @@ getException 方法返回 Throwable 对象，如果任务被取消了则返回 C
 ### 11.5 入门案例
 
 场景: 生成一个计算任务，计算 1+2+3.........+1000, 每 100 个数切分一个子任务
+
+```java
+package com.atguigu.test;
+
+import java.util.concurrent.RecursiveTask;
+
+/**
+ * 递归累加
+ */
+public class TaskExample extends RecursiveTask<Long> {
+    private int start;
+    private int end;
+    private long sum;
+
+    /**
+     * 构造函数
+     *
+     * @param start
+     * @param end
+     */
+    public TaskExample(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    /**
+     * The main computation performed by this task.
+     *
+     * @return the result of the computation
+     */
+
+    @Override
+    protected Long compute() {
+
+        System.out.println("任务" + start + "=========" + end + "累加开始");
+        // 大于 100 个数相加切分,小于直接加
+        if (end - start <= 100) {
+            for (int i = start; i <= end; i++) {
+                // 累加
+                sum += i;
+            }
+        } else {
+            // 切分为 2 块
+            int middle = start + 100;
+            // 递归调用,切分为 2 个小任务
+            TaskExample taskExample1 = new TaskExample(start, middle);
+            TaskExample taskExample2 = new TaskExample(middle + 1, end);
+            // 执行:异步
+            taskExample1.fork();
+            taskExample2.fork();
+            // 同步阻塞获取执行结果
+            sum = taskExample1.join() + taskExample2.join();
+        }
+        // 加完返回
+        return sum;
+    }
+} 
+
+```
+
+```java
+package com.atguigu.test;
+
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
+
+/**
+ * 分支合并案例
+ */
+public class ForkJoinPoolDemo {
+
+
+    /**
+     * 生成一个计算任务，计算 1+2+3.........+1000
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        // 定义任务
+        TaskExample taskExample = new TaskExample(1, 1000);
+        // 定义执行对象
+        ForkJoinPool forkJoinPool = new ForkJoinPool();
+        // 加入任务执行
+        ForkJoinTask<Long> result = forkJoinPool.submit(taskExample);
+        // 输出结果
+        try {
+            System.out.println(result.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            forkJoinPool.shutdown();
+        }
+    }
+} 
+
+```
 
 
 
