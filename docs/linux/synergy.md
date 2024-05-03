@@ -32,6 +32,7 @@ sidebar_position: 6
 下载地址
 ----
 [蓝云](https://wwi.lanzoup.com/irEn805348gh)
+`chy9`
 > 若分享失效，可以在下方评论区留言召唤博主
 
 ### 2023年5月4日更新
