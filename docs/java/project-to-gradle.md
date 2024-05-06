@@ -29,4 +29,8 @@ allprojects {
         implementation 'junit:junit:4.13.2'
     }
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 ```
