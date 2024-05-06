@@ -1,5 +1,6 @@
 # 项目转为gradle
 
+[下载](https://gradle.org/releases/)
 1. 新建`settings.gradle`
 
 ```groovy
