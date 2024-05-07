@@ -14,6 +14,7 @@ apply plugin: 'java'
 
 allprojects {
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
     }
