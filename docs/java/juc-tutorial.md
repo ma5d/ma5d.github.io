@@ -1,6 +1,6 @@
 # JUC高并发编程 
 
-![代码仓库](https://gitee.com/ma5d/juc_atguigu.git)
+[代码仓库](https://gitee.com/ma5d/juc_atguigu.git)
 
 ## 1 什么是JUC 
 
