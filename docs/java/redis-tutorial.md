@@ -1,7 +1,6 @@
 # redis教程
-## 1. Redis数据类型
 
-###	1.1 Redis的五大数据类型
+##	1. Redis的五大数据类型
 - string（字符串）
 - hash（哈希，类似java里的Map）
 - list（列表）
@@ -14,8 +13,7 @@
   - 菜鸟教程：https://www.runoob.com/redis/redis-tutorial.html
   - Redis命令参考：https://www.runoob.com/redis/redis-commands.html
 
-
-#### 1.1.1Redis 键(key)
+### 1.1 Redis 键(key)
 
 常用案例
 * `keys *`
@@ -28,7 +26,7 @@
 * `ttl key` 查看还有多少秒过期，-1表示永不过期，-2表示已过期
 * `type key` 查看你的key是什么类型
 
-#### 1.1.2 Redis字符串(String)
+### 1.2 Redis字符串(String)
 常用, 单值单value 案例
 * `set`/`get`/`del`/`append`/`strlen`
 * `Incr`/`decr`/`incrby`/`decrby`,一定要是数字才能进行加减
@@ -44,7 +42,7 @@
   * `msetnx`:同时设置一个或多个 `key-value` 对，当且仅当所有给定 key 都不存在。
 * `getset`(先get再set)
 
-#### 1.1.3 Redis列表(List)
+### 1.3 Redis列表(List)
 常用,单值多value,案例
 * `lpush`/`rpush`/`lrange`
 * `lpop`/`rpop`
@@ -57,49 +55,50 @@
 * linsert key  before/after 值1 值2
 * 性能总结
 
-```html
-Redis集合(Set)
-常用
-单值多value
+
+### 1.4 Redis集合(Set)
+
+> 单值多value
+
 案例
-sadd/smembers/sismember
-scard，获取集合里面的元素个数
-srem key value 删除集合中元素
-srandmember key 某个整数(随机出几个数)
-spop key 随机出栈
-smove key1 key2 在key1里某个值      作用是将key1里的某个值赋给key2
+* `sadd/smembers/sismember`
+* `scard`，获取集合里面的元素个数
+* `srem key value` 删除集合中元素
+* `srandmember key` 某个整数(随机出几个数)
+* `spop key` 随机出栈
+* `smove key1 key2` 在key1里某个值      作用是将key1里的某个值赋给key2
+
 数学集合类
-差集：sdiff
-交集：sinter
-并集：sunion
-Redis哈希(Hash)
-常用
-KV模式不变，但V是一个键值对
+* 差集：sdiff
+* 交集：sinter
+* 并集：sunion
+
+### 1.5 Redis哈希(Hash)
+
+> 常用, KV模式不变，但V是一个键值对
+
 案例
-hset/hget/hmset/hmget/hgetall/hdel
-hlen
-hexists key 在key里面的某个值的key
-hkeys/hvals
-hincrby/hincrbyfloat
-hsetnx
-Redis有序集合Zset(sorted set)
-多说一句
-在set基础上，加一个score值。
-之前set是k1 v1 v2 v3，
-现在zset是k1 score1 v1 score2 v2
-常用
+- `hset/hget/hmset/hmget/hgetall/hdel`
+- `hlen`
+- `hexists key` 在key里面的某个值的key
+- `hkeys/hvals`
+- `hincrby/hincrbyfloat`
+- `hsetnx`
+
+### 1.6 Redis有序集合Zset(sorted set)
+
+> 多说一句 在set基础上，加一个score值。 之前set是k1 v1 v2 v3， 现在zset是k1 score1 v1 score2 v2
+
 案例
-zadd/zrange
-withscores
-zrangebyscore key 开始score 结束score
-withscores
-(   不包含
-limit 作用是返回限制
-limit 开始下标步 多少步
-zrem key 某score下对应的value值，作用是删除元素
-zcard/zcount key score区间/zrank key values值，作用是获得下标值/zscore key 对应值,获得分数
-zrevrank key values值，作用是逆序获得下标值
-zrevrange
-zrevrangebyscore  key 结束score 开始score
-```
+- `zadd/zrange [withscores]`
+- `zrangebyscore key 开始score 结束score [withscores]`
+  - (   不包含 
+  - limit 作用是返回限制 limit 开始下标步 多少步
+
+- `zrem key` 某score下对应的value值，作用是删除元素
+- `zcard/zcount key score区间/zrank key values值`，作用是获得下标值/zscore key 对应值,获得分数
+- `zrevrank key values`值，作用是逆序获得下标值
+- zrevrange
+- zrevrangebyscore  key 结束score 开始score
+
 
