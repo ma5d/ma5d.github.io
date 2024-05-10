@@ -101,4 +101,61 @@
 - zrevrange
 - zrevrangebyscore  key 结束score 开始score
 
+## 2 解析配置文件 `redis.conf`
+### 2.1 地址
+```shell
+docker run \
+	--log-opt max-size=100m \
+	--log-opt max-file=2 \
+	--network mybridge \
+	--ip 172.22.1.63 \
+	-p 6379:6379 \
+	--name redis \
+	-v /home/docker/redis/redis.conf:/etc/redis/redis.conf \
+	-v /home/docker/redis/data:/data \
+	-d redis \
+	redis-server /etc/redis/redis.conf  \
+	--appendonly yes
+```
+
+### 2.2 Units 单位
+
+* 配置大小单位,开头定义了一些基本的度量单位，只支持bytes，不支持bit
+* 对大小写不敏感
+
+### 2.3 Include 包含
+
+* 和我们的`Struts2`配置文件类似，可以通过`includes`包含， r`edis.conf`可以作为总闸，包含其他`.conf`文件
+* 类似于`nginx.conf`
+
+### 2.4 GENERAL通用
+
+* Daemonize
+* Pidfile
+* Port
+* Tcp-backlog
+  1. tcp-backlog 设置tcp的backlog，backlog其实是一个连接队列. 
+  2. backlog队列总和=未完成三次握手队列 + 已经完成三次握手队列。 
+  3. 在高并发环境下你需要一个高backlog值来避免慢客户端连接问题。 
+  4. 注意Linux内核会将这个值减小到`/proc/sys/net/core/somaxconn`的值，所以需要确认增大`somaxconn`和`tcp_max_syn_backlog`两个值
+      来达到想要的效果.
+
+* Timeout
+  * 单位为秒，如果设置为0，则不会进行Keepalive检测，建议设置成60
+
+* Bind
+* Tcp-keepalive
+  * 单位为秒，如果设置为0，则不会进行Keepalive检测，建议设置成60
+
+* Loglevel
+* Logfile
+* Syslog-enabled
+  * 是否把日志信息记录到系统日志中，默认是no
+* Syslog-ident
+  * 设置系统日志`syslog`中的日志标志
+* Syslog-facility
+  * 指定syslog设备，值可以是USER或LOCAL0-LOCAL7
+* Databases
+
+### 2.5 SNAPSHOTTING快照
 
