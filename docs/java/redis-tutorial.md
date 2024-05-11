@@ -343,3 +343,58 @@ https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/
     数值都和原进程一致，但是是一个全新的进程，并作为原进程的子进程
 
 3. Rdb 保存的是dump.rdb文件
+4. 配置多久保存快照
+5. 如何触发RDB快照
+   - 配置文件中默认的快照配置
+   - 命令save或者是 bgsave
+     Save：save时只管保存，其它不管，全部阻塞
+     BGSAVE：Redis会在后台异步进行快照操作，
+     快照同时还可以响应客户端请求。可以通过lastsave 命令获取最后一次成功执行快照的时间
+     
+   - 执行flushall命令，也会产生dump.rdb文件，但里面是空的，无意义
+
+6. 恢复rdb文件
+   将备份文件 (dump.rdb) 移动到 redis 安装目录并启动服务即可
+
+   CONFIG GET dir获取目录
+
+7. rdb 优势
+   - 适合大规模的数据恢复
+   - 对数据完整性和一致性要求不高
+
+8. rdb 劣势
+    - 在一定间隔时间做一次备份，所以如果redis意外down掉的话，就会丢失最后一次快照后的所有修改
+    - Fork的时候，内存中的数据被克隆了一份，大致2倍的膨胀性需要考虑
+9. 如何停止
+
+   动态所有停止RDB保存规则的方法：`redis-cli config set save ""`
+
+10. 小总结
+```mermaid
+graph LR
+        A((内存中的对象))
+        B((磁盘中的RDB文件))
+        A  -- rdbSave --> B
+        B  -- rdbLoad --> A
+```
+* 优势
+  * RDB是一个非常紧凑的文件
+  * RDB在保存RDB文件时父进程唯一需要做的就是fork出一个子进程,接下来的工作全部由子进程来做，父进程不需要再做其他IO操作，所以RDB持久化方式可以最大化redis的性能.
+  * 与AOF相比,在恢复大的数据集的时候，RRDB方式会更快一些
+
+* 缺点
+  * 数据丢失风险大
+  * RDB需要经常fork子进程来保存数据集到硬盘上,当数据集比较大的时候,fork的过程是非常耗时的,可能会导致Redis在一些毫秒级不能相应客户端请求（save模式？）
+
+### 3.2 AOF（Append Only File）
+
+1. 是什么
+
+    以日志的形式来记录每个写操作，将Redis执行过的所有写指令记录下来(读操作不记录)。
+
+   只许追加文件但不可以改写文件，redis启动之初会读取该文件重新构建数据，换言之，redis
+   重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作
+2. Aof保存的是appendonly.aof文件
+3. 配置位置 redis.conf appendonly no 
+
+    默认是no, yes 就是打开aof持久化
