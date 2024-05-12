@@ -483,131 +483,217 @@ graph LR
 一个队列中，一次性、顺序性、排他性的执行一系列命令
 
 ### 4.3 怎么玩
-1. 常用命令
+#### 1. 常用命令
 
-    | 序号                    | 命令及描述                                               |
-    |-----------------------|-----------------------------------------------------|
-    | `multi`               | 开启事务，后面执行的命令都会放入队列中等待执行                             |
-    | `DISCARD`             | 取消事务，放弃执行事务块内的所有命令。                                 |
-    | `EXEC`                | 执行所有事务块内的命令。                                        |
-    | `WATCH key [key ...]` | 监视一个(或多个)key，如果在事务执行之前这个(或这些)key 被其他命令所改动，那么事务将被打断。 |
-    | `UNWATCH`             | 取消 WATCH 命令对所有key 的监视。                              |
+| 序号                    | 命令及描述                                               |
+|-----------------------|-----------------------------------------------------|
+| `multi`               | 开启事务，后面执行的命令都会放入队列中等待执行                             |
+| `DISCARD`             | 取消事务，放弃执行事务块内的所有命令。                                 |
+| `EXEC`                | 执行所有事务块内的命令。                                        |
+| `WATCH key [key ...]` | 监视一个(或多个)key，如果在事务执行之前这个(或这些)key 被其他命令所改动，那么事务将被打断。 |
+| `UNWATCH`             | 取消 WATCH 命令对所有key 的监视。                              |
 
-2. Case1：正常执行
-    ```shell
-   [root@cloud bin]# redis-server /usr/common/redis304/redis_new.conf
-   [root@c1oud bin]# redis-c1i
-   127.0.0.1:6379> ping
-   PONG
-   PONG127.0.0.1:6379>MULTI
-   OK
-   127.0.0.1:6379>set id 12
-   QUEUED
-   127.0.0.1:6379>get id QUEUED 
-   127.0.0.1:6379>incr tl 
-   QUEUED
-   127.0.0.1:6379>incr tl
-   QUEUED
-   127.0.0.1:6379>get tl
-   QUEUED
-   127.0.0.1:6379>EXEC1
-   1）0K
-   2）"12"
-   3）(integer）
-   4）(integer）
-   5）"2"
-   127.0.0.1:6379>
-    ```
-3. Case2：放弃事务
-    ```shell
-    127.0.0.1:6379>MULTI
-    OK
-    127.0.0.1:6379>set name Z3
-    QUEUED
-    127.0.0.1:6379>set age 28
-    QUEUED
-    127.0.0.1:6379>inct tl
-    QUEUED
-    127.0.0.1:6379>discard
-    OK
-    127.0.0.1:6379>
-    ```
+#### 2. Case1：正常执行
+```shell
+[root@cloud bin]# redis-server /usr/common/redis304/redis_new.conf
+[root@c1oud bin]# redis-c1i
+127.0.0.1:6379> ping
+PONG
+PONG127.0.0.1:6379>MULTI
+OK
+127.0.0.1:6379>set id 12
+QUEUED
+127.0.0.1:6379>get id QUEUED 
+127.0.0.1:6379>incr tl 
+QUEUED
+127.0.0.1:6379>incr tl
+QUEUED
+127.0.0.1:6379>get tl
+QUEUED
+127.0.0.1:6379>EXEC1
+1）0K
+2）"12"
+3）(integer）
+4）(integer）
+5）"2"
+127.0.0.1:6379>
+```
+#### 3. Case2：放弃事务
+```shell
+127.0.0.1:6379>MULTI
+OK
+127.0.0.1:6379>set name Z3
+QUEUED
+127.0.0.1:6379>set age 28
+QUEUED
+127.0.0.1:6379>inct tl
+QUEUED
+127.0.0.1:6379>discard
+OK
+127.0.0.1:6379>
+```
 
-4. Case3：全体连坐
-    ```shell
-    127.0.0.1:6379>MULTI
-    OK
-    127.0.0.1:6379>set name Z3
-    QUEUED
-    127.0.0.1:6379>get name
-    QUEUED
-    127.0.0.1:6379>incr tl
-    QUEUED
-    127.0.0.1:6379>get tl
-    QUEUED
-    127.0.0.1:6379>set email
-    (error) ERR wrong number of arguments for 'set' command
-    127.0.0.1:6379> exce
-    (error) ERR unknown command exce 
-    127.0.0.1:6379>EXEC
-    (error) EXECABORT Transaction discarded because of previous errors.
-    127.0.0.1:6379>
-    ```
+#### 4. Case3：全体连坐
+```shell
+127.0.0.1:6379>MULTI
+OK
+127.0.0.1:6379>set name Z3
+QUEUED
+127.0.0.1:6379>get name
+QUEUED
+127.0.0.1:6379>incr tl
+QUEUED
+127.0.0.1:6379>get tl
+QUEUED
+127.0.0.1:6379>set email
+(error) ERR wrong number of arguments for 'set' command
+127.0.0.1:6379> exce
+(error) ERR unknown command exce 
+127.0.0.1:6379>EXEC
+(error) EXECABORT Transaction discarded because of previous errors.
+127.0.0.1:6379>
+```
 
-5. Case4：冤头债主
-   ```shell
-   127.0.0.1:6379> MULTI
-   OK
-   127.0.0.1:6379> set age 11
-   QUEUED
-   127.0.0.1:6379> incr t1
-   QUEUED
-   127.0.0.1:6379> set emai1 abc@163.com
-   QUEUED
-   127.0.0.1:6379> incr email # 冤有头债有主，对的执行错的QUEUED抛出
-   QUEUED
-   127.0.0.1:6379> get age
-   OUEUED
-   127.0.0.1:6379> EXEC
-   1) 0K
-   2) (integer）3
-   3) OK
-   4)（error） ERR values not an integer or out of range
-   5) "11"
-   127.0.0.1:6379>
-    ```
-6. Case5：watch监控
+#### 5. Case4：冤头债主
+```shell
+127.0.0.1:6379> MULTI
+OK
+127.0.0.1:6379> set age 11
+QUEUED
+127.0.0.1:6379> incr t1
+QUEUED
+127.0.0.1:6379> set emai1 abc@163.com
+QUEUED
+127.0.0.1:6379> incr email # 冤有头债有主，对的执行错的QUEUED抛出
+QUEUED
+127.0.0.1:6379> get age
+OUEUED
+127.0.0.1:6379> EXEC
+1) 0K
+2) (integer）3
+3) OK
+4)（error） ERR values not an integer or out of range
+5) "11"
+127.0.0.1:6379>
+```
+#### 6. Case5：watch监控
 
-   - 6.1 悲观锁/乐观锁/CAS(Check And Set)
-     - 悲观锁
-       - 每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会block直到它拿到锁。
-       - 传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁
+##### - 6.1 悲观锁/乐观锁/CAS(Check And Set)
+- 悲观锁
+  - 每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会block直到它拿到锁。
+  - 传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁
 
-       - 乐观锁：
-         - 每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制。
-         - 乐观锁适用于多读的应用类型，这样可以提高吞吐量，像数据库提供的类似于write_condition机制，其实都是提供的乐观锁。
-         - 乐观锁策略:提交版本必须大于记录当前版本才能执行更新
-       - CAS(Check And Set)
+- 乐观锁：
+  - 每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制。
+  - 乐观锁适用于多读的应用类型，这样可以提高吞吐量，像数据库提供的类似于write_condition机制，其实都是提供的乐观锁。
+  - 乐观锁策略:提交版本必须大于记录当前版本才能执行更新
+- CAS(Check And Set)
 
-   - 6.2 初始化信用卡可用余额和欠额
-   ```shell
-   127.0.0.1:6379>set ba1ance 100
-   OK
-   127.0.0.1:6379>set debt 0
-   OK
-   127.0.0.1:6379>MULTI
-   OK
-   127.0.0.1:6379>DECRBY balance 30
-   QUEUED
-   127.0.0.1:6379>INCRBY debt 30
-   QUEUED
-   127.0.0.1:6379>EXEC
-   1）（integer）70
-   2）（integer）30
-   127.0.0.1:6379>get balance
-   "70"
-   127.0.0.1:6379>get debt
-   "30"
-   127.0.0.1:6379>
-   ```
-   无加塞篡改，先监控再开启multi，保证两笔金额变动在同一个事务内
+##### 6.2 初始化信用卡可用余额和欠额
+  ```shell
+  127.0.0.1:6379>set ba1ance 100
+  OK
+  127.0.0.1:6379>set debt 0
+  OK
+  127.0.0.1:6379>MULTI
+  OK
+  127.0.0.1:6379>DECRBY balance 30
+  QUEUED
+  127.0.0.1:6379>INCRBY debt 30
+  QUEUED
+  127.0.0.1:6379>EXEC
+  1）（integer）70
+  2）（integer）30
+  127.0.0.1:6379>get balance
+  "70"
+  127.0.0.1:6379>get debt
+  "30"
+  127.0.0.1:6379>
+  ```
+##### 6.3 无加塞篡改，先监控再开启multi，保证两笔金额变动在同一个事务内
+```shell
+127.0.0.1:6379>WATCH balance
+OK
+127.0.0.1:6379>MULTI
+OK
+127.0.0.1:6379>DECRBY ba1ance 10
+QUEUED
+127.0.0.1:6379>INCRBY debt 10
+QUEUED127.0.0.1:6379>EXEC
+1）（integer）60
+2）（integer）40
+```
+
+##### 6.4 加塞篡改，先监控再开启multi，保证两笔金额变动在同一个事务内
+```shell
+127.0.0.1:6379>WATCH balance
+OK
+127.0.0.1:6379>set balance 300
+OK
+127.0.0.1:6379>MULTI
+OK
+127.0.0.1:6379>DECKBY balance 15
+QUEUED
+127.0.0.1:6379>INCRBY debt 15
+QUEUED
+127.0.0.16379>EXEC
+(ni1)
+127.0.1:6379>get balance
+"300"
+127.0.0.1:6379>
+```
+
+##### 6.5 unwatch
+```shell
+127.0.0.1:6379>WATCH balance
+OK
+127.0.0.1:6379>set ba1ance 300
+OK
+127.0.0.1:6379>set balance 350
+OK
+127.0.0.1:6379>UNWATCH
+OK
+127.0.0.1:6379>MULTI
+OK
+127.0.0.1:6379>set balance 100
+QUEUED
+127.0.0.1:6379>set debt 0
+QUEUED
+127.0.0.1:6379>EXEC
+1）0K
+2）0K
+127.0.1:6379>get balance
+"100"
+127.0.0.1:6379>
+```
+一旦执行了exec之前加的监控锁都会被取消掉了
+
+##### 6.6 小结
+Watch指令，类似乐观锁，事务提交时，如果Key的值已被别的客户端改变，
+比如某个list已被别的客户端push/pop过了，整个事务队列都不会被执行
+
+通过WATCH命令在事务执行之前监控了多个Keys，倘若在WATCH之后有任何Key的值发生了变化，
+EXEC命令执行的事务都将被放弃，同时返回Nullmulti-bulk应答以通知调用者事务执行失败
+
+### 4.4 3阶段
+1. 开启：以MULTI开始一个事务
+2. 入队：将多个命令入队到事务中，接到这些命令并不会立即执行，而是放到等待执行的事务队列里面
+3. 执行：由EXEC命令触发事务，事务中的命令依次执行.
+
+### 4.5 3特性
+1. 单独的隔离操作：事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。
+2. 没有隔离级别的概念：队列中的命令没有提交之前都不会实际的被执行，因为事务提交前任何指令都不会被实际执行， 也就不存在”事务内的查询要看到事务里的更新，在事务外查询不能看到”这个让人万分头痛的问题
+3. 不保证原子性：redis同一个事务中如果有一条命令执行失败，其后的命令仍然会被执行，<mark>没有回滚</mark>
+
+## 5. Redis 的发布订阅
+### 5.1 是什么
+Redis 发布订阅(pub/sub)是一种消息通信模式：发送者(pub)发送消息，订阅者(sub)接收消息。
+
+订阅/发布消息图
+下图展示了频道 channel1，以及订阅这个频道的三个客户端一-client2、client5 和 client1 之间的关系:
+
+```mermaid
+graph TD
+    A([发布者])
+    B[订阅者]
+```
