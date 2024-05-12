@@ -687,13 +687,102 @@ EXEC命令执行的事务都将被放弃，同时返回Nullmulti-bulk应答以�
 
 ## 5. Redis 的发布订阅
 ### 5.1 是什么
-Redis 发布订阅(pub/sub)是一种消息通信模式：发送者(pub)发送消息，订阅者(sub)接收消息。
+进程间的一种消息通信模式：发送者(pub)发送消息，订阅者(sub)接收消息。
 
 订阅/发布消息图
 下图展示了频道 channel1，以及订阅这个频道的三个客户端一-client2、client5 和 client1 之间的关系:
 
 ```mermaid
-graph TD
-    A([发布者])
-    B[订阅者]
+graph BT
+    A([channel1])
+    B[client2]
+    C[client5]
+    D[client1]
+    B-- subscribe --> A
+    C-- subscribe --> A
+    D-- subscribe --> A
 ```
+
+当有新消息通过 PUBLISH 命令发送给频道 channel1 时，这个消息就会被发送给订阅它的三个客户端：
+
+```mermaid
+flowchart TB
+    client[PUBLISH channel1 message]
+    A([channel1])
+    B[client2]
+    C[client5]
+    D[client1]
+    client -.-> A
+    A -. message .-> B
+    A -. message .-> C
+    A -. message .-> D
+```
+
+### 5.2 命令
+| 命令                                          | 描述                            |
+|---------------------------------------------|-------------------------------|
+| PSUBSCRIBE pattern [pattern ...]            | 订阅一个或多个符合给定模式的频道。             |
+| PUBSUB subcommand [argument [argument ...]] | 查看订阅与发布系统状态。                  |
+| PUBLISH channel message                     | 将信息 message 发送到指定的频道 channel。 |
+| PUNSUBSCRIBE [pattern [pattern ...]]        | 退订所有给定模式的频道。                  |
+| SUBSCRIBE channel [channel ...]             | 订阅给定的一个或多个频道的信息。              |
+| UNSUBSCRIBE [channel [channel ...]]         | 指退订给定的频道。                     |
+
+### 5.3 案例
+
+先订阅后发布后才能收到消息，
+
+1. 可以一次性订阅多个，SUBSCRIBE c1 c2 c3
+2. 消息发布，PUBLISH c2 hello-redis
+3. 订阅多个，通配符*， PSUBSCRIBE new*
+4. 收取消息， PUBLISH new1 redis2015
+
+## 6. Redis的复制(Master/Slave)
+### 6.1 是什么
+行话：也就是我们所说的主从复制，主机数据更新后根据配置和策略， 自动同步到备机的master/slaver机制，Master以写为主，Slave以读为主.
+
+### 6.2 能干嘛
+1. 读写分离
+2. 容灾快速恢复
+
+### 6.3 怎么玩
+1. 配从(库)不配主(库)
+2. 从库配置：slaveof 主库IP 主库端口
+   - 每次与master断开之后，都需要重新连接，除非你配置进redis.conf文件
+   - Info replication
+3. 修改配置文件细节操作
+   - 拷贝多个redis.conf文件
+    ```shell
+    root@c1oud zzyy_soft]# cd redis-3.0.4
+    [root@c1oud redis-3.0.4]# 1s -1
+    总计 148
+    ...
+    --rw-rw-r-- 1 root root 31391 09-08 16:02 redis.conf
+    ...
+    [root@c1oud redis-3.0.4]#cp redis.conf /usr/common/redis304/redis6379.conf
+    [root@c1oud redis-3.0.4]#cp redis.conf /usr/common/redis304/redis6380.conf
+    [root@c1oud redis-3.0.4]#cp redis.conf/usr/common/redis304/redis6381.conf
+    [root@c1oud redis-3.0.4]#
+    ```
+
+    - 开启daemonize,Pid文件名字,指定端口
+    ```properties
+    daemonize yes
+    pidfile /var/run/redis6379.pid
+    port 6379
+    ```
+  - Log文件名字
+    ```properties
+    logfile "mylog6379.log"
+    ```
+  - Dump.rdb名字
+    ```properties
+    dbfilename dump6379.rdb
+    ```
+### 6.4 常用3招（系统结构）
+#### 6.4.1 一主二仆
+
+#### 6.4.2 薪火相传
+
+#### 6.4.3 反客为主
+
