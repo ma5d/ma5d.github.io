@@ -746,24 +746,24 @@ flowchart TB
 2. 容灾快速恢复
 
 ### 6.3 怎么玩
-1. 配从(库)不配主(库)
-2. 从库配置：slaveof 主库IP 主库端口
-   - 每次与master断开之后，都需要重新连接，除非你配置进redis.conf文件
-   - Info replication
-3. 修改配置文件细节操作
-   - 拷贝多个redis.conf文件
-    ```shell
-    root@c1oud zzyy_soft]# cd redis-3.0.4
-    [root@c1oud redis-3.0.4]# 1s -1
-    总计 148
-    ...
-    --rw-rw-r-- 1 root root 31391 09-08 16:02 redis.conf
-    ...
-    [root@c1oud redis-3.0.4]#cp redis.conf /usr/common/redis304/redis6379.conf
-    [root@c1oud redis-3.0.4]#cp redis.conf /usr/common/redis304/redis6380.conf
-    [root@c1oud redis-3.0.4]#cp redis.conf/usr/common/redis304/redis6381.conf
-    [root@c1oud redis-3.0.4]#
-    ```
+#### 6.3.1 配从(库)不配主(库)
+#### 2. 从库配置：slaveof 主库IP 主库端口
+- 每次与master断开之后，都需要重新连接，除非你配置进redis.conf文件
+- Info replication
+#### 3. 修改配置文件细节操作
+- 拷贝多个redis.conf文件
+ ```shell
+ root@c1oud zzyy_soft]# cd redis-3.0.4
+ [root@c1oud redis-3.0.4]# 1s -1
+ 总计 148
+ ...
+ --rw-rw-r-- 1 root root 31391 09-08 16:02 redis.conf
+ ...
+ [root@c1oud redis-3.0.4]#cp redis.conf /usr/common/redis304/redis6379.conf
+ [root@c1oud redis-3.0.4]#cp redis.conf /usr/common/redis304/redis6380.conf
+ [root@c1oud redis-3.0.4]#cp redis.conf/usr/common/redis304/redis6381.conf
+ [root@c1oud redis-3.0.4]#
+ ```
 
     - 开启daemonize,Pid文件名字,指定端口
     ```properties
@@ -771,18 +771,297 @@ flowchart TB
     pidfile /var/run/redis6379.pid
     port 6379
     ```
-  - Log文件名字
-    ```properties
-    logfile "mylog6379.log"
+- Log文件名字
+  ```properties
+  logfile "mylog6379.log"
+  ```
+- Dump.rdb名字
+  ```properties
+  dbfilename dump6379.rdb
+  ```
+#### 6.3 常用3招（系统结构）
+##### 6.3.1 一主二仆
+1. Init
+    ```shell
+    [root@atguigu bin]#redis-server /usr/common/redis6379.conf
+    [root@atguigu bin]#redis-c1i -p 6379
+    127.0.0.1:6379> keys *
+    (empty list or set)
+    127.0.0.1:6379>info replication
+    # Replication
+    role:master
+    connected_slaves:0
+    master_repl_offset:0
+    repl_backlog_active:0
+    repl_backlog_size:1048576
+    repl_backlog_first_byte_offset:0
+    repl_backlog_histlen:0
+    127.0.0.1:6379> keys *
+    (empty list or set）
+    127.0.0.1:6379> set k1 6379host
+    OK
+    127.0.0.1:6379> set k2 v2
+    OK
+    127.0.0.1:6379> mget k1 k2
+    1) "6379host"
+    2) "v2"
+    127.0.0.1:6379>
     ```
-  - Dump.rdb名字
-    ```properties
-    dbfilename dump6379.rdb
+    ```shell
+    [root@atguigu bin]# redis-server /usr/common/redis6380.conf
+    [root@atguigu bin]# redis-c1i -p 6380
+    127.0.0.1:6380> info republication
+    # Replication
+    role:master
+    connected_slaves:0
+    master_repl_offset:0
+    rep1_backlog_active:0
+    rep1_back1og_size:1048576
+    repl backlog first byte offset:0
+    rep1_backlog_histlen:0
+    127.0.0.1:6380> slaveof 127.0.0.1 6379
     ```
-### 6.4 常用3招（系统结构）
-#### 6.4.1 一主二仆
+    
+    ```shell
+    [root@atguigu bin]# redis-server /usr/common/redis6381.conf
+    [root@atguigu bin]# redis-c1i -p 6381
+    127.0.0.1:6380> info republication
+    # Replication
+    role:master
+    connected_slaves:0
+    master_repl_offset:0
+    rep1_backlog_active:0
+    rep1_back1og_size:1048576
+    repl backlog first byte offset:0
+    rep1_backlog_histlen:0
+    127.0.0.1:6380> 
+    ```
+2. 一个Master,两个Slave
+    ```shell
+    [root@atguigu bin]# redis-server /usr/common/redis6379.conf
+    [root@atguigu bin]# redis-c1i -p 6379
+    127.0.0.1:6379> set k1 v1111111111
+    OK
+    127.0.0.1:6379> get k1
+    "v11111111111"
+    127.0.0.1:6379> set k2 v2222222
+    OK
+    127.0.0.1:6379> get k2
+    "v22222222"
+    127.0.0.1:6379>
+    ```
 
-#### 6.4.2 薪火相传
+    ```shell
+    [root@atguigu bin]# redis-server /usr/common/redis6380.conf
+    [root@atguigu bin]# redis-c1i -p 6380
+    127.0.0.1:6380> slaveof 127.0.0.1 6379
+    OK
+    127.0.0.1:6380> keys *
+    1) "k1"
+    127.0.0.1:6380> keys *
+    1) "k1"
+    2) "k2"
+    127.0.0.1:6380>
+    ```
+    
+    ```shell
+    [root@atguigu bin]# redis-server /usr/common/redis6381.conf
+    [root@atguigu bin]# redis-c1i -p 6381
+    127.0.0.1:6381> slaveof 127.0.0.1 6379
+    OK
+    127.0.0.1:6381> get k1
+    "v11111111111"
+    127.0.0.1:6381> get k2
+    "v22222222"
+    127.0.0.1:6381>
+    ```
+3. 日志查看
+    1. 主机日志
+        ```log
+        11204:M 13 0ct 17:00:23.461 * Fu11 resync requested by slave 127.0.0.1:6380
+        11204:M 13 0ct 17:00:23.461 * S1ave 127.0.0.1:6380 asks for synchronization
+        11204:M 13 0ct 17:00:23.462Background saving started by pid 12379
+        11204:M 13 Oct17:00:23.461*Starting BGSAVE for SYNC with target: disk
+        12379:C 13 0ct 17:00:23.468 * DB saved on disk
+        12379:C 13 0ct 17:00:23.469 * RDB: 0 MB of memory used by copy-on-write
+        11204:M 13 0ct 17:00:23.523 Background saving terminated with succes
+    
+        11204:M 13 0ct 17:00:23.523 Synchronization with s1ave 127.0.0.1:6380 succeeded
+    
+        11204:M 13 0ct 17:00:37.768S1ave 127.0.0.1:6381 asks for synchronization
+        11204:M 13 Oct 17:00:37.768* Starting BGSAVE for SYNC with target: disk
+        11204:M 13 0ct 17:00:37.768 * Fu11 resync requested by slave 127.0.0.1:6381
+        12384:C 13 0ct 17:00:37.774 * DB saved on disk
+        11204:M 13 0ct 17:00:37.769 * Background saving started by pid 12384
+        11204:M 13 0ct 17:00:37.783
+        12384:C 13 0ct 17:00:37.775 * RDB: 0 MB of memory used by copy-on-write*Background saving terminated with suc
+    
+        11204:M 13 0ct 17:00:37.783 * Synchronization with s1ave 127.0.0.1:6380 succeeded
+        ```
+    2. 从机日志
+        ```
+        12301:S 13 0ct 17:00:23.461 Connecting to MASTER 127.0.0.1:6379
+        12301:S 13 0ct 17:00:23.461 MASTER <-> SLAVE sync started
+        12301:S 13 0ct 17:00:23.461 Non blocking connect for SYNC fired the event.
+        12301:S 13 0ct 17:00:23.461 Master replied to PING, replication can continue...
+        12301:S 13 0ct 17:00:23.523 Partial resynchronization not possible (no cached master)
+        12301:S 13 0ct 17:00:23.523 Fullresyncfrommaster:81875758lac6eedfe6918ebc04739bc7dca700a3：1
+        12301:S 13 0ct 17:00:23.523MASTER <> SLAVE sync: receiving 37 bytes from master
+        12301:S 13 0ct 17:00:23.52312301:S 13 0ct 17:00:23.523
+        12301:S 13 0ct 17:00:23.523MASTER <-> SLAVE sync: Finished with success   
+        ```
+    3.  info replication
+        ```shell
+        127.0.0.1:6379> info replication
+        # Replication
+        role :master
+        connected_slaves :2
+        slave0:ip=127.0.0.1,port=6380, state=on1ine ,offset=1178,1ag=0
+        s1ave1 :ip=127 .0.0.1, port=6381, state=on1ine ,offset=1178, 1ag=0
+        master_repl_offset:1178
+        rep1_backlog_active :1
+        rep1_back1og_size:1048576
+        rep1_backlog_first_byte_offset:2
+        rep1_back1og_hist1en:1177
+        127.0.0.1:6379>
+        ```
 
-#### 6.4.3 反客为主
+        ```shell
+        127.0.0.1:6380> info replication
+        # Replication
+        role:slave
+        master_host:127.0.0.1
+        master_port:6379
+        master_link_status:up
+        master_last_io_seconds_ago:5
+        master_sync_in_progress:0
+        repl_backlog_offset:1136
+        ```
+4. 主从问题演示
 
+    1. 切入点问题？slave1、slave2是从头开始复制还是从切入点开始复制?比如从k4进来，那之前的123是否也可以复制
+        - slave1、slave2会从k4开始复制，之前的123不会复制
+    2. 从机是否可以写？set可否？
+        - 从机只能读，set会报错.
+    3. 主机shutdown后情况如何？从机是上位还是原地待命
+        - 原地待命，主机shutdown后，从机会继续复制，但是复制的是空数据。
+    4. 主机又回来了后，主机新增记录，从机还能否顺利复制？
+        - 可以顺利复制。
+    5. 其中一台从机down后情况如何？依照原有它能跟上大部队吗？
+        - 原地待命，从机down后，这台从机会继续复制，但是复制的是空数据。
+
+##### 6.3.2 薪火相传
+- 上一个Slave可以是下一个slave的Master，Slave同样可以接收其他slaves的连接和同步请求，那么该slave作为了链条中下一个的master, 可以有效减轻master的写压力
+- 中途变更转向:会清除之前的数据，重新建立拷贝最新的
+- `Slaveof` 新主库IP 新主库端口
+
+##### 6.3.3 反客为主
+- SLAVEOF no one 使当前数据库停止与其他数据库的同步，转成主数据库
+
+
+### 6.4 复制原理
+- Slave启动成功连接到master后会发送一个sync命令
+- Master接到命令启动后台的存盘进程，同时收集所有接收到的用于修改数据集命令，在后台进程执行完毕之后，master将传送整个数据文件到slave，以完成一次完全同步
+- 全量复制：而slave服务在接收到数据库文件数据后，将其存盘并加载到内存中。
+- 增量复制：Master继续将新的所有收集到的修改命令依次传给slave，完成同步
+- 但是只要是重新连接master，一次完全同步（全量复制）将被自动执行
+
+### 6.5 哨兵模式
+#### 6.5.1 是什么
+- 反客为主的自动版，能够后台监控主机是否故障，如果故障了根据投票数自动将从库转换为主库
+#### 6.5.2 怎么玩（使用步骤）
+1. 调整结构，6379->6380->6381
+2. 自定义的/myredis目录下新建sentinel.conf文件，名字绝不能错
+3. 配置哨兵，填写内容
+    - `sentinel.conf` monitor 被监控数据库名字(自己起名字) 127.0.0.1 6379 `1`
+   ```shell
+     cat sentinel.conf
+     sentinel monitor host6379 127.0.0.1 6379 1
+    ```
+    - 上面最后一个数字1，表示主机挂掉后salve投票看让谁接替成为主机，得票数多少后成为主机
+4. 启动哨兵
+    - `redis-sentinel /myredis/sentinel.conf`
+5. 正常主从测试
+6. 模拟故障，master down
+    ```shell
+    127.0.0.1:6379> shutdown
+    ```
+    ```shell
+    127.0.0.1:6380> info replication
+    # Replication
+    role:slave
+    master_host:127.0.0.1
+    master_port:6379
+    master_link_status:down
+    ...
+    ```
+7. 投票重选
+    ```shell
+    5402:X 14 0ct 10:43:59.431.1 6379
+    5402:X 14 0ct 10:44:00.361+promoted-s1ave s1ave 127.0.0.1:6380 127.0.0.1 6380 @ host6379 127.0.0.1 6379
+    5402:X 14 0ct 10:44:00.361+fai1over-state-reconf-s1aves master host6379 127.0.0.1 6379
+    5402:X 14 0ct 10:44:00.448+s1ave-reconf-sent s1ave 127.0.0.1:6381 127.0.0.1 6381 @ host6379 127.0.0.1 6379
+    5402:X 14 0ct 10:44:01.387
+    5402:X 14 0ct 10:44:01.387+s1ave-reconf-inprog s1ave 127.0.0.1:6381 127.0.0.1 6381 @ host6379 127.0.0.1 6379+s1ave-reconf-done s1ave 127.0.0.1:6381 127.0.0.1 6381 @ host6379 127.0.0.1 6379
+    5402:X 14 0ct 10:44:01.470+failoverend master host6379 127.0.0.1 6379
+    
+    5402:X 14 0ct 10:44:01.471 * +s1ave s1ave 127.0.0.1:6381 127.0.0.1 6381 @ host6379 127.0.0.1 6380
+    5402:X 14 0ct 10:44:01.470+switch-master host6379 127.0.0.1 6379 127.0.0.1 6380 # 选出新老大6380
+    5402:X 14 0ct 10:44:31.487 # +sdown s1ave 127.0.0.1:6379 127.0.0.1 6379 @ host6379 127.0.0.1 6380
+    5402:X 14 0ct 10:44:01.471 * +s1ave s1ave 127.0.0.1:6379 127.0.0.1 6379 @ host6379 127.0.0.1 6380
+    ```
+8. 问题：如果之前的master重启回来，会不会双master冲突？
+    - 回答：不会，重启回来就是slave
+    - 结论：故障转移之后，会自动将老的主库变成从库
+9. 一组sentinel能同时监控多个Master
+
+### 6.6 复制的缺点
+
+由于所有的写操作都是先在Master上操作，然后同步更新到Slave上，所以从Master同步到Slave机器有一定的延迟，当系统很繁忙的时候，延迟问题会更加严重，Slave机器数量的增加也会使这个问题更加严重。
+
+## 7. Redis的Java客户端Jedis
+### 7.1 安装JDK, eclipse
+### 7.2 拉取项目
+https://gitee.com/ma5d/redis1122.git
+
+### 7.3 Jedis 常用操作
+1. 连接Redis
+2. 数据结构测试
+3. 事务测试
+4. 主从复制
+
+### 7.4 Jedis 连接池
+1. 获取Jedis实例需要从JedisPool中获取
+2. 用完Jedis实例需要返还给JedisPool
+3. 如果Jedis在使用过程中出错，则也需要还给JedisPool
+4. 案例见代码
+5. 配置总结all
+
+* JedisPool的配置参数大部分是由JedisPoolConfig的对应项来赋值的。
+
+* maxActive：控制一个pool可分配多少个jedis实例，通过`pool.getResource()`来获取；如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted。
+* maxIdle：控制一个pool最多有多少个状态为idle(空闲)的jedis实例；
+* whenExhaustedAction：表示当pool中的jedis实例都被allocated完时，pool要采取的操作；默认有三种。
+  * WHEN_EXHAUSTED_FAIL --> 表示无jedis实例时，直接抛出NoSuchElementException；
+  * WHEN_EXHAUSTED_BLOCK --> 则表示阻塞住，或者达到maxWait时抛出JedisConnectionException；
+  * WHEN_EXHAUSTED_GROW --> 则表示新建一个jedis实例，也就说设置的maxActive无用；
+* maxWait：表示当borrow一个jedis实例时，最大的等待时间，如果超过等待时间，则直接抛JedisConnectionException；
+
+
+* testOnBorrow：获得一个jedis实例的时候是否检查连接可用性`（ping()）`；如果为true，则得到的jedis实例均是可用的；
+* testOnReturn：return 一个jedis实例给pool时，是否检查连接可用性（ping()）；
+* testWhileIdle：如果为true，表示有一个idle object evitor线程对idle object进行扫描，如果validate失败，此object会被从pool中drop掉；这一项只有在timeBetweenEvictionRunsMillis大于0时才有意义；
+
+* timeBetweenEvictionRunsMillis：表示idle object evitor两次扫描之间要sleep的毫秒数；
+* numTestsPerEvictionRun：表示idle object evitor每次扫描的最多的对象数；
+
+* minEvictableIdleTimeMillis：表示一个对象至少停留在idle状态的最短时间，然后才能被idle object evitor扫描并驱逐；这一项只有在timeBetweenEvictionRunsMillis大于0时才有意义；
+* softMinEvictableIdleTimeMillis：在minEvictableIdleTimeMillis基础上，加入了至少minIdle个对象已经在pool里面了。如果为-1，evicted不会根据idle time驱逐任何对象。如果minEvictableIdleTimeMillis>0，则此项设置无意义，且只有在timeBetweenEvictionRunsMillis大于0时才有意义；
+* 
+* lifo：borrowObject返回对象时，是采用DEFAULT_LIFO（last in first out，即类似cache的最频繁使用队列），如果为False，则表示FIFO队列；
+
+* 其中JedisPoolConfig对一些参数的默认设置如下：
+  * testWhileIdle=true
+  * minEvictableIdleTimeMills=60000
+  * timeBetweenEvictionRunsMillis=30000
+  * numTestsPerEvictionRun=-1
