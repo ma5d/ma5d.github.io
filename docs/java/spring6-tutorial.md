@@ -213,7 +213,7 @@ public class HelloWorld {
 
 在resources目录创建一个 Spring 配置文件 beans.xml（配置文件名称可随意命名，如：springs.xm）
 
-![img007](images/spring6/img007.png)
+![img007](https://gitee.com/ma5d/imgs/raw/spring6/img007.png)
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -255,7 +255,7 @@ public class HelloWorldTest {
 
 #### 2.3.5、运行测试程序
 
-![image-20221031172354535](images/spring6/image-20221031172354535.png)
+![image-20221031172354535](https://gitee.com/ma5d/imgs/raw/spring6/image-20221031172354535.png)
 
 
 
@@ -282,7 +282,7 @@ public class HelloWorld {
 
 执行结果：
 
-![image-20221031181430720](images/spring6/image-20221031181430720.png)
+![image-20221031181430720](https://gitee.com/ma5d/imgs/raw/spring6/image-20221031181430720.png)
 
 **测试得知：创建对象时确实调用了无参数构造方法。**
 
@@ -309,7 +309,7 @@ private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHash
 ```
 
 Spring容器加载到Bean类时 , 会把这个类的描述信息, 以包名加类名的方式存到beanDefinitionMap 中,
-Map<String,BeanDefinition> , 其中 String是Key , 默认是类名首字母小写 , BeanDefinition , 存的是类的定义(描述信息) , 我们通常叫BeanDefinition接口为 : bean的定义对象。
+`Map<String,BeanDefinition>` , 其中 String是Key , 默认是类名首字母小写 , BeanDefinition , 存的是类的定义(描述信息) , 我们通常叫BeanDefinition接口为 : bean的定义对象。
 
 
 
@@ -416,7 +416,7 @@ FATAL：严重错误
 
 运行原测试程序
 
-![image-20221031214305224](images/spring6/image-20221031214305224.png)
+![image-20221031214305224](https://gitee.com/ma5d/imgs/raw/spring6/image-20221031214305224.png)
 
 运行原测试程序，多了spring打印日志
 
@@ -441,7 +441,7 @@ public class HelloWorldTest {
 
 控制台：
 
-![image-20221031214547501](images/spring6/image-20221031214547501.png)
+![image-20221031214547501](https://gitee.com/ma5d/imgs/raw/spring6/image-20221031214547501.png)
 
 
 
@@ -499,7 +499,7 @@ BeanFactory 的子接口，提供了更多高级特性。面向 Spring 的使用
 
 **③ApplicationContext的主要实现类**
 
-![iamges](images/spring6/img005.png)
+![iamges](https://gitee.com/ma5d/imgs/raw/spring6/img005.png)
 
 | 类型名                          | 简介                                                         |
 | ------------------------------- | ------------------------------------------------------------ |
@@ -1284,7 +1284,7 @@ public void setTeacherMap(Map<String, Teacher> teacherMap) {
 
 **②创建外部属性文件**
 
-![images](images/spring6/img010.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img010.png)
 
 ```properties
 jdbc.user=root
@@ -1315,7 +1315,7 @@ jdbc.driver=com.mysql.cj.jdbc.Driver
 <context:property-placeholder location="classpath:jdbc.properties"/>
 ```
 
-注意：在使用 <context:property-placeholder> 元素加载外包配置文件功能前，首先需要在 XML 配置的一级标签 <beans> 中添加 context 相关的约束。
+注意：在使用 `<context:property-placeholder>` 元素加载外包配置文件功能前，首先需要在 XML 配置的一级标签 `<beans> `中添加 context 相关的约束。
 
 **④配置bean**
 
@@ -1992,7 +1992,7 @@ Spring 通过注解实现自动装配的步骤如下：
 
 #### 3.3.2、开启组件扫描
 
-Spring 默认不使用注解装配 Bean，因此我们需要在 Spring 的 XML 配置中，通过 <context:component-scan> 元素开启 Spring Beans的自动扫描功能。开启此功能后，Spring 会自动从扫描指定的包（base-package 属性设置）及其子包下的所有类，如果类上使用了 @Component 注解，就将该类装配到容器中。
+Spring 默认不使用注解装配 Bean，因此我们需要在 Spring 的 XML 配置中，通过 `<context:component-scan> `元素开启 Spring Beans的自动扫描功能。开启此功能后，Spring 会自动从扫描指定的包（base-package 属性设置）及其子包下的所有类，如果类上使用了 @Component 注解，就将该类装配到容器中。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -2008,7 +2008,7 @@ Spring 默认不使用注解装配 Bean，因此我们需要在 Spring 的 XML �
 </beans>
 ```
 
-注意：在使用 <context:component-scan> 元素开启自动扫描功能前，首先需要在 XML 配置的一级标签 <beans> 中添加 context 相关的约束。
+注意：在使用 `<context:component-scan> `元素开启自动扫描功能前，首先需要在 XML 配置的一级标签` <beans>` 中添加 context 相关的约束。
 
 **情况一：最基本的扫描方式**
 
@@ -2218,7 +2218,7 @@ public class UserTest {
 
 测试结果：
 
-![image-20221101153556681](images/spring6/image-20221101153556681.png)
+![image-20221101153556681](https://gitee.com/ma5d/imgs/raw/spring6/image-20221101153556681.png)
 
 以上构造方法和setter方法都没有提供，经过测试，仍然可以注入成功。
 
@@ -3362,7 +3362,7 @@ public interface Calculator {
 
 #### 5.1.2、创建实现类
 
-![images](images/spring6/img014.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img014.png)
 
 ```java
 public class CalculatorImpl implements Calculator {
@@ -3411,7 +3411,7 @@ public class CalculatorImpl implements Calculator {
 
 #### 5.1.3、创建带日志功能的实现类
 
-![images](images/spring6/img015.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img015.png)
 
 ```java
 public class CalculatorLogImpl implements Calculator {
@@ -3501,11 +3501,11 @@ public class CalculatorLogImpl implements Calculator {
 
 二十三种设计模式中的一种，属于结构型模式。它的作用就是通过提供一个代理类，让我们在调用目标方法的时候，不再是直接对目标方法进行调用，而是通过代理类**间接**调用。让不属于目标方法核心逻辑的代码从目标方法中剥离出来——**解耦**。调用目标方法时先调用代理对象的方法，减少对目标方法的调用和打扰，同时让附加功能能够集中在一起也有利于统一维护。
 
-![images](images/spring6/img016.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img016.png)
 
 使用代理后：
 
-![images](images/spring6/img017.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img017.png)
 
 **②生活中的代理**
 
@@ -3558,7 +3558,7 @@ public class CalculatorStaticProxy implements Calculator {
 
 #### 5.2.3、动态代理
 
-![images](images/spring6/img018.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img018.png)
 
 生产代理对象的工厂类：
 
@@ -3642,7 +3642,7 @@ AOP（Aspect Oriented Programming）是一种设计思想，是软件设计领�
 
 这个概念不是语法层面的，而是根据附加功能的逻辑上的需要：有十个附加功能，就有十个横切关注点。
 
-![images](images/spring6/img019.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img019.png)
 
 ##### ②通知（增强）
 
@@ -3656,13 +3656,13 @@ AOP（Aspect Oriented Programming）是一种设计思想，是软件设计领�
 - 后置通知：在被代理的目标方法**最终结束**后执行（**盖棺定论**）
 - 环绕通知：使用try...catch...finally结构围绕**整个**被代理的目标方法，包括上面四种通知对应的所有位置
 
-![images](images/spring6/img020.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img020.png)
 
 ##### ③切面
 
 封装通知方法的类。
 
-![images](images/spring6/img021.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img021.png)
 
 ##### ④目标
 
@@ -3678,7 +3678,7 @@ AOP（Aspect Oriented Programming）是一种设计思想，是软件设计领�
 
 把方法排成一排，每一个横切位置看成x轴方向，把方法从上到下执行的顺序看成y轴，x轴和y轴的交叉点就是连接点。**通俗说，就是spring允许你使用通知的地方**
 
-![images](images/spring6/img022.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img022.png)
 
 ##### ⑦切入点
 
@@ -3704,7 +3704,7 @@ AOP（Aspect Oriented Programming）是一种设计思想，是软件设计领�
 
 #### 5.4.1、技术说明
 
-![images](images/spring6/img023.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img023.png)
 
 
 
@@ -3938,7 +3938,7 @@ public class CalculatorTest {
 
 执行结果：
 
-![image-20221102155523983](images/spring6/image-20221102155523983.png)
+![image-20221102155523983](https://gitee.com/ma5d/imgs/raw/spring6/image-20221102155523983.png)
 
 
 
@@ -3969,7 +3969,7 @@ public class CalculatorTest {
 
 **①作用**
 
-![images](images/spring6/img024.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img024.png)
 
 **②语法细节**
 
@@ -3993,7 +3993,7 @@ public class CalculatorTest {
     - 例如：execution(public int *..*Service.*(.., int))	正确
       例如：execution(* int *..*Service.*(.., int))	错误
 
-![images](images/spring6/img025.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img025.png)
 
 
 
@@ -4110,7 +4110,7 @@ public Object aroundMethod(ProceedingJoinPoint joinPoint){
 - @Order(较小的数)：优先级高
 - @Order(较大的数)：优先级低
 
-![images](images/spring6/img026.png)
+![images](https://gitee.com/ma5d/imgs/raw/spring6/img026.png)
 
 
 
