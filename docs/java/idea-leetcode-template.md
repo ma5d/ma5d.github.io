@@ -23,19 +23,18 @@ T${question.frontendQuestionId}_$!velocityTool.camelCaseName(${question.titleSlu
 `CodeTemplate`:
 
 ```
+package leetcode.editor.cn;
+
 ${question.content}
 
-package leetcode.editor.cn;
-//Java：${question.title}
 public class T${question.frontendQuestionId}_$!velocityTool.camelCaseName(${question.titleSlug}){
     public static void main(String[] args) {
-        Solution solution = new T$!{question.frontendQuestionId}_$!velocityTool.camelCaseName(${question.titleSlug}).Solution();
-        // TO TEST
+        System.out.println(new Solution());
+        
     }
-	static
-    ${question.code}
+static
+${question.code}
 }
-
 ```
 
 `TemplateConstant`:
