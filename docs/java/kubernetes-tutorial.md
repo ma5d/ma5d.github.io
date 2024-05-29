@@ -41,16 +41,16 @@ Kubernetes 能够进行应用的自动化部署和扩缩容。在 Kubernetes 中
 | GlusterFS   | HDFS、K8S    |
 
 #### 2.4 k8s 集群架构
-![24k8sFrameWork](24k8sFrameWork.png)
+`![24k8sFrameWork](24k8sFrameWork.png)`
 
 #### 2.5 k8s 集群架构节点角色功能
 
-| Master Node                                                                                                                               | Worker Node                                                                  |
-|-------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
-| k8s 集群控制节点，对集群进行调度管理，接受集群外用户去集群操作请求；<br> Master Node 由 API Server、Scheduler、ClusterState Store（ETCD 数据库）和<br/>Controller MangerServer 所组成 | 集群工作节点，运行用户业务应用容器；<br/>Worker Node 包含 kubelet、kube proxy 和 ContainerRuntime； |
+| Master Node                                                                                                                                | Worker Node                                                                  |
+|--------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| k8s 集群控制节点，对集群进行调度管理，接受集群外用户去集群操作请求；<br/> Master Node 由 API Server、Scheduler、ClusterState Store（ETCD 数据库）和<br/>Controller MangerServer 所组成 | 集群工作节点，运行用户业务应用容器；<br/>Worker Node 包含 kubelet、kube proxy 和 ContainerRuntime； |
 
 
-![k8sRole](k8sRole.png)
+`![k8sRole](k8sRole.png)`
 
 ## 二、kubernetes 集群搭建(kubeadm 方式)
 ### 1、前置知识点
@@ -99,7 +99,7 @@ kubeadm join <Master 节点的 IP 和端口>
 5. 部署 Dashboard Web 页面，可视化查看 Kubernetes 资源
 
 ### 5.准备环境
-![start](start.png)
+`![start](start.png)`
 
 | 角色         | IP            |
 |------------|---------------|
