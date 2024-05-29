@@ -332,6 +332,51 @@ k8s 集群中对资源管理和资源对象编排部署都可以通过声明样�
 
 ### 3、资源清单描述方法
 
+1. 在 k8s 中，一般使用 YAML 格式的文件来创建符合我们预期期望的 pod,这样的 YAML 文件称为资源清单。
+
+2. 常用字段
+
+- 必须存在的属性
+
+| 参数名                    | 字段类型   | 说明                                            |
+|------------------------|--------|-----------------------------------------------|
+| version                | String | K8SAPI的版本，目前基本是v1，可以用`kubectlapi-version`命令查询 |
+| kind                   | String | 这里指的是yaml文件定义的资源类型和角色，比如：Pod                  |
+| metadata               | Object | 元数据对象，固定值写metadata                            |
+| metadata.name          | String | 元数据对象的名字，这里由我们编写，比如命名Pod的名字                   |
+| metadata.namespace     | String | 元数据对象的命名空间，由我们自身定义                            |
+| Spec                   | Object | 详细定义对象，固定值写Spec                               |
+| spec.container[]       | list   | 这里是Spec对象的容器列表定义，是个列表                         |
+| spec.container[].name  | String | 这里定义容器的名字                                     |
+| spec.container[].image | String | 这里定义要用到的镜像名称                                  |
+
+- spec 主要对象
+
+| 参数名                               | 字段类型   | 说明                                                                                                                                               |
+|-----------------------------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| spec.containers[].name            | string | 定义容器的名字                                                                                                                                          |
+| spec.containers[].image           | String | 定义要用到的镜像的名称                                                                                                                                      |
+| spec.containers[].imagePullPolicy | String | 定义镜像拉取策略，有Always，Never，IfNotPresent三个值课选（1）Always：意思是每次尝试重新拉取镜像（2）Never：表示仅使用本地镜像（3）IfNotPresent：如果本地有镜像就是用本地镜像，没有就拉取在线镜像。上面三个值都没设置的话，默认是Always. |
+|                                   |        |                                                                                                                                                  |
+| spec.containers[].command[]       | List   | 指定容器启动命令，因为是数组可以指定多个，不指定则使用镜像打包时使用的启动命令。                                                                                                         |
+| spec.containers[]args[]           | List   | 指定容器启动命令参数，因为是数组可以指定多个。                                                                                                                          |
+| spec.containers[].workingDir      | String | 指定容器的工作目录                                                                                                                                        |
+| spec.containers[].volumeMounts[]  | List   | 指定容器内部的存储卷配置                                                                                                                                     |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
