@@ -205,10 +205,132 @@ kubeadm init \
 --kubernetes-version v1.17.0 \
 --service-cidr=10.96.0.0/12 \
 --pod-network-cidr=10.244.0.0/16
+```
+
+（2）使用 kubectl 工具：
+```shell
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl get nodes
+```
+
+### 9、安装 Pod 网络插件（CNI）
+```shell
+# 确保能够访问到 quay.io 这个 registery。如果 Pod 镜像下载失败，可以改这个镜像地址
+$ kubectl apply –f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
 ```
 
+### 10、加入 Kubernetes Node
+在 192.168.31.62/63（Node）执行,向集群添加新节点，执行在 kubeadm init 输出的 kubeadm join 命令：
+```
+kubeadm join 192.168.31.61:6443 --token esce21.q6hetwm8si29qxwn \
+--discovery-token-ca-cert-hash \
+sha256:00603a05805807501d7181c3d60b478788408cfe6cedefedb1f97569708be9c5
+```
 
+### 11、测试 kubernetes 集群
+在 Kubernetes 集群中创建一个 pod，验证是否正常运行：
+```shell
+kubectl create deployment nginx --image=nginx
+kubectl expose deployment nginx --port=80 --type=NodePort
+kubectl get pod,svc
+```
+
+访问地址：http://NodeIP:Port
+> 任意node IP 即可，node回自动分配高段位端口，并且转发到某一指定的80端口，重启不会失效。
+
+## 三、kubernetes 集群搭建(二进制方式)
+
+### 1、安装要求
+在开始之前，部署 Kubernetes 集群机器需要满足以下几个条件：
+
+1. 一台或多台机器，操作系统 CentOS7.x-86_x64
+2. 硬件配置：2GB 或更多 RAM，2 个 CPU 或更多 CPU，硬盘 30GB 或更多
+3. 集群中所有机器之间网络互通
+4. 可以访问外网，需要拉取镜像，如果服务器不能上网，需要提前下载镜像并导入节点
+5. 禁止 swap 分区
+> 1. 内存限制管理：Kubernetes 可以为每个容器设置内存限制，以确保应用程序不会超出其可用的内存资源。但如果允许使用 swap 分区，那么当物理内存不足时，Linux 内核会将一部分内存交换到磁盘上的 swap 分区，这可能会导致容器的内存使用超出限制。
+> 2. 性能稳定性：将内存交换到磁盘上的 swap 分区会导致大量的磁盘 IO 操作，这会降低系统的性能。尤其是在容器化环境中，应用程序的性能对于整个集群的稳定性和吞吐量至关重要。
+> 3. 可预测性：在容器环境中，容器通常被设计为可以快速启动和停止，并且可以动态调整资源。使用 swap 分区可能会导致启动时间延长，因为需要将交换出的内存从磁盘读取回内存中。
+> 4. 避免 OOM（Out of Memory）：如果 Kubernetes 允许使用 swap 分区，那么当容器试图使用已经交换出去的内存时，可能会触发 Linux 内核的 OOM 杀死机制，导致整个容器或节点不稳定甚至崩溃。
+
+### 2、准备环境
+
+1. 软件环境：
+
+   | 软件         | 版本                   |
+   |------------|----------------------|
+   | 操作系统       | CentOS7.8_x64 （mini） |
+   | Docker     | 19-ce                |
+   | Kubernetes | 1.19                 |
+
+2. 服务器规划：
+
+| 角色         | IP            | 组件                                                         |
+|------------|---------------|------------------------------------------------------------|
+| k8s-master | 192.168.31.71 | kube-apiserver，kube-controller-manager，kube-scheduler，etcd |
+| k8s-node1  | 192.168.31.72 | kubelet，kube-proxy，docker etcd                             |
+| k8s-node2  | 192.168.31.73 | kubelet，kube-proxy，docker，etcd                             |
+
+### 3、操作系统初始化配
+
+```shell
+# 关闭防火墙
+systemctl stop firewalld
+systemctl disable firewalld
+# 关闭 selinux
+sed -i 's/enforcing/disabled/' /etc/selinux/config
+# 永久
+setenforce 0
+# 临时
+# 关闭 swap
+swapoff -a
+# 临时
+sed -ri 's/.*swap.*/#&/' /etc/fstab
+# 永久
+# 根据规划设置主机名
+hostnamectl set-hostname <hostname>
+# 在 master 添加 hosts
+cat >> /etc/hosts << EOF
+192.168.44.147 m1
+192.168.44.148 n1
+EOF
+# 将桥接的 IPv4 流量传递到 iptables 的链
+cat > /etc/sysctl.d/k8s.conf << EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sysctl --system
+# 生效
+# 时间同步
+yum install ntpdate -y
+ntpdate time.windows.com
+```
+
+### 4、部署 Etcd 集群
+### 5、安装 Docker
+### 6、部署 Master Node
+### 7、部署 Worker Node
+
+## 四、kubernetes 集群 YAML 文件详解
+
+### 1、YAML 文件概述
+k8s 集群中对资源管理和资源对象编排部署都可以通过声明样式（YAML）文件来解决，
+也就是可以把需要对资源对象操作编辑到 YAML 格式文件中，我们把这种文件叫做资源清单文件，
+通过 kubectl 命令直接使用资源清单文件就可以实现对大量的资源对象进行编排部署了。
+
+### 2、YAML 文件书写格式
+1. YAML 支持的数据结构
+- 对象：键值对的集合，又称为映射（mapping）/ 哈希（hashes） / 字典（dictionary）
+- 数组：一组按次序排列的值，又称为序列（sequence） / 列表（list）
+- 纯量（scalars）：单个的、不可再分的值
+- 复合结构：由数组和对象组成的复合结构
+
+略
+
+### 3、资源清单描述方法
 
 
 
