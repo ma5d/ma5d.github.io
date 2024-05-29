@@ -45,9 +45,9 @@ Kubernetes 能够进行应用的自动化部署和扩缩容。在 Kubernetes 中
 
 #### 2.5 k8s 集群架构节点角色功能
 
-| Master Node                                                                                                                                | Worker Node                                                                  |
-|--------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
-| k8s 集群控制节点，对集群进行调度管理，接受集群外用户去集群操作请求；</br> Master Node 由 API Server、Scheduler、ClusterState Store（ETCD 数据库）和<br/>Controller MangerServer 所组成 | 集群工作节点，运行用户业务应用容器；<br/>Worker Node 包含 kubelet、kube proxy 和 ContainerRuntime； |
+| Master Node                                                                                                                               | Worker Node                                                                  |
+|-------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| k8s 集群控制节点，对集群进行调度管理，接受集群外用户去集群操作请求；<br> Master Node 由 API Server、Scheduler、ClusterState Store（ETCD 数据库）和<br/>Controller MangerServer 所组成 | 集群工作节点，运行用户业务应用容器；<br/>Worker Node 包含 kubelet、kube proxy 和 ContainerRuntime； |
 
 
 ![k8sRole](k8sRole.png)
