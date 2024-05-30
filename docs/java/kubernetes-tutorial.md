@@ -388,8 +388,7 @@ spec:
 
 ### 1、kubectl 概述
 
-kubectl 是 Kubernetes 集群的命令行工具，通过 kubectl 能够对集群本身进行管理，
-并能够在集群上进行容器化应用的安装部署。
+kubectl 是 Kubernetes 集群的命令行工具，通过 kubectl 能够对集群本身进行管理， 并能够在集群上进行容器化应用的安装部署。
 
 ### 2、kubectl 命令的语法
 ```shell
@@ -411,31 +410,69 @@ server 的地址和端口。
 
 ### 3、kubectl help 获取更多信息
 
+获取kubectl帮助方法
+[root@masterl ~]# kubectl --help
 
 
+### 4、kubectl 子命令使用分类
 
+1. 基础命令
 
+   |      |         |                             |
+   |------|---------|-----------------------------|
+   | 基础命令 | create  | 通过文件名或标准输入创建资源              |
+   |      | expose  | 将一个资源公开为一个新的 Service        |
+   |      | run     | 在集群中运行一个特定的镜像基础命令           |
+   |      | set     | 在对象上设置特定的功能                 |
+   |      | got     | 显示一个或多个资源                   |
+   |      | explain | 文档参考资料                      |
+   |      | edit    | 使用默认的编辑器编辑一个资源。             |
+   |      | delete  | 通过文件名、标准输入、资源名称或标签选择器来删除资源。 |
 
+2. 部署和集群管理命令
 
+   |      |                |                                               |
+   |------|----------------|-----------------------------------------------|
+   | 部署命令 | rollout        | 管理资源的发布                                       |
+   |      | rolling-update | 对给定的复制控制器滚动更新                                 |
+   |      | scale          | 扩容或缩容Pod数量，Deployment、ReplicaSet、RC或Job       |
+   |      | autoscale      | 创建一个自动选择扩容或缩容并设置Pod数量                         |
+   |      | cerlificate    | 修改证书资源                                        |
+   |      | cluster-info   | 显示集群信息                                        |
+   |      | top            | 显示资源（CPU/Memory/Storage）使用。需要Heapster运行集群管理命令 |
+   |      | cordon         | 标记节点不可调度                                      |
+   |      | uncordon       | 标记节点可调度                                       |
+   |      | drain          | 驱逐节点上的应用，准备下线维护                               |
+   |      | taint          | 修改节点taint标记                                   |
 
+3. 故障和调试命令
+4. 其他命令
 
+## 六、kubernetes 核心技术-Pod
 
+### 1、Pod 概述
 
+Pod 是 k8s 系统中可以创建和管理的最小单元，是资源对象模型中由用户创建或部署的最 小资源对象模型， 也是在 k8s 上运行容器化应用的资源对象，其他的资源对象都是用来支撑或者扩展 Pod 对象功能的，比如控制器对象是用来管控 Pod 对象的，Service 或者Ingress 资源对象是用来暴露 Pod 引用对象的，PersistentVolume 资源对象是用来为 Pod提供存储等等，k8s 不会直接处理容器，而是 Pod，Pod 是由一个或多个 container 组成Pod 是 Kubernetes 的最重要概念，每一个 Pod 都有一个特殊的被称为”根容器“的 Pause容器。Pause 容器对应的镜 像属于 Kubernetes 平台的一部分，除了 Pause 容器，每个 Pod还包含一个或多个紧密相关的用户业务容器。
 
+Pod: `Pause`, `user container1`, `user container2`
 
+1. Pod vs 应用.每个 Pod 都是应用的一个实例，有专用的 IP
+2. Pod vs 容器.一个 Pod 可以有多个容器，彼此间共享网络和存储资源，每个 Pod 中有一个 Pause 容器保存所有的容器状态， 通过管理 pause 容器，达到管理 pod 中所有容器的效果
+3. Pod vs 节点.同一个 Pod 中的容器总会被调度到相同 Node 节点，不同节点间 Pod 的通信基于虚拟二层网络技术实现
+4. Pod vs Pod.普通的 Pod 和静态Pod
 
+### 2、Pod 特性
+1. 资源共享
 
+   一个 Pod 里的多个容器可以共享存储和网络，可以看作一个逻辑的主机。共享的如 namespace,cgroups 或者其他的隔离资源。 
 
+   多个容器共享同一 network namespace，由此在一个 Pod 里的多个容器共享 Pod 的 IP 和 端口 namespace，所以一个 Pod 内的多个容器之间可以通过 localhost 来进行通信,所需要注意的是不同容器要注意不要有端口冲突即可。不同的 Pod 有不同的 IP,不同 Pod 内的多个容器之前通信，不可以使用 IPC（如果没有特殊指定的话）通信，通常情况下使用 Pod 的 IP 进行通信。
+   
+   一个 Pod 里的多个容器可以共享存储卷，这个存储卷会被定义为 Pod 的一部分，并且可
+   以挂载到该 Pod 里的所有容器的文件系统上。
 
+2. 生命周期短暂
 
-
-
-
-
-
-
-
-
-
+   Pod 属于生命周期比较短暂的组件，比如，当 Pod 所在节点发生故障，那么该节点上的 Pod 会被调度到其他节点，但需要注意的是，被重新调度的 Pod 是一个全新的 Pod,跟之前的 Pod 没有半毛钱关系
 
 
