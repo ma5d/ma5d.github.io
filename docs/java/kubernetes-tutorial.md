@@ -406,6 +406,34 @@ kubectl [command] [TYPE] [NAME] [flags]
 ```shell
 kubectl get pods
 ```
+- flags：指定可选的参数。例如，可用-s 或者–server 参数指定 Kubernetes API
+server 的地址和端口。
+
+### 3、kubectl help 获取更多信息
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
