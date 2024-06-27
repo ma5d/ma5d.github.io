@@ -475,4 +475,258 @@ Pod: `Pause`, `user container1`, `user container2`
 
    Pod 属于生命周期比较短暂的组件，比如，当 Pod 所在节点发生故障，那么该节点上的 Pod 会被调度到其他节点，但需要注意的是，被重新调度的 Pod 是一个全新的 Pod,跟之前的 Pod 没有半毛钱关系
 
+### 3. Pod 定义
+（1）下面是 yaml 文件定义的 Pod 的完整内容
+   ```txt
+   apiVersion: v1
+   kind: Pod
+   metadata: //元数据
+   name: string
+   namespace: string
+   labels:
+   -name: string
+   annotations:
+   -name: string
+   spec:
+   containers:
+   //pod 中的容器列表，可以有多个容器
+   - name: string
+   //容器的名称
+   image: string //容器中的镜像
+   imagesPullPolicy:
+   [Always|Never|IfNotPresent]//获取镜像的策略，默认值为
+   Always，每次都尝试重新下载镜像
+   command: [string]
+   //容器的启动命令列表（不配置的话使用镜像内部的命令） args:
+   [string]
+   //启动参数列表
+   workingDir: string
+   //容器的工作目录 volumeMounts:
+   //挂载到到容器内部的存储
+   卷设置
+   -name: string
+   mountPath: string
+   //存储卷在容器内部 Mount 的绝对路径 readOnly: boolean
+   //
+   默认值为读写
+   ports: //容器需要暴露的端口号列表
+   -name: string
+   containerPort: int //容器要暴露的端口
+   hostPort: int //容器所在主机监听的端口（容器暴露端口映射到宿主机的端口，设置
+   hostPort 时同一
+   台宿主机将不能再启动该容器的第 2 份副本）
+   protocol: string
+   //TCP 和 UDP，默认值为 TCP env:
+   //容器运行前要设置的环境
+   列表
+   -name: string value: string
+   resources:
+   limits:
+   //资源限制，容器的最大可用资源数量 cpu: Srting
+   memory: string
+   requeste:
+   //资源限制，容器启动的初始可用资源数量 cpu: string
+   memory: string
+   livenessProbe:
+   //pod 内容器健康检查的设置 exec:
+   command: [string] //exec 方式需要指定的命令或脚本 httpGet:
+   //通过 httpget 检
+   查健康
+   path: string port: number host: string scheme: Srtring httpHeaders:
+   - name: Stirng value: string
+   tcpSocket:
+   //通过 tcpSocket 检查健康
+   port: number initialDelaySeconds: 0//首次检查时间 timeoutSeconds: 0
+   //检查超时
+   时间
+   periodSeconds: 0
+   //检查间隔时间
+   successThreshold: 0
+   failureThreshold: 0 securityContext:
+   //安全配置
+   privileged: falae
+   restartPolicy: [Always|Never|OnFailure]//重启策略，默认值为 Always
+   nodeSelector: object //节点选择，表示将该 Pod 调度到包含这些 label 的 Node 上，以
+   key:value 格式指定
+   imagePullSecrets:
+   -name: string
+   hostNetwork: false
+   //是否使用主机网络模式，弃用 Docker 网桥，默认否
+   volumes:
+   //在该 pod 上定义共享存储卷列表
+   -name: string emptyDir: {} hostPath:
+   path: string secret:
+   secretName: string item:
+   -key: string path: string
+   configMap: name: string items:
+   -key: string
+   path: string
+   ```
+
+### 4. Pod 的基本使用方法
+
+   在 kubernetes 中对运行容器的要求为：容器的主程序需要一直在前台运行，而不是后台运行。应用需要改造成前台运行的方式。如果我们创建的 Docker 镜像的启动命令是后台执行程序，则在 kubelet 创建包含这个容器的 pod 之 后运行完该命令，即认为 Pod 已经结束，将立刻销毁该 Pod。如果为该 Pod 定义了 RC，则创建、销毁会陷入一个无 限循环的过程中。Pod 可以由 1 个或多个容器组合而成。
+
+   （1）一个容器组成的 Pod 的 yaml 示例
+   ```yaml
+   # 一个容器组成的 Pod
+   apiVersion: v1
+   kind: Pod
+   metadata:
+      name: mytomcat
+      labels:
+         name: mytomcat
+   spec:
+      containers:
+         - name: mytomcat
+           image: tomcat
+           ports:
+              - containerPort: 8000
+   ```
+   
+   （2）多个容器组成的 Pod 的 yaml 示例
+   ```yaml
+   #两个紧密耦合的容器
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: myweb
+     labels:
+       name: tomcat-redis
+   spec:
+     containers:
+     - name: tomcat
+       image: tomcat
+       ports:
+       - containerPort: 8080
+     - name: redis
+       image: redis
+       ports:
+       - containerPort: 6379
+   
+   ```
+   
+   （3）创建
+   ```bash
+   kubectl create -f xxx.yaml
+   ```
+   
+   （4）查看
+   ```bash
+   kubectl get pod/po <Pod_name>
+   kubectl get pod/po <Pod_name> -o wide
+   kubectl describe pod/po <Pod_name>
+   ```
+   
+   （5）删除
+   ```bash
+   kubectl delete -f pod pod_name.yaml
+   kubectl delete pod --all/[pod_name]
+   ```
+
+### 5. Pod 的分类
+   > Pod 有两种类型
+
+   1. 普通 Pod
+
+      普通 Pod 一旦被创建，就会被放入到 etcd 中存储，随后会被 Kubernetes Master 调度到某个具体的 Node 上并进行绑定，随后该 Pod 对应的 Node 上的 kubelet 进程实例化成一组相关的 Docker 容器并启动起来。在默认情 况下，当 Pod 里某个容器停止时，Kubernetes 会 自动检测到这个问题并且重新启动这个 Pod 里某所有容器， 如果 Pod 所在的 Node 宕机，则会将这个 Node 上的所有 Pod 重新调度到其它节点上。
+
+   2. 静态 Pod
+
+     静态 Pod 是由 kubelet 进行管理的仅存在于特定 Node 上的 Pod,它们不能通过 API Server 进行管理，无法与 ReplicationController、Deployment 或 DaemonSet 进行关联，并且 kubelet 也无法对它们进行健康检查。
+
+### 6. Pod 生命周期和重启策略
+
+   1. Pod 的状态
+
+      | 状态值       | 说明                                                |
+      |-----------|---------------------------------------------------|
+      | Pending   | APIServer已经创建了该Pod，但Pod中的一个或多个容器的镜像还没有创建，包括镜像下载过程 |
+      | Running   | Pod内所有容器已创建，且至少一个容器处于运行状态、正在启动状态或正在重启状态           |
+      | Completed | Pod内所有容器均成功执行退出，且不会再重启                            |
+      | Failed    | Pod内所有容器均已退出，但至少一个容器退出失败                          |
+      | Unknown   | 由于某种原因无法获取Pod状态，例如网络通信不畅                          |
+
+   2. Pod 重启策略
+      Pod 的重启策略包括 Always、OnFailure 和 Never，默认值是 Always
+      
+      | 重启策略      | 说明                              |
+      |-----------|---------------------------------|
+      | Always    | 当容器失效时，由kubelet自动重启该容器          |
+      | OnFailure | 当容器终止运行且退出码不为0时，由kubelet自动重启该容器 |
+      | Never     | 不论容器运行状态如何，kubelet都不会重启该容器      |
+
+   3. 常见状态转换
+      
+      | Pod包含的容器数 | Pod当前的状态 | 发生事件     | Pod的结果状态 RestartPolicy=? |           |
+      |-----------|----------|----------|--------------------------|-----------|
+      |           |          | Always   | OnFailure                | Never     |
+      | 包含一个容器    | Running  | 容器成功退出   | Running                  | Succeeded |Succeeded|
+      | 包含一个容器    | Running  | 容器失败退出   | Running                  | Running   |Failure|
+      | 包含两个容器    | Running  | 1个容器失败退出 | Running                  | Running   |Running|
+      | 包含两个容器    | Running  | 容器被OOM杀掉 | Running                  | Running   |Failure|
+
+### 7. Pod 资源配置
+   每个 Pod 都可以对其能使用的服务器上的计算资源设置限额，Kubernetes 中可以设置限额的计算资源有 CPU 与 Memory 两种，其中 CPU 的资源单位为 CPU 数量,是一个绝对值而非相对值。Memory 配额也是一个绝对值，它的单 位是内存字节数。
+   
+   Kubernetes 里，一个计算资源进行配额限定需要设定以下两个参数： Requests 该资源最小申请数量，系统必须满足要求 Limits 该资源最大允许使用的量，不能突破，当容器试图使用超过这个量的资源时，可能会被 Kubernetes Kill 并重启.
+
+   1. 举例
+```yaml
+sepc:
+  containers:
+    - name: db
+      image: mysql
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+```
+上述代码表明 MySQL 容器申请最少 0.25 个 CPU 以及 64MiB 内存，在运行过程中容器所能使用的资源配额为 0.5 个 CPU 以及 128MiB 内存。
+
+## 七、kubernetes 核心技术-Label
+### 1、Label 概述
+
+Label 是 Kubernetes 系统中另一个核心概念。一个 Label 是一个 key=value 的键值对，其中 key 与 value 由用户自己指 定。Label 可以附加到各种资源对象上，如 Node、Pod、Service、RC，一个资源对象可以定义任意数量的 Label， 同一个 Label 也可以被添加到任意数量的资源对象上，Label 通常在资源对象定义时确定，也可以在对象创建后动态 添加或删除。Label 的最常见的用法是使用 metadata.labels 字段，来为对象添加 Label，通过spec.selector 来引用对象
+
+### 2、Label 示例
+
+```yaml
+apiVersion: v1
+kind: ReplicationController 
+metadata:
+   name: nginx 
+spec:
+  replicas: 3 
+  selector:
+    app: nginx 
+  template:
+    metadata:
+      labels:
+        app: nginx 
+    spec:
+      containers:
+      - name: nginx 
+        image: nginx 
+        ports:
+        - containerPort: 80
+```
+-------------------------------------
+```yaml
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: nginx
+spec:
+  type: NodePort 
+  ports:
+    - port: 80
+      nodePort: 3333 
+  selector:
+    app: nginx
+```
+Label 附加到 Kubernetes 集群中各种资源对象上，目的就是对这些资源对象进行分组管理，而分组管理的核心就 是 Label Selector。Label 与 Label Selector 都是不能单独定义，必须附加在一些资源对象的定义文件上，一般附加 在 RC 和 Service 的资源定义文件中.
 
