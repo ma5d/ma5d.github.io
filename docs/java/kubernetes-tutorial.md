@@ -733,7 +733,8 @@ Label 附加到 Kubernetes 集群中各种资源对象上，目的就是对这�
 
 
 ## 八、kubernetes 核心技术-Controller 控制器
-1、Replication Controller
+
+### 1、Replication Controller
 Replication Controller(RC)是 Kubernetes 系统中核心概念之一，当我们定义了一个 RC 并提交到 Kubernetes 集群中以后，Master 节点上的 Controller Manager 组件就得到通知，定期检查系统中存活的 Pod,并确保目标 Pod 实例的数量刚好等于 RC 的预期值，如果有过多或过少的 Pod 运行，系统就会停掉或创建一些 Pod.此外我们也可以通过修改 RC 的副本
 数量，来实现 Pod 的动态缩放功能。
 ```shell
@@ -743,10 +744,10 @@ kubectl scale rc nginx --replicas=5
 由于 Replication Controller 与 Kubernetes 代码中的模块 Replication Controller 同名，
 所以在 Kubernetes v1.2 时， 它就升级成了另外一个新的概念 Replica Sets,官方解释为下一代的 RC，它与 RC 区别是:Replica Sets 支援基于集合的 Label selector,而 RC 只支持基于等式的 Label Selector。我们很少单独使用 Replica Set,它主要被 Deployment 这个更高层面的资源对象所使用，从而形成一整套 Pod 创建、删除、更新的编排机制。最好不要越过 RC 直接创建 Pod， 因为 Replication Controller 会通过 RC 管理 Pod 副本，实现自动创建、补足、替换、删除 Pod 副本，这样就能提高应用的容灾能力，减少由于节点崩溃等意外状况造成的损失。即使应用程序只有一个 Pod 副本，也强烈建议使用 RC 来定义 Pod.
 
-2、Replica Set
+### 2、Replica Set
 Replica Set 跟 Replication Controller 没有本质的不同，只是名字不一样，并且 Replica Set 支持集合式的 selector（ReplicationController 仅支持等式）。Kubernetes 官方强烈建议避免直接使用 ReplicaSet，而应该通过 Deployment 来创建 RS 和 Pod。由于 ReplicaSet 是 ReplicationController 的代替物，因此用法基本相同，唯一的区别在于 ReplicaSet 支持集合式的 selector。
 
-3、Deployment
+### 3、Deployment
 Deployment 是 Kubenetes v1.2 引入的新概念，引入的目的是为了更好的解决 Pod 的编排问题，Deployment 内部使用了 Replica Set 来实现。Deployment 的定义与 Replica Set 的定义很类似，除了 API 声明与 Kind 类型有所区别：
 ```yaml
 apiVersion: extensions/v1beta1 
@@ -773,7 +774,7 @@ spec:
             - containerPort: 8080
 ```
 
-4、Horizontal Pod Autoscaler
+### 4、Horizontal Pod Autoscaler
 
 Horizontal Pod Autoscaler(Pod 横向扩容 简称 HPA)与 RC、Deployment 一样，也属于一种 Kubernetes 资源对象。通过追踪分析 RC 控制的所有目标 Pod 的负载变化情况，来确定是否需要针对性地调整目标 Pod 的副本数，这是 HPA 的实现原理。
 
@@ -835,3 +836,5 @@ spec:
     maxReplicas: 10
     targetCPUUtilizationPercentage: 50
 ```
+
+## 九、kubernetes 核心技术-Volume
