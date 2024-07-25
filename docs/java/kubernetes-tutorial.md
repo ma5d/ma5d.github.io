@@ -940,7 +940,7 @@ PersistentVolumeClaim（PVC）是由用户进行存储的请求。 它类似于 
 
 PVC 和 PV 是一一对应的。
 
-## 2、生命周期
+### 2、生命周期
 PV 是群集中的资源。PVC 是对这些资源的请求，并且还充当对资源的检查。PV 和 PVC 之间的相互作用遵循以下生命周期：
 
 Provisioning ——-> Binding ——–>Using——>Releasing——>Recycling
@@ -965,3 +965,170 @@ Provisioning ——-> Binding ——–>Using——>Releasing——>Recycling
 - 保留策略：允许人工处理保留的数据。
 - 删除策略：将删除 pv 和外部关联的存储资源，需要插件支持。
 - 回收策略：将执行清除操作，之后可以被新的 pvc 使用，需要插件支持
+
+### 3、PV 类型
+```yaml
+GCEPersistentDisk
+AWSElasticBlockStore
+AzureFile
+AzureDisk
+FC (Fibre Channel)
+Flexvolume
+Flocker
+NFS
+iSCSI
+RBD (Ceph Block Device)
+CephFS
+Cinder (OpenStack block storage)
+Glusterfs
+VsphereVolume
+Quobyte Volumes
+HostPath (Single node testing only – local storage is not supported in any
+way and WILL NOT WORK in a multi-node cluster)
+Portworx Volumes
+ScaleIO Volumes
+StorageOS
+```
+
+### 4、PV 卷阶段状态
+
+* Available – 资源尚未被 claim 使用
+* Bound – 卷已经被绑定到 claim 了
+* Released – claim 被删除，卷处于释放状态，但未被集群回收。
+* Failed – 卷自动回收失败
+
+### 5、演示：创建 PV
+（1）第一步：编写 yaml 文件，并创建 pv
+创建 5 个 pv，存储大小各不相同，是否可读也不相同
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv001
+  labels:
+    name: pv001
+spec:
+  nfs:
+    path: /data/volumes/v1
+    server: nfs
+  accessModes: [ "ReadWriteMany","ReadWriteOnce" ]
+  capacity:
+    storage: 2Gi
+```
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv002
+  labels:
+    name: pv002
+spec:
+  nfs:
+    path: /data/volumes/v2
+    server: nfs
+  accessModes: [ "ReadWriteOnce" ]
+  capacity:
+    storage: 5Gi
+```
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv003
+  labels:
+    name: pv003
+spec:
+  nfs:
+    path: /data/volumes/v3
+    server: nfs
+  accessModes: [ "ReadWriteMany","ReadWriteOnce" ]
+  capacity:
+    storage: 20Gi
+```
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv004
+  labels:
+    name: pv004
+spec:
+  nfs:
+    path: /data/volumes/v4
+    server: nfs
+  accessModes: [ "ReadWriteMany","ReadWriteOnce" ]
+  capacity:
+    storage: 10Gi
+```
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: pv005
+    labels:
+      name: pv005
+spec:
+    nfs:
+        path: /data/volumes/v5
+        server: nfs
+    accessModes: ["ReadWriteMany","ReadWriteOnce"]
+    capacity:
+      storage: 15Gi
+```
+（2）第二步：执行创建命令
+```shell
+kubectl apply -f pv-damo.yaml
+```
+
+```log
+[root@master volumes]# kubectl apply-f pv-damo.yaml
+persistentvolume/pvoo1 created
+persistentvolume/pvoo2 created
+persistentvolume/pvo03 created
+persistentvolume/pvo04 created
+persistentvolume/pvoo5 created
+```
+
+（3）第三步：查询验证
+```shell
+kubectl get pv
+```
+```log
+[root@master ~]# hubectl get pv
+NAME CAPACITY ACCESS MODES REPLAIM POLICY STATUS CLAIM
+pv001 5Gi RW0,RWX   Retain Available
+pv002 5Gi RW0       Retain Available
+pv003 5Gi RW0,RWX   Retain Available
+pv004 10Gi RW0,RWX  Retain Available
+pv005 10Gi RW0,RWX  Retain Available
+```
+6、演示：创建 PVC，绑定 PV
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+name: mypvc
+namespace: default
+spec:
+accessModes: ["ReadWriteMany"]
+resources:
+requests:
+storage: 6Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+name: vol-pvc
+namespace: default
+spec:
+volumes:
+- name: html
+persistentVolumeClaim:
+claimName: mypvc
+containers:
+- name: myapp
+image: ikubernetes/myapp:v1
+volumeMounts:
+- name: html
+mountPath: /usr/share/nginx/html/
+```
