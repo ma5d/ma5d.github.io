@@ -730,8 +730,6 @@ spec:
 ```
 Label 附加到 Kubernetes 集群中各种资源对象上，目的就是对这些资源对象进行分组管理，而分组管理的核心就 是 Label Selector。Label 与 Label Selector 都是不能单独定义，必须附加在一些资源对象的定义文件上，一般附加 在 RC 和 Service 的资源定义文件中.
 
-
-
 ## 八、kubernetes 核心技术-Controller 控制器
 
 ### 1、Replication Controller
@@ -923,7 +921,6 @@ spec:
           server: 192.168.126.112
 ```
 
-
 ## 十、 kubernetes 核心技术-PVC 和 PV
 
 ### 1、基本概念
@@ -1102,33 +1099,141 @@ pv003 5Gi RW0,RWX   Retain Available
 pv004 10Gi RW0,RWX  Retain Available
 pv005 10Gi RW0,RWX  Retain Available
 ```
-6、演示：创建 PVC，绑定 PV
+
+### 5、演示：创建 PVC，绑定 PV
+（1）第一步：编写 yaml 文件，并创建 pvc
 ```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-name: mypvc
-namespace: default
+    name: mypvc
+    namespace: default
 spec:
-accessModes: ["ReadWriteMany"]
-resources:
-requests:
-storage: 6Gi
----
+    accessModes: ["ReadWriteMany"]
+    resources:
+        requests:
+          storage: 6Gi
+```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
-name: vol-pvc
-namespace: default
+  name: vol-pvc
+  namespace: default
 spec:
-volumes:
-- name: html
-persistentVolumeClaim:
-claimName: mypvc
-containers:
-- name: myapp
-image: ikubernetes/myapp:v1
-volumeMounts:
-- name: html
-mountPath: /usr/share/nginx/html/
+  volumes:
+    - name: html
+      persistentVolumeClaim:
+        claimName: mypvc
+  containers:
+    - name: myapp
+      image: ikubernetes/myapp:v1
+      volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html/
 ```
+
+（2）第二步：执行命令创建
+```shell
+kubectl apply -f vol-pvc-demo.yaml
+```
+
+```log
+[root@master volumes]# kubectl apply -f vol-pvc-demo.yaml
+persistentvolumeclaim/mypvc created
+pod/vol-pvc created
+```
+
+（3）第三步：查询验证
+```log
+[root@master ~]# kubectl get pvc
+NAME    STATUS  VOLUME  CAPACITY    ACCESS MODES    STORAGECLASS AGE
+mypvc   Bound   pv004   10Gi        RW0,RWX                      24s
+[root@master ~]# kubectl get pv
+NAME    CAPCCITY ACCESS MODES RECLAIM POLICY STATUS     CLAIM
+pv001   5Gi      RWO,RWX      Retain         Avaliable  
+pv002   5Gi      RWO          Retain         Avaliable
+pv003   5Gi      RWO,RWX      Retain         Avaliable
+pv004   5Gi      RWO,RWX      Retain         Avaliable  default/mypvc
+pv005   5Gi      RWO,RWX      Retain         Avaliable
+```
+```log
+[root@master~]#kubectl get pods -o wide
+NAME    READY   STATUS  RESTARTS    AGE IP  NODE   
+vol-pvc 1/1     Running 0           59s 10.244.2.117    node2
+[root@master~]# curl 10.244.2.117
+<h1>NFS stor 04</h1>
+```
+
+## 十一、kubernetes 核心技术-Secret
+
+### 1、Secret 存在意义
+Secret 解决了密码、token、密钥等敏感数据的配置问题，而不需要把这些敏感数据暴露到镜像或者 Pod Spec 中。Secret 可以以 Volume 或者环境变量的方式使用
+
+### 2、Secret 有三种类型
+- Service Account :用来访问 Kubernetes API,由 Kubernetes 自动创建，并且会自动挂载到 Pod 的 run/secrets/kubernetes.io/serviceaccount 目录中
+- Opaque : base64 编码格式的 Secret,用来存储密码、密钥等
+- kubernetes.io/dockerconfigjson ：用来存储私有 docker registry 的认证信息
+
+### 3、Service Account
+Service Account 用来访问 Kubernetes API,甶 Kubernetes 自动创建，并且会自动挂载到 Pod 的/run/secrets/kubernetes.io/serviceaccount 目录中
+
+```log
+$ kubectl run nginx --image nginx
+deployment "nginx" created
+$ kubectl get pods
+NAME READY STATUS RESTARTS AGE
+nginx-3137573019-md1u2 1/1 Running 0 13s
+$ kubectl exec nginx-3137573019-md1u2 ls /run/secrets/kubernetes.io/serviceaccount
+ca.crt
+namespace
+token
+```
+
+### 4、Opaque Secret
+（1）创建说明：Opaque 类型的数据是一个 map 类型，要求 value 是 base64 编码格式
+```shell
+$ echo -n "admin" | base64
+YWRtaW4=
+$ echo -n "1f2d1e2e67df" | base64
+MWYyZDFlMmU2N2Rm:
+```
+
+（2）secrets.yml
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+    name: mysecret
+type: Opaque
+data:
+    password: MWYyZDFlMmU2N2Rm
+    username: YWRtaW4=
+```
+
+（3）使用方式
+
+将 Secret 挂载到 Volume 中
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: seret-test
+  labels:
+    name: seret-test
+spec:
+  volumes:
+    - name: secrets
+      secret:
+        secretName: mysecret
+  containers:
+    - image: hub.atguigu.com/library/myapp:v1
+      name: db
+      volumeMounts:
+        - name: secrets
+          mountPath: secrets
+          readOnly: true
+```
+
+将 Secret 导出到环境变量中
