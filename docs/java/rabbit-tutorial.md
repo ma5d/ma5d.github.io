@@ -1,11 +1,13 @@
-# 消息队列
+# rabbit 教程
 
-## 1.1. MQ 的相关概念
-### 1.1.1. 什么是 MQ
+## 1. 消息队列
+
+### 1.1 MQ 的相关概念
+#### 1.1.1. 什么是 MQ
 
 MQ(message queue)，从字面意思上看，本质是个队列，FIFO 先入先出，只不过队列中存放的内容是 message 而已，还是一种跨进程的通信机制，用于上下游传递消息。在互联网架构中，MQ 是一种非常常见的上下游“逻辑解耦+物理解耦”的消息通信服务。使用了 MQ 之后，消息发送上游只需要依赖 MQ，不用依赖其他服务。
 
-### 1.1.2. 为什么要用 MQ
+#### 1.1.2. 为什么要用 MQ
 
 1. 流量消峰
 举个例子，如果订单系统最多能处理一万次订单，这个处理能力应付正常时段的下单时绰绰有余，正常时段我们下单一秒后就能返回结果。但是在高峰期，如果有两万次下单操作系统是处理不了的，只能限制订单超过一万后不允许用户下单。使用消息队列做缓冲，我们可以取消这个限制，把一秒内下的订单分散成一段时间来处理，这时有些用户可能在下单十几秒后才能收到下单成功的操作，但是比不能下单的体
@@ -23,7 +25,7 @@ MQ(message queue)，从字面意思上看，本质是个队列，FIFO 先入先�
 
 ![异步处理.png](https://gitee.com/ma5d/imgs/raw/rabbit/异步处理.png)
 
-### 1.1.3. MQ 的分类
+#### 1.1.3. MQ 的分类
 1. ActiveMQ
     - 优点：单机吞吐量万级，时效性 ms 级，可用性高，基于主从架构实现高可用性，消可靠性较低的概率丢失数据
     - 缺点:官方社区现在对 ActiveMQ 5.x 维护越来越少，高吞吐量场景较少使用。
@@ -43,7 +45,7 @@ MQ(message queue)，从字面意思上看，本质是个队列，FIFO 先入先�
    - 优点:由于 erlang 语言的高并发特性，性能较好；吞吐量到万级，MQ 功能比较完备,健壮、稳定、易用、跨平台、支持多种语言 如：Python、Ruby、.NET、Java、JMS、C、PHP、ActionScript、XMPP、STOMP等，支持 AJAX 文档齐全；开源提供的管理界面非常棒，用起来很好用,社区活跃度高；更新频率相当高https://www.rabbitmq.com/news.html
    - 缺点：商业版需要收费,学习成本较高
 
-### 1.1.4. MQ 的选择
+#### 1.1.4. MQ 的选择
 1. Kafka
    > Kafka 主要特点是基于 Pull 的模式来处理消息消费，追求高吞吐量，一开始的目的就是用于日志收集和传输，适合产生大量数据的互联网服务的数据收集业务。大型公司建议可以选用，如果有日志采集功能，肯定是首选 kafka 了。尚硅谷官网 kafka 视频连接 http://www.gulixueyuan.com/course/330/tasks
 2. RocketMQ
@@ -51,21 +53,21 @@ MQ(message queue)，从字面意思上看，本质是个队列，FIFO 先入先�
 3. RabbitMQ
    > 结合 erlang 语言本身的并发优势，性能好时效性微秒级，社区活跃度也比较高，管理界面用起来十分方便，如果你的数据量没有那么大，中小型公司优先选择功能比较完备的 RabbitMQ。
 
-## 1.2. RabbitMQ
-### 1.2.1. RabbitMQ 的概念
+### 1.2. RabbitMQ
+#### 1.2.1. RabbitMQ 的概念
 RabbitMQ 是一个消息中间件：它接受并转发消息。你可以把它当做一个快递站点，当你要发送一个包裹时，你把你的包裹放到快递站，快递员最终会把你的快递送到收件人那里，按照这种逻辑 RabbitMQ 是一个快递站，一个快递员帮你传递快件。RabbitMQ 与快递站的主要区别在于，它不处理快件而是接收，存储和转发消息数据。
 
-### 1.2.2. 四大核心概念
+#### 1.2.2. 四大核心概念
 - 生产者: 产生数据发送消息的程序是生产者
 - 交换机: 交换机是 RabbitMQ 非常重要的一个部件，一方面它接收来自生产者的消息，另一方面它将消息 推送到队列中。交换机必须确切知道如何处理它接收到的消息，是将这些消息推送到特定队列还是推送到多个队列，亦或者是把消息丢弃，这个得有交换机类型决定.
 - 队列: 队列是 RabbitMQ 内部使用的一种数据结构，尽管消息流经 RabbitMQ 和应用程序，但它们只能存储在队列中。队列仅受主机的内存和磁盘限制的约束，本质上是一个大的消息缓冲区。<mark>许多生产者可以将消息发送到一个队列，许多消费者可以尝试从一个队列接收数据。这就是我们使用队列的方式.</mark>
 - 消费者: 消费与接收具有相似的含义。消费者大多时候是一个等待接收消息的程序。请注意生产者，消费者和消息中间件很多时候并不在同一机器上。同一个应用程序既可以是生产者又是可以是消费者。
 
-### 1.2.3. RabbitMQ 核心部分
+#### 1.2.3. RabbitMQ 核心部分
 
 ![核心部分.png](https://gitee.com/ma5d/imgs/raw/rabbit/核心部分.png)
 
-### 1.2.4. 各个名词介绍
+#### 1.2.4. 各个名词介绍
 
 ![工作原理.png](https://gitee.com/ma5d/imgs/raw/rabbit/工作原理.png)
 
@@ -77,7 +79,7 @@ RabbitMQ 是一个消息中间件：它接受并转发消息。你可以把它�
 - Queue：消息最终被送到这里等待 consumer 取走。
 - Binding：exchange 和 queue 之间的虚拟连接，binding 中可以包含 routing key。Binding 信息被保存到 exchange 中的查询表中，用于 message 的分发依据。
 
-### 1.2.5. 安装
+#### 1.2.5. 安装
 
 1. 官网地址
    https://www.rabbitmq.com/download.html
@@ -138,11 +140,68 @@ RabbitMQ 是一个消息中间件：它接受并转发消息。你可以把它�
    ![登录.png](https://gitee.com/ma5d/imgs/raw/rabbit/登录.png)
 7. 重置命令
    关闭应用的命令为
+   ```shell
    rabbitmqctl stop_app
+   ```
    清除的命令为
+   ```shell
    rabbitmqctl reset
+   ```
    重新启动命令为
+   ```shell
    rabbitmqctl start_app
+   ```
+## 2. Hello World
+> 在本教程的这一部分中，我们将用 Java 编写两个程序。发送单个消息的生产者和接收消息并打印出来的消费者。我们将介绍 Java API 中的一些细节。
+
+在下图中，“ P”是我们的生产者，“ C”是我们的消费者。中间的框是一个队列-RabbitMQ 代
+表使用者保留的消息缓冲区.
+![hello_world.png](https://gitee.com/ma5d/imgs/raw/rabbit/hello_world.png)
+
+### 2.1. 依赖
+```xml
+<!--指定 jdk 编译版本-->
+<build>
+   <plugins>
+      <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-compiler-plugin</artifactId>
+         <configuration>
+            <source>8</source>
+            <target>8</target>
+         </configuration>
+      </plugin>
+   </plugins>
+</build>
+<dependencies>
+<!--rabbitmq 依赖客户端-->
+<dependency>
+   <groupId>com.rabbitmq</groupId>
+   <artifactId>amqp-client</artifactId>
+   <version>5.8.0</version>
+</dependency>
+<!--操作文件流的一个依赖-->
+<dependency>
+   <groupId>commons-io</groupId>
+   <artifactId>commons-io</artifactId>
+   <version>2.6</version>
+</dependency>
+</dependencies>
+```
+
+### 2.2. 消息生产者
+### 2.3. 消息消费者
+
+## 3. Work Queues
+> 工作队列(又称任务队列)的主要思想是避免立即执行资源密集型任务，而不得不等待它完成。 相反我们安排任务在之后执行。我们把任务封装为消息并将其发送到队列。在后台运行的工作进程将弹出任务并最终执行作业。当有多个工作线程时，这些工作线程将一起处理这些任务。
+
+
+
+
+
+
+
+
 
 
 
