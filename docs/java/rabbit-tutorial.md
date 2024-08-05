@@ -156,46 +156,26 @@ RabbitMQ 是一个消息中间件：它接受并转发消息。你可以把它�
 
 在下图中，“ P”是我们的生产者，“ C”是我们的消费者。中间的框是一个队列-RabbitMQ 代
 表使用者保留的消息缓冲区.
+
 ![hello_world.png](https://gitee.com/ma5d/imgs/raw/rabbit/hello_world.png)
 
 ### 2.1. 依赖
-```xml
-<!--指定 jdk 编译版本-->
-<build>
-   <plugins>
-      <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-compiler-plugin</artifactId>
-         <configuration>
-            <source>8</source>
-            <target>8</target>
-         </configuration>
-      </plugin>
-   </plugins>
-</build>
-<dependencies>
-<!--rabbitmq 依赖客户端-->
-<dependency>
-   <groupId>com.rabbitmq</groupId>
-   <artifactId>amqp-client</artifactId>
-   <version>5.8.0</version>
-</dependency>
-<!--操作文件流的一个依赖-->
-<dependency>
-   <groupId>commons-io</groupId>
-   <artifactId>commons-io</artifactId>
-   <version>2.6</version>
-</dependency>
-</dependencies>
-```
+[pom.xml](https://gitee.com/ma5d/rabbit-tutorial/blob/master/HelloWorld/pom.xml)
 
 ### 2.2. 消息生产者
+[Producer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/HelloWorld/src/main/java/org/ma5d/Producer.java)
 ### 2.3. 消息消费者
+[Consumer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/HelloWorld/src/main/java/org/ma5d/Consumer.java)
 
 ## 3. Work Queues
 > 工作队列(又称任务队列)的主要思想是避免立即执行资源密集型任务，而不得不等待它完成。 相反我们安排任务在之后执行。我们把任务封装为消息并将其发送到队列。在后台运行的工作进程将弹出任务并最终执行作业。当有多个工作线程时，这些工作线程将一起处理这些任务。
 
+### 3.1. 轮训分发消息
 
+在这个案例中我们会启动两个工作线程，一个消息发送线程，我们来看看他们两个工作线程
+是如何工作的。
+
+#### 3.1.1. 抽取工具类
 
 
 
