@@ -249,6 +249,62 @@ channel.basicAck(deliveryTag, true);
 
 #### 3.2.6. 消息手动应答代码
 
-默认消息采用的是自动应答，所以我们要想实现消息消费过程中不丢失，需要把自动应答改
-为手动应答，消费者在上面代码的基础上增加下面画红色部分代码。
+默认消息采用的是自动应答，所以我们要想实现消息消费过程中不丢失，需要把自动应答改为手动应答，消费者在上面代码的基础上增加下面画红色部分代码。
+
+[Worker.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/ack/Worker.java)
+
+消息生产者
+
+[Task.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/ack/Task.java)
+
+
+#### 3.2.7. 手动应答效果演示
+
+正常情况下消息发送方发送两个消息 C1 和 C2 分别接收到消息并进行处理
+
+```log
+1 2 3 4
+发送消息完成:1
+发送消息完成:2
+发送消息完成:3
+发送消息完成:4
+
+worker01接收到消息:1
+worker01接收到消息:3
+worker02接收到消息:2
+worker02接收到消息:4
+```
+
+在发送者发送消息 dd，发出消息之后的把 C2 消费者停掉，按理说该 C2 来处理该消息，但是由于它处理时间较长，在还未处理完，也就是说 C2 还没有执行 ack 代码的时候，C2 被停掉了，此时会看到消息被 C1 接收到了，说明消息 dd 被重新入队，然后分配给能处理消息的 C1 处理了.
+
+![手动应答1.png](https://gitee.com/ma5d/imgs/raw/rabbit/手动应答1.png)
+
+![手动应答2.png](https://gitee.com/ma5d/imgs/raw/rabbit/手动应答2.png)
+
+
+### 3.3. RabbitMQ 持久化
+
+#### 3.3.1. 概念
+
+刚刚我们已经看到了如何处理任务不丢失的情况，但是如何保障当 RabbitMQ 服务停掉以后消息生产者发送过来的消息不丢失。默认情况下 RabbitMQ 退出或由于某种原因崩溃时，它忽视队列和消息，除非告知它不要这样做。确保消息不会丢失需要做两件事：我们需要将队列和消息都标记为持久化。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
