@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4505860b-94b2-43da-92b9-9e5695411ecf" name="Changes" comment="hello world">
+    <list default="true" id="4505860b-94b2-43da-92b9-9e5695411ecf" name="Changes" comment="work queues">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/java/rabbit-tutorial.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/java/rabbit-tutorial.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +108,7 @@
       <workItem from="1722605141673" duration="3024000" />
       <workItem from="1722786006499" duration="78000" />
       <workItem from="1722786096566" duration="2820000" />
-      <workItem from="1722871422105" duration="353000" />
+      <workItem from="1722871422105" duration="1106000" />
     </task>
     <task id="LOCAL-00001" summary="pvc">
       <option name="closed" value="true" />
@@ -143,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722787920432</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="work queues">
+      <option name="closed" value="true" />
+      <created>1722871915075</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1722871915075</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -153,7 +160,8 @@
     <MESSAGE value="pvc" />
     <MESSAGE value="secret" />
     <MESSAGE value="hello world" />
-    <option name="LAST_COMMIT_MESSAGE" value="hello world" />
+    <MESSAGE value="work queues" />
+    <option name="LAST_COMMIT_MESSAGE" value="work queues" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>
