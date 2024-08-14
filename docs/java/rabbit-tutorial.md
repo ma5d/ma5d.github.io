@@ -288,23 +288,60 @@ worker02接收到消息:4
 
 刚刚我们已经看到了如何处理任务不丢失的情况，但是如何保障当 RabbitMQ 服务停掉以后消息生产者发送过来的消息不丢失。默认情况下 RabbitMQ 退出或由于某种原因崩溃时，它忽视队列和消息，除非告知它不要这样做。确保消息不会丢失需要做两件事：我们需要将队列和消息都标记为持久化。
 
+#### 3.3.2. 队列如何实现持久化
 
+```java
+// 队列持久化
+channel.queueDeclare(ACK_QUEUE_NAME, durable: true, exclusive: false, autoDelete:false, arguments:null);
+```
 
+但是需要注意的就是如果之前声明的队列不是持久化的，需要把原先队列先删除，或者重新创建一个持久化的队列，不然就会出现错误.
 
+```log
+Caused by: com.rabbitmq.client.ShutdownSignalException: channel error; protocol method: #method<channel.close>(reply-code=406, reply-text=PRECONDITION_FAILED - inequivalent arg 'durable' for queue 'ack_queue' in vhost '/': received 'true' but current is 'false', class-id=50, method-id=10)
+```
 
+以下为控制台中持久化与非持久化队列的 UI 显示区、
 
+![持久化队列.png](https://gitee.com/ma5d/imgs/raw/rabbit/持久化队列.png)
 
+这个时候即使重启 rabbitmq 队列也依然存在
 
+#### 3.3.3. 消息实现持久化
 
+> 消息持久化的前提通常是队列持久化。在RabbitMQ中，只有当队列被声明为持久化（durable=True）时，标记为持久化的消息（delivery_mode=2）才能发挥其应有的作用。
 
+> 队列持久化确保了即使RabbitMQ服务重启，队列本身及其内部的消息状态能够被保留。如果队列是非持久化的，那么在RabbitMQ重启后，这个队列将不会自动重新创建，队列中的所有消息也会丢失
 
+> 已经入队的不会持久化存储。
 
+要想让消息实现持久化需要在消息生产者修改代码，MessageProperties.PERSISTENT_TEXT_PLAIN 添加这个属性。
 
+```java
+channel.basicPublish(exchange: "", TASK_QUEUE_NAME, props: null, message.getBytes(charsetName: "UTF-8"));
 
+// 当durable为true的时候
+channel.basicPublish(exchange: "", TASK_QUEUE_NAME, props: MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes(charsetName: "UTF-8"));
+```
 
+将消息标记为持久化并不能完全保证不会丢失消息。尽管它告诉 RabbitMQ 将消息保存到磁盘，但是这里依然存在当消息刚准备存储在磁盘的时候 但是还没有存储完，消息还在缓存的一个间隔点。此时并没有真正写入磁盘。持久性保证并不强，但是对于我们的简单任务队列而言，这已经绰绰有余了。如果需要更强有力的持久化策略，参考后边课件发布确认章节。
 
+#### 3.3.4. 不公平分发
 
+在最开始的时候我们学习到 RabbitMQ 分发消息采用的轮训分发，但是在某种场景下这种策略并不是很好，比方说有两个消费者在处理任务，其中有个消费者 1 处理任务的速度非常快，而另外一个消费者 2 处理速度却很慢，这个时候我们还是采用轮训分发的化就会到这处理速度快的这个消费者很大一部分时间处于空闲状态，而处理慢的那个消费者一直在干活，这种分配方式在这种情况下其实就不太好，但是RabbitMQ 并不知道这种情况它依然很公平的进行分发。
 
+为了避免这种情况，我们可以设置参数 `channel.basicQos(1);`
+```java
+int prefetchCount = 1;
+channel.basicQos(prefetchCount);
+```
 
+> prefetchCount() 是在使用 RabbitMQ 这类消息队列中间件时，与消费者（Consumer）设置相关的一个参数。它用于控制在消费者处理消息时，可以预取多少条消息到本地进行处理。这个参数对消息处理的性能和资源使用有重要影响。
+
+![不公平分发1.png](https://gitee.com/ma5d/imgs/raw/rabbit/不公平分发1.png)
+
+![不公平分发2.png](https://gitee.com/ma5d/imgs/raw/rabbit/不公平分发2.png)
+
+意思就是如果这个任务我还没有处理完或者我还没有应答你，你先别分配给我，我目前只能处理一个任务，然后 rabbitmq 就会把该任务分配给没有那么忙的那个空闲消费者，当然如果所有的消费者都没有完成手上任务，队列还在不停的添加新任务，队列有可能就会遇到队列被撑满的情况，这个时候就只能添加新的 worker 或者改变其他存储任务的策略.
 
 
