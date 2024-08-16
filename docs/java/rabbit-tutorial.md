@@ -381,15 +381,126 @@ Channel channel = connection.createChannel();
 channel.confirmSelect();
 ```
 
+> 当你调用waitForConfirms()方法时，它会阻塞当前线程直到以下情况之一发生：
+> 1. 所有在调用waitForConfirms()之前发布的消息都得到了确认。
+> 2. 调用waitForConfirms()之后发布的消息不会被等待确认。
+> 3. 如果在等待过程中发生超时（默认情况下没有超时，即无限等待），则会抛出java.util.concurrent.TimeoutException。
+
 #### 4.2.2. 单个确认发布
 
 这是一种简单的确认方式，它是一种同步确认发布的方式，也就是发布一个消息之后只有它被确认发布，后续的消息才能继续发布,waitForConfirmsOrDie(long)这个方法只有在消息被确认的时候才返回，如果在指定时间范围内这个消息没有被确认那么它将抛出异常。这种确认方式有一个最大的缺点就是:发布速度特别的慢，因为如果没有确认发布的消息就会阻塞所有后续消息的发布，这种方式最多提供每秒不超过数百条发布消息的吞吐量。当然对于某些应用程序来说这可能已经足够了.
+
+[Individual.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/confirm/Individual.java)
 
 #### 4.2.3. 批量确认发布
 
 上面那种方式非常慢，与单个等待确认消息相比，先发布一批消息然后一起确认可以极大地提高吞吐量，当然这种方式的缺点就是:当发生故障导致发布出现问题时，不知道是哪个消息出现问题了，我们必须将整个批处理保存在内存中，以记录重要的信息而后重新发布消息。当然这种方案仍然是同步的，也一样阻塞消息的发布。
 
-> 当你调用waitForConfirms()方法时，它会阻塞当前线程直到以下情况之一发生：
-> 1. 所有在调用waitForConfirms()之前发布的消息都得到了确认。
-> 2. 调用waitForConfirms()之后发布的消息不会被等待确认。
-> 3. 如果在等待过程中发生超时（默认情况下没有超时，即无限等待），则会抛出java.util.concurrent.TimeoutException。
+[Batch.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/confirm/Batch.java)
+
+
+#### 4.2.4. 异步确认发布
+
+异步确认虽然编程逻辑比上两个要复杂，但是性价比最高，无论是可靠性还是效率都没得说，他是利用回调函数来达到消息可靠性传递的，这个中间件也是通过函数回调来保证是否投递成功，下面就让我们来详细讲解异步确认是怎么实现的。
+
+![异步处理.png](https://gitee.com/ma5d/imgs/raw/rabbit/异步处理.png)
+
+[Async.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/confirm/Async.java)
+
+
+#### 4.2.5. 如何处理异步未确认消息
+
+最好的解决的解决方案就是把未确认的消息放到一个基于内存的能被发布线程访问的队列，比如说用 ConcurrentLinkedQueue 这个队列在 confirm callbacks 与发布线程之间进行消息的传递。
+
+#### 4.2.6. 以上 3 种发布确认速度对比
+- 单独发布消息：同步等待确认，简单，但吞吐量非常有限。
+- 批量发布消息： 批量同步等待确认，简单，合理的吞吐量，一旦出现问题但很难推断出是那条
+消息出现了问题。
+- 异步处理：最佳性能和资源使用，在出现错误的情况下可以很好地控制，但是实现起来稍微难些
+
+```java
+public static void main(String[] args) throws Exception {
+//这个消息数量设置为 1000 好些 不然花费时间太长
+publishMessagesIndividually();
+publishMessagesInBatch();
+handlePublishConfirmsAsynchronously();
+}
+//运行结果
+发布 1,000 个单独确认消息耗时 50,278 ms
+发布 1,000 个批量确认消息耗时 635 ms
+发布 1,000 个异步确认消息耗时 92 ms
+```
+
+## 5. 交换机
+
+在上一节中，我们创建了一个工作队列。我们假设的是工作队列背后，每个任务都恰好交付给一个消
+费者(工作进程)。在这一部分中，我们将做一些完全不同的事情-我们将消息传达给多个消费者。这种模式称为 ”发布/订阅”。
+
+为了说明这种模式，我们将构建一个简单的日志系统。它将由两个程序组成:第一个程序将发出日志消息，第二个程序是消费者。其中我们会启动两个消费者，其中一个消费者接收到消息后把日志存储在磁盘，另外一个消费者接收到消息后把消息打印在屏幕上，事实上第一个程序发出的日志消息将广播给所有消费者者。
+
+### 5.1. Exchanges
+
+#### 5.1.1. Exchanges 概念
+
+RabbitMQ 消息传递模型的核心思想是: 生产者生产的消息从不会直接发送到队列。实际上，通常生产
+者甚至都不知道这些消息传递传递到了哪些队列中。
+
+相反，生产者只能将消息发送到交换机(exchange)，交换机工作的内容非常简单，一方面它接收来自生产者的消息，另一方面将它们推入队列。
+
+交换机必须确切知道如何处理收到的消息。是应该把这些消息放到特定队列还是说把他们到许多队列中还是说应该丢弃它们。这就的由交换机的类型来决定。
+
+![交换机概念.png](https://gitee.com/ma5d/imgs/raw/rabbit/交换机概念.png)
+
+#### 5.1.2. Exchanges 的类型
+总共有以下类型：直接(direct), 主题(topic) ,标题(headers) , 扇出(fanout)
+
+#### 5.1.3. 无名 exchange
+
+在本教程的前面部分我们对 exchange 一无所知，但仍然能够将消息发送到队列。之前能实现的
+原因是因为我们使用的是默认交换，我们通过空字符串(“”)进行标识。
+
+```java
+channel.basicPublish("", "hello", null, messgae.getBytes());
+```
+
+第一个参数是交换机的名称。空字符串表示默认或无名称交换机：消息能路由发送到队列中其实
+是由 routingKey(bindingkey)绑定 key 指定的，如果它存在的话。
+
+### 5.2. 临时队列
+
+之前的章节我们使用的是具有特定名称的队列(还记得 hello 和 ack_queue 吗？)。队列的名称我们
+来说至关重要-我们需要指定我们的消费者去消费哪个队列的消息。
+
+每当我们连接到 Rabbit 时，我们都需要一个全新的空队列，为此我们可以创建一个具有随机名称
+的队列，或者能让服务器为我们选择一个随机队列名称那就更好了。其次一旦我们断开了消费者的连
+接，队列将被自动删除。
+创建临时队列的方式如下:
+```java
+String queueName = channel.queueDeclare().getQueue();
+```
+创建出来之后长成这样:
+
+![临时队列.png](https://gitee.com/ma5d/imgs/raw/rabbit/临时队列.png)
+
+### 5.3. 绑定(bindings)
+
+什么是 bingding 呢，binding 其实是 exchange 和 queue 之间的桥梁，它告诉我们 exchange 和那个队列进行了绑定关系。比如说下面这张图告诉我们的就是 X 与 Q1 和 Q2 进行了绑定。
+
+![绑定.png](https://gitee.com/ma5d/imgs/raw/rabbit/绑定.png)
+
+### 5.4. Fanout
+
+#### 5.4.1. Fanout 介绍
+Fanout 这种类型非常简单。正如从名称中猜到的那样，它是将接收到的所有消息广播到它知道的所有队列中。系统中默认有些 exchange 类型。
+
+![扇出.png](https://gitee.com/ma5d/imgs/raw/rabbit/扇出.png)
+
+#### 5.4.2. Fanout 实战
+
+![扇出实战.png](https://gitee.com/ma5d/imgs/raw/rabbit/扇出实战.png)
+
+Logs 和临时队列的绑定关系如下图
+
+![扇出UI.png](https://gitee.com/ma5d/imgs/raw/rabbit/扇出UI.png)
+
+ReceiveLogs01 将接收到的消息打印在控制台
