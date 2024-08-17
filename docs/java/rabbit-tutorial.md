@@ -504,3 +504,108 @@ Logs 和临时队列的绑定关系如下图
 ![扇出UI.png](https://gitee.com/ma5d/imgs/raw/rabbit/扇出UI.png)
 
 ReceiveLogs01 将接收到的消息打印在控制台
+
+[ReceiveLogs01.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/exchange/ReceiveLogs01.java)
+
+ReceiveLogs02 将接收到的消息存储在磁盘
+
+[ReceiveLogs02.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/exchange/ReceiveLogs02.java)
+
+EmitLog 发送消息给两个消费者接收
+
+[EmitLog.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/exchange/EmitLog.java)
+
+### 5.5. Direct exchange
+
+#### 5.5.1. 回顾
+在上一节中，我们构建了一个简单的日志记录系统。我们能够向许多接收者广播日志消息。在本节我们将向其中添加一些特别的功能-比方说我们只让某个消费者订阅发布的部分消息。例如我们只把严重错误消息定向存储到日志文件(以节省磁盘空间)，同时仍然能够在控制台上打印所有日志消息。
+
+我们再次来回顾一下什么是 bindings，绑定是交换机和队列之间的桥梁关系。也可以这么理解：队列只对它绑定的交换机的消息感兴趣。绑定用参数：routingKey 来表示也可称该参数为 binding key，创建绑定我们用代码:`channel.queueBind(queueName, EXCHANGE_NAME, "routingKey");`<mark>绑定之后的
+意义由其交换类型决定。</mark>
+
+#### 5.5.2. Direct exchange 介绍
+上一节中的我们的日志系统将所有消息广播给所有消费者，对此我们想做一些改变，例如我们希望将日志消息写入磁盘的程序仅接收严重错误(errros)，而不存储哪些警告(warning)或信息(info)日志.
+
+消息避免浪费磁盘空间。Fanout 这种交换类型并不能给我们带来很大的灵活性-它只能进行无意识的广播，在这里我们将使用 direct 这种类型来进行替换，这种类型的工作方式是，消息只去到它绑定的routingKey 队列中去。
+
+![直连.png](https://gitee.com/ma5d/imgs/raw/rabbit/直连.png)
+
+在上面这张图中，我们可以看到 X 绑定了两个队列，绑定类型是 direct。队列 Q1 绑定键为 orange，队列 Q2 绑定键有两个:一个绑定键为 black，另一个绑定键为 green.在这种绑定情况下，生产者发布消息到 exchange 上，绑定键为 orange 的消息会被发布到队列Q1。绑定键为 black，green 和的消息会被发布到队列 Q2，其他消息类型的消息将被丢弃。
+
+#### 5.5.3. 多重绑定
+
+![多重绑定.png](https://gitee.com/ma5d/imgs/raw/rabbit/多重绑定.png)
+
+当然如果 exchange 的绑定类型是 direct，但是它绑定的多个队列的 key 如果都相同，在这种情况下虽然绑定类型是 direct 但是它表现的就和 fanout 有点类似了，就跟广播差不多，如上图所示。
+
+#### 5.5.4. 实战
+
+![直连实战.png](https://gitee.com/ma5d/imgs/raw/rabbit/直连实战.png)
+
+![直连UI.png](https://gitee.com/ma5d/imgs/raw/rabbit/直连UI.png)
+
+
+[EmitLogDirect.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/exchange/direct/EmitLogDirect.java)
+
+[ReceiveLogsDirect01.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/exchange/direct/ReceiveLogsDirect01.java)
+
+[ReceiveLogsDirect02.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/exchange/direct/ReceiveLogsDirect02.java)
+
+### 5.6. Topics
+
+#### 5.6.1. 之前类型的问题
+
+在上一个小节中，我们改进了日志记录系统。我们没有使用只能进行随意广播的 fanout 交换机，而是使用了 direct 交换机，从而有能实现有选择性地接收日志。
+
+尽管使用 direct 交换机改进了我们的系统，但是它仍然存在局限性-比方说我们想接收的日志类型有 info.base 和 info.advantage，某个队列只想 info.base 的消息，那这个时候 direct 就办不到了。这个时候就只能使用 topic 类型.
+
+#### 5.6.2. Topic 的要求
+发送到类型是 topic 交换机的消息的 routing_key 不能随意写，必须满足一定的要求，它必须是一个单词列表，以点号分隔开。这些单词可以是任意单词，比如说："stock.usd.nyse", "nyse.vmw","quick.orange.rabbit".这种类型的。当然这个单词列表最多不能超过 <mark>255 个字节</mark>。
+在这个规则列表中，其中有两个替换符是大家需要注意的: *(星号)可以代替一个<mark>单词</mark>, #(井号)可以替代零个或多个单词
+
+#### 5.6.3. Topic 匹配案例
+下图绑定关系如下
+
+- Q1-->绑定的是: 中间带 orange 带 3 个单词的字符串(*.orange.*)
+- Q2-->绑定的是: 最后一个单词是 rabbit 的 3 个单词(*.*.rabbit)、第一个单词是 lazy 的多个单词(lazy.#)
+
+![主题.png](https://gitee.com/ma5d/imgs/raw/rabbit/主题.png)
+
+上图是一个队列绑定关系图，我们来看看他们之间数据接收情况是怎么样的
+
+| routing key | 接收到的队列 |
+|---|---|
+| quick.orange.rabbit | Q1, Q2 |
+| lazy.orange.elephant | Q1, Q2 |
+| quick.orange.fox | Q1 |
+| lazy.brown.fox | Q2 |
+| lazy.pink.rabbit | 虽然满足两个绑定但只被队列 Q2 接收一次 |
+| quick.brown.fox | 不匹配任何绑定不会被任何队列接收到会被丢弃 |
+| quick.orange.male.rabbit | 是四个单词不匹配任何绑定会被丢弃 |
+| lazy.orange.male.rabbit | 是四个单词但匹配 Q2 |
+
+当队列绑定关系是下列这种情况时需要引起注意
+- 当一个队列绑定键是#,那么这个队列将接收所有数据，就有点<mark>像<mark> fanout 了
+- 如果队列绑定键当中没有#和*出现，那么该队列绑定类型就是 direct 了
+
+#### 5.6.4. 实战
+
+![主题UI.png](https://gitee.com/ma5d/imgs/raw/rabbit/主题UI.png)
+
+[EmitLogTopic.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/exchange/topic/EmitLogTopic.java)
+
+[ReceiveLogsTopic01.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/exchange/topic/ReceiveLogsTopic01.java)
+
+[ReceiveLogsTopic02.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/exchange/topic/ReceiveLogsTopic02.java)
+
+
+
+
+
+
+
+
+
+
+
+
