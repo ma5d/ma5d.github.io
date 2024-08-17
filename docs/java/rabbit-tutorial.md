@@ -661,16 +661,21 @@ EmitLog 发送消息给两个消费者接收
 1. 消息生产者代码同上生产者一致
 2. C1 消费者代码(启动之后关闭该消费者 模拟其接收不到消息)
 
+[Consumer01.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/dead/ttl/Consumer01.java)
 
+3. C2 消费者代码不变
 
+启动消费者 1 然后再启动消费者 2
 
+![消息被拒UI.png](https://gitee.com/ma5d/imgs/raw/rabbit/消息被拒UI.png)
 
+## 7. 延迟队列
+### 7.1. 延迟队列概念
 
-
-
-
-
-
+延时队列,队列内部是有序的，最重要的特性就体现在它的延时属性上，延时队列中的元素是希望
+在指定时间到了以后或之前取出和处理，简单来说，延时队列就是用来存放需要在指定时间被处理的
+元素的队列。
+7.2. 延迟队列使用场景
 
 
 
