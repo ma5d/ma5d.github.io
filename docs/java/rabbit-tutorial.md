@@ -599,6 +599,132 @@ EmitLog 发送消息给两个消费者接收
 [ReceiveLogsTopic02.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/exchange/topic/ReceiveLogsTopic02.java)
 
 
+## 6. 死信队列
+### 6.1. 死信的概念
+先从概念解释上搞清楚这个定义，死信，顾名思义就是无法被消费的消息，字面意思可以这样理解，一般来说，producer 将消息投递到 broker 或者直接到 queue 里了，consumer 从 queue 取出消息进行消费，但某些时候由于特定的原因导致 queue 中的某些消息无法被消费，这样的消息如果没有
+后续的处理，就变成了死信，有死信自然就有了死信队列。
+
+应用场景:为了保证订单业务的消息数据不丢失，需要使用到 RabbitMQ 的死信队列机制，当消息消费发生异常时，将消息投入死信队列中.还有比如说: 用户在商城下单成功并点击去支付后在指定时间未支付时自动失效。
+
+### 6.2. 死信的来源
+
+- 消息 TTL 过期：队列达到最大长度(队列满了，无法再添加数据到 mq 中)
+- 消息被拒绝(basic.reject 或 basic.nack)并且 requeue=false.
+
+### 6.3. 死信实战
+#### 6.3.1. 代码架构图
+
+![死信队列.png](https://gitee.com/ma5d/imgs/raw/rabbit/死信队列.png)
+
+#### 6.3.2. 消息 TTL 过期
+
+生产者代码
+
+[Producer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/dead/Producer.java)
+
+消费者 C1 代码(启动之后关闭该消费者 模拟其接收不到消息)
+
+[Consumer01.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/dead/Consumer01.java)
+
+![死信UI.png](https://gitee.com/ma5d/imgs/raw/rabbit/死信UI.png)
+
+消费者 C2 代码(以上步骤完成后 启动 C2 消费者 它消费死信队列里面的消息)
+
+[Consumer02.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/dead/Consumer02.java)
+
+![死信消费.png](https://gitee.com/ma5d/imgs/raw/rabbit/死信消费.png)
+
+#### 6.3.3. 队列达到最大长度
+
+1. 消息生产者代码去掉 TTL 属性
+
+#### 6.3.3. 队列达到最大长度
+
+1. 消息生产者代码去掉 TTL 属性
+
+[Producer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/dead/ttl/Producer.java)
+
+2. C1 消费者修改以下代码(启动之后关闭该消费者 模拟其接收不到消息)
+
+[Consumer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/dead/ttl/Consumer.java)
+
+注意此时需要把原先队列删除 因为参数改变了.
+
+> 多的才会发送到死信队列。
+
+3. C2 消费者代码不变(启动 C2 消费者)
+
+![死信ttlUI.png](https://gitee.com/ma5d/imgs/raw/rabbit/死信ttlUI.png)
+
+#### 6.3.4. 消息被拒
+
+1. 消息生产者代码同上生产者一致
+2. C1 消费者代码(启动之后关闭该消费者 模拟其接收不到消息)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
