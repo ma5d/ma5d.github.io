@@ -747,35 +747,43 @@ return QueueBuilder.durable(QUEUE_A).withArguments(args).build();
 
 [TtlQueueConfig.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/config/TtlQueueConfig.java)
 
+#### 7.5.3. 消息生产者代码
+
+[SendMsgController.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/controller/SendMsgController.java)
+
+#### 7.5.4. 消息消费者代码
+
+[DeadLetterQueueConsumer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/DeadLetterQueueConsumer.java)
+
+发起一个请求 `http://127.0.0.1:8080/ttl/sendMsg/嘻嘻嘻`
+
+```log
+2024-08-18T22:10:40.587+08:00  INFO 175952 --- [SpringRabbit] [nio-8080-exec-1] o.m.s.controller.SendMsgController       : 当前时间：Sun Aug 18 22:10:40 CST 2024,发送一条信息给两个 TTL 队列:嘻嘻嘻
+2024-08-18T22:10:50.625+08:00  INFO 175952 --- [SpringRabbit] [ntContainer#0-1] o.m.s.DeadLetterQueueConsumer            : 当前时间：Sun Aug 18 22:10:50 CST 2024,收到死信队列信息消息来自 ttl 为 10S 的队列: 嘻嘻嘻
+2024-08-18T22:11:20.612+08:00  INFO 175952 --- [SpringRabbit] [ntContainer#0-1] o.m.s.DeadLetterQueueConsumer            : 当前时间：Sun Aug 18 22:11:20 CST 2024,收到死信队列信息消息来自 ttl 为 40S 的队列: 嘻嘻嘻
+```
+
+第一条消息在 10S 后变成了死信消息，然后被消费者消费掉，第二条消息在 40S 之后变成了死信消息，然后被消费掉，这样一个延时队列就打造完成了。
+
+不过，如果这样使用的话，岂不是每增加一个新的时间需求，就要新增一个队列，这里只有 10S 和 40S两个时间选项，如果需要一个小时后处理，那么就需要增加 TTL 为一个小时的队列，如果是预定会议室然后提前通知这样的场景，岂不是要增加无数个队列才能满足需求？
+
+### 7.6. 延时队列优化
+
+#### 7.6.1. 代码架构图
+
+在这里新增了一个队列 QC,绑定关系如下,该队列不设置 TTL 时间
+
+![延时队列优化.png](https://gitee.com/ma5d/imgs/raw/rabbit/延时队列优化.png)
+
+#### 7.6.2. 配置文件类代码
+
+#### 7.6.3. 消息生产者代码
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+发起请求
+- `http://localhost:8080/ttl/sendExpirationMsg/你好 1/20000`
+- `http://localhost:8080/ttl/sendExpirationMsg/你好 2/2000`
 
 
 
