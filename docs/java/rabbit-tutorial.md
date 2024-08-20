@@ -777,14 +777,162 @@ return QueueBuilder.durable(QUEUE_A).withArguments(args).build();
 
 #### 7.6.2. 配置文件类代码
 
+[MsgTtlQueueConfig.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/config/MsgTtlQueueConfig.java)
+
 #### 7.6.3. 消息生产者代码
 
-
+[SendMsgController.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/controller/SendMsgController.java)
 
 发起请求
 - `http://localhost:8080/ttl/sendExpirationMsg/你好 1/20000`
 - `http://localhost:8080/ttl/sendExpirationMsg/你好 2/2000`
 
+```log
+2024-08-18T22:28:27.814+08:00  INFO 173796 --- [SpringRabbit] [nio-8080-exec-1] o.m.s.controller.SendMsgController       : 当前时间：Sun Aug 18 22:28:27 CST 2024,发送一条时长20000毫秒 TTL 信息给队列 C:你好 1
+2024-08-18T22:28:39.059+08:00  INFO 173796 --- [SpringRabbit] [nio-8080-exec-2] o.m.s.controller.SendMsgController       : 当前时间：Sun Aug 18 22:28:39 CST 2024,发送一条时长2000毫秒 TTL 信息给队列 C:你好 2
+2024-08-18T22:28:47.829+08:00  INFO 173796 --- [SpringRabbit] [ntContainer#0-1] o.m.s.DeadLetterQueueConsumer            : 当前时间：Sun Aug 18 22:28:47 CST 2024,收到死信队列信息你好 1
+2024-08-18T22:28:47.830+08:00  INFO 173796 --- [SpringRabbit] [ntContainer#0-1] o.m.s.DeadLetterQueueConsumer            : 当前时间：Sun Aug 18 22:28:47 CST 2024,收到死信队列信息你好 2
+```
+
+看起来似乎没什么问题，但是在最开始的时候，就介绍过如果使用在消息属性上设置 TTL 的方式，消息可能并不会按时“死亡“，因为<mark> RabbitMQ 只会检查第一个消息是否过期</mark>，如果过期则丢到死信队列，如果第一个消息的延时时长很长，而第二个消息的延时时长很短，第二个消息并不会优先得到执行。
+
+### 7.7. Rabbitmq 插件实现延迟队列
+
+上文中提到的问题，确实是一个问题，如果不能实现在消息粒度上的 TTL，并使其在设置的 TTL 时间及时死亡，就无法设计成一个通用的延时队列。那如何解决呢，接下来我们就去解决该问题。
+
+#### 7.7.1. 安装延时队列插件
+在官网上下载 https://www.rabbitmq.com/community-plugins.html，下载 rabbitmq_delayed_message_exchange 插件，然后解压放置到 RabbitMQ 的插件目录。
+
+进入 RabbitMQ 的安装目录下的 plgins 目录，执行下面命令让该插件生效，然后重启 RabbitMQ 
+```shell
+/usr/lib/rabbitmq/lib/rabbitmq_server-3.8.8/plugins
+rabbitmq-plugins enable rabbitmq_delayed_message_exchange
+```
+```log
+ma@ma-C92:~$ docker exec -it rabbit /bin/bash
+root@rabbit:/# rabbitmq-plugins enable rabbitmq_delayed_message_exchange
+Enabling plugins on node rabbit@rabbit:
+rabbitmq_delayed_message_exchange
+The following plugins have been configured:
+  rabbitmq_delayed_message_exchange
+  rabbitmq_federation
+  rabbitmq_management
+  rabbitmq_management_agent
+  rabbitmq_prometheus
+  rabbitmq_web_dispatch
+Applying plugin configuration to rabbit@rabbit...
+The following plugins have been enabled:
+  rabbitmq_delayed_message_exchange
+
+started 1 plugins.
+```
+
+![延时插件.png](https://gitee.com/ma5d/imgs/raw/rabbit/延时插件.png)
+
+#### 7.7.2. 代码架构图
+在这里新增了一个队列 delayed.queue,一个自定义交换机 delayed.exchange，绑定关系如下:
+
+#### 7.7.3. 配置文件类代码
+在我们自定义的交换机中，这是一种新的交换类型，该类型消息支持延迟投递机制 消息传递后并
+不会立即投递到目标队列中，而是存储在 mnesia(一个分布式数据系统)表中，当达到投递时间时，才
+投递到目标队列中。
+
+![延时UI.png](https://gitee.com/ma5d/imgs/raw/rabbit/延时UI.png)
+
+#### 7.7.3. 配置文件类代码
+
+在我们自定义的交换机中，这是一种新的交换类型，该类型消息支持延迟投递机制 消息传递后并不会立即投递到目标队列中，而是存储在 mnesia(一个分布式数据系统)表中，当达到投递时间时，才投递到目标队列中。
+
+
+
+#### 7.7.4. 消息生产者代码
+
+[SendMsgController.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/controller/SendMsgController.java)
+
+### 7.7.5. 消息消费者代码
+
+[DeadLetterQueueConsumer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/DeadLetterQueueConsumer.java)
+
+
+发起请求：
+
+`http://localhost:8080/ttl/sendDelayMsg/come on baby1/20000`
+`http://localhost:8080/ttl/sendDelayMsg/come on baby2/2000`
+
+
+```log
+2024-08-20T20:41:21.330+08:00  INFO 39368 --- [SpringRabbit] [nio-8080-exec-2] o.m.s.controller.SendMsgController       :  当前时间：Tue Aug 20 20:41:21 CST 2024,发送一条延迟20000毫秒的信息给队列delayed.queue:come on baby1
+2024-08-20T20:41:33.029+08:00  INFO 39368 --- [SpringRabbit] [nio-8080-exec-3] o.m.s.controller.SendMsgController       :  当前时间：Tue Aug 20 20:41:33 CST 2024,发送一条延迟2000毫秒的信息给队列delayed.queue:come on baby2
+2024-08-20T20:41:35.047+08:00  INFO 39368 --- [SpringRabbit] [ntContainer#0-1] o.m.s.DeadLetterQueueConsumer            : 当前时间：Tue Aug 20 20:41:35 CST 2024,收到延时队列的消息：come on baby2
+2024-08-20T20:41:41.334+08:00  INFO 39368 --- [SpringRabbit] [ntContainer#0-1] o.m.s.DeadLetterQueueConsumer            : 当前时间：Tue Aug 20 20:41:41 CST 2024,收到延时队列的消息：come on baby1
+```
+
+### 7.8. 总结
+
+延时队列在需要延时处理的场景下非常有用，使用 RabbitMQ 来实现延时队列可以很好的利用 RabbitMQ 的特性，如：消息可靠发送、消息可靠投递、死信队列来保障消息至少被消费一次以及未被正确处理的消息不会被丢弃。另外，通过 RabbitMQ 集群的特性，可以很好的解决单点故障问题，不会因为单个节点挂掉导致延时队列不可用或者消息丢失。当然，延时队列还有很多其它选择，比如利用 Java 的 DelayQueue，利用 Redis 的 zset，利用 Quartz或者利用 kafka 的时间轮，这些方式各有特点,看需要适用的场景.
+
+## 8. 发布确认高级
+
+在生产环境中由于一些不明原因，导致 rabbitmq 重启，在 RabbitMQ 重启期间生产者消息投递失败，导致消息丢失，需要手动处理和恢复。于是，我们开始思考，如何才能进行 RabbitMQ 的消息可靠投递呢？特别是在这样比较极端的情况，RabbitMQ 集群不可用的时候，无法投递的消息该如何处理呢:
+
+应用[xxx]在[08-1516:36:04]发生[错误日志异常]，alertId=[xxx]。
+由[org.springframework.amqp.rabbit.listener.BlockingQueueConsumer:start:620]触发。
+应用 xxx 可能原因如下服务名为：异常为：org.springframework.amqp.rabbit.listener.BlockingQueueConsumer:start:620,
+产生原因如下:
+1.org.springframework.amqp.rabbit.listener.QueuesNotAvailableException:Cannot prepare queue for listener. Either the queue doesn't exist or the broker will notallow us to use it.||Consumer received fatal=false exception on startup:
+
+
+### 8.1. 发布确认 springboot 版本
+#### 8.1.1. 确认机制方案
+
+![确认机制方案.png](https://gitee.com/ma5d/imgs/raw/rabbit/确认机制方案.png)
+
+#### 8.1.2. 代码架构图
+
+![发布确认架构图.png](https://gitee.com/ma5d/imgs/raw/rabbit/发布确认架构图.png)
+
+#### 8.1.3. 配置文件
+
+在配置文件当中需要添加 `spring.rabbitmq.publisher-confirm-type=correlated`
+
+- NONE: 禁用发布确认模式，是默认值
+- CORRELATED: 发布消息成功到交换器后会触发回调方法
+- SIMPLE: 经测试有两种效果.
+   - 其一效果和 CORRELATED 值一样会触发回调方法.
+   - 其二在发布消息成功后使用 rabbitTemplate 调用 waitForConfirms 或 waitForConfirmsOrDie 方法等待 broker 节点返回发送结果，根据返回结果来判定下一步的逻辑，要注意的点是 waitForConfirmsOrDie 方法如果返回 false 则会关闭 channel，则接下来无法发送消息到 broker
+
+#### 8.1.4. 添加配置类
+
+[ConfirmConfig.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/config/ConfirmConfig.java)
+
+#### 8.1.5. 消息生产者
+#### 8.1.6. 回调接口
+
+[Producer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/controller/Producer.java)
+
+#### 8.1.7. 消息消费者
+
+[DeadLetterQueueConsumer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/DeadLetterQueueConsumer.java)
+
+#### 8.1.8. 结果分析
+
+```log
+2024-08-20T23:28:06.965+08:00  INFO 183176 --- [SpringRabbit] [nio-8080-exec-1] o.ma5d.springrabbit.controller.Producer  : 发送消息内容:xx1
+2024-08-20T23:28:06.971+08:00  INFO 183176 --- [SpringRabbit] [nectionFactory3] o.m.springrabbit.controller.MyCallBack   : 交换机已经收到 id 为:2的消息
+2024-08-20T23:28:06.971+08:00  INFO 183176 --- [SpringRabbit] [nectionFactory4] o.m.springrabbit.controller.MyCallBack   : 交换机已经收到 id 为:1的消息
+2024-08-20T23:28:06.974+08:00  INFO 183176 --- [SpringRabbit] [ntContainer#1-1] o.m.s.DeadLetterQueueConsumer            : 接受到队列 confirm.queue 消息:xx1key1
+```
+
+可以看到，发送了两条消息，第一条消息的 RoutingKey 为 "key1"，第二条消息的 RoutingKey 为"key2"，两条消息都成功被交换机接收，也收到了交换机的确认回调，但消费者只收到了一条消息，因为第二条消息的 RoutingKey 与队列的 BindingKey 不一致，也没有其它队列能接收这个消息，所有第二条消息被直接丢弃了。
+
+### 8.2. 回退消息
+
+### 8.3. 备份交换机
+
+
+## 9. RabbitMQ 其他知识点
+
+## 10. RabbitMQ 集群
 
 
 
