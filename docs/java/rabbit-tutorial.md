@@ -927,10 +927,60 @@ started 1 plugins.
 
 ### 8.2. 回退消息
 
+#### 8.2.1. Mandatory 参数
+
+在仅开启了生产者确认机制的情况下，交换机接收到消息后，会直接给消息生产者发送确认消息，如果发现该消息不可路由，那么消息会被直接丢弃，此时生产者是不知道消息被丢弃这个事件的。那么如何让无法被路由的消息帮我想办法处理一下？最起码通知我一声，我好自己处理啊。
+
+通过设置 mandatory 参数可以在当消息传递过程中不可达目的地时将消息返回给生产者。
+
+#### 8.2.2. 消息生产者代码
+#### 8.2.3. 回调接口
+
+[MessageProducer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/controller/MessageProducer.java)
+
+#### 8.2.4. 结果分析
+
+```log
+2024-08-21T21:41:07.004+08:00  INFO 170572 --- [SpringRabbit] [nio-8080-exec-1] o.m.s.controller.MessageProducer         : 发送消息 id 为:176f799a-e439-492d-94f0-73b4aa3a7115内容为nullkey1
+2024-08-21T21:41:07.014+08:00  INFO 170572 --- [SpringRabbit] [nio-8080-exec-1] o.m.s.controller.MessageProducer         : 发送消息 id 为:f2a50b27-dcaf-4c8e-a6fd-f703c38ff9ef内容为nullkey2
+2024-08-21T21:41:07.016+08:00  INFO 170572 --- [SpringRabbit] [ntContainer#2-1] o.m.s.DeadLetterQueueConsumer            : 接受到队列 confirm.queue 消息:nullkey1
+2024-08-21T21:41:07.019+08:00  INFO 170572 --- [SpringRabbit] [nectionFactory3] o.m.s.controller.MessageProducer         : 交换机收到消息确认成功, id:176f799a-e439-492d-94f0-73b4aa3a7115
+2024-08-21T21:41:07.021+08:00  INFO 170572 --- [SpringRabbit] [nectionFactory3] o.m.s.controller.MessageProducer         : 消息:nullkey2被服务器退回，退回原因:NO_ROUTE, 交换机是:confirm.exchange, 路由 key:key2
+2024-08-21T21:41:07.021+08:00  INFO 170572 --- [SpringRabbit] [nectionFactory1] o.m.s.controller.MessageProducer         : 交换机收到消息确认成功, id:f2a50b27-dcaf-4c8e-a6fd-f703c38ff9ef
+
+```
+
 ### 8.3. 备份交换机
 
+有了 mandatory 参数和回退消息，我们获得了对无法投递消息的感知能力，有机会在生产者的消息无法被投递时发现并处理。但有时候，我们并不知道该如何处理这些无法路由的消息，最多打个日志，然后触发报警，再来手动处理。而通过日志来处理这些无法路由的消息是很不优雅的做法，特别是当生产者所在的服务有多台机器的时候，手动复制日志会更加麻烦而且容易出错。而且设置 mandatory 参数会增加生产者的复杂性，需要添加处理这些被退回的消息的逻辑。如果既不想丢失消息，又不想增加生产者的复杂性，该怎么做呢？
+
+前面在设置死信队列的文章中，我们提到，可以为队列设置死信交换机来存储那些处理失败的消息，可是这些不可路由消息根本没有机会进入到队列，因此无法使用死信队列来保存消息。
+
+在 RabbitMQ 中，有一种备份交换机的机制存在，可以很好的应对这个问题。什么是备份交换机呢？备份交换机可以理解为 RabbitMQ 中交换机的“备胎”，当我们为某一个交换机声明一个对应的备份交换机时，就是为它创建一个备胎，当交换机接收到一条不可路由消息时，将会把这条消息转发到备份交换机中，由备份交换机来进行转发和处理，通常备份交换机的类型为 Fanout ，这样就能把所有消息都投递到与其绑定的队列中，然后我们在备份交换机下绑定一个队列，这样所有那些原交换机无法被路由的消息，就会都进入这个队列了。当然，我们还可以建立一个报警队列，用独立的消费者来进行监测和报警。
+
+#### 8.3.1. 代码架构图
+
+![备份交换机.png](https://gitee.com/ma5d/imgs/raw/rabbit/备份交换机.png)
+
+#### 8.3.2. 修改配置类
+
+[ConfirmConfig.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/config/ConfirmConfig.java)
+
+#### 8.3.3. 报警消费者
+
+[WarningConsumer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/SpringRabbit/src/main/java/org/ma5d/springrabbit/service/WarningConsumer.java)
+
+#### 8.3.4. 测试注意事项
+
+```log
+2024-08-21T22:27:58.154+08:00 ERROR 183740 --- [SpringRabbit] [168.31.223:5672] o.s.a.r.c.CachingConnectionFactory       : Shutdown Signal: channel error; protocol method: #method<channel.close>(reply-code=406, reply-text=PRECONDITION_FAILED - inequivalent arg 'alternate-exchange' for exchange 'confirm.exchange' in vhost '/': received the value 'backup.exchange' of type 'longstr' but current is none, class-id=40, method-id=10)
+2024-08-21T22:27:59.176+08:00 ERROR 183740 --- [SpringRabbit] [168.31.223:5672] o.s.a.r.c.CachingConnectionFactory       : Shutdown Signal: channel error; protocol method: #method<channel.close>(reply-code=406, reply-text=PRECONDITION_FAILED - inequivalent arg 'alternate-exchange' for exchange 'confirm.exchange' in vhost '/': received the value 'backup.exchange' of type 'longstr' but current is none, class-id=40, method-id=10)
+```
 
 ## 9. RabbitMQ 其他知识点
+### 9.1. 幂等性
+### 9.2. 优先级队列
+### 9.3. 惰性队列
 
 ## 10. RabbitMQ 集群
 
