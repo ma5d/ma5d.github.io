@@ -1054,11 +1054,48 @@ a.消息生产者
 
 b.消息消费者
 
-
+[Consumer.java](https://gitee.com/ma5d/rabbit-tutorial/blob/master/WorkQueues/src/main/java/org/ma5d/priority/Consumer.java)
 
 ### 9.3. 惰性队列
 
+#### 9.3.1. 使用场景
+
+RabbitMQ 从 3.6.0 版本开始引入了惰性队列的概念。惰性队列会尽可能的将消息存入磁盘中，而在消费者消费到相应的消息时才会被加载到内存中，它的一个重要的设计目标是能够支持更长的队列，即支持更多的消息存储。当消费者由于各种各样的原因(比如消费者下线、宕机亦或者是由于维护而关闭等)而致使长时间内不能消费消息造成堆积时，惰性队列就很有必要了。
+
+默认情况下，当生产者将消息发送到 RabbitMQ 的时候，队列中的消息会尽可能的存储在内存之中，这样可以更加快速的将消息发送给消费者。即使是持久化的消息，在被写入磁盘的同时也会在内存中驻留一份备份。当 RabbitMQ 需要释放内存的时候，会将内存中的消息换页至磁盘中，这个操作会耗费较长的时间，也会阻塞队列的操作，进而无法接收新的消息。虽然 RabbitMQ 的开发者们一直在升级相关的算法，但是效果始终不太理想，尤其是在消息量特别大的时候。
+
+#### 9.3.2. 两种模式
+
+队列具备两种模式：default 和 lazy。
+
+默认的为 default 模式，在 3.6.0 之前的版本无需做任何变更。lazy模式即为惰性队列的模式，可以通过调用 channel.queueDeclare 方法的时候在参数中设置，也可以通过 Policy 的方式设置，如果一个队列同时使用这两种方式设置的话，那么 Policy 的方式具备更高的优先级。
+
+如果要通过声明的方式改变已有队列的模式的话，那么只能先删除队列，然后再重新声明一个新的。在队列声明的时候可以通过“x-queue-mode”参数来设置队列的模式，取值为“default”和“lazy”。下面示例中演示了一个惰性队列的声明细节：
+
+```java
+Map<String, Object> args = new HashMap<String, Object>();
+args.put("x-queue-mode", "lazy");
+channel.queueDeclare("myqueue", false, false, false, args);
+```
+
+#### 9.3.3. 内存开销对比
+
+![惰性队列.png](https://gitee.com/ma5d/imgs/raw/rabbit/惰性队列.png)
+
+在发送 1 百万条消息，每条消息大概占 1KB 的情况下，普通队列占用内存是 1.2GB，而惰性队列仅仅占用 1.5MB.
+
 ## 10. RabbitMQ 集群
 
+### 10.1. clustering
+#### 10.1.1. 使用集群的原因
 
+### 10.2. 镜像队列
+#### 10.2.1. 使用镜像的原因
 
+### 10.3. Haproxy+Keepalive 实现高可用负载均衡
+
+### 10.4. Federation Exchange
+
+### 10.5. Federation Queue
+
+### 10.6. Shovel
