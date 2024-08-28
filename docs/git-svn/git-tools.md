@@ -1,3 +1,4 @@
+# GIT 代码段
 
 ## 1. git 代理
 
@@ -49,3 +50,19 @@ git push
     git update-index --no-skip-worktree "/app/tep/ap.txt"//打开GIT跟踪本地文件修改
     ```
 
+## 5. 鉴权失败
+
+```log
+ma-C92# git push
+remote: Invalid username or password.
+致命错误：'https://github.com/ma5d/ma5d.github.io/' 鉴权失败
+```
+
+```bash
+# 这会将你的凭据（包括 PAT）保存在明文文件中
+git config --global credential.helper store
+echo "https://username:personal_access_token@github.com" > ~/.git-credentials
+chmod 600 ~/.git-credentials
+```
+
+直接push解决问题。
