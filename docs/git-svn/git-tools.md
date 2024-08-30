@@ -66,3 +66,10 @@ chmod 600 ~/.git-credentials
 ```
 
 直接push解决问题。
+
+## 6. git 拉取指定分支
+
+```shell
+git clone --single-branch --branch <branch_name> <repository_url>
+git clone --depth 1 --single-branch --branch Quartz https://gitee.com/ma5d/imgs.git
+```
