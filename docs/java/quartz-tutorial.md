@@ -42,7 +42,7 @@ Quartz 就是一个开源的、用于 Java 编程语言的任务调度框架。�
 ### 1. 创建 Job 类
 创建一个 Job 类，名称自定义，需要实现 Job 接口，并实现 execute 方法。
 
-[MyJob.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/MyJob.java)
+[TestClass.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/TestClass.java)
 
 ### 2. 编写定时任务
 需要创建任务详情（JobDetail）、触发器（Trigger）、调度器（Scheduler）。
@@ -84,15 +84,64 @@ JobDetail 通过 JobBuilder 创建。Trigger 通过 TriggerBuilder 创建。在�
 
 [TestClassSetter.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/TestClassSetter.java)
 
+## 4. Job
+
+Quartz 每次在执行任务的时候，都会创建新的 Job 对象和 JobDetail 对象。修改 Job 对象，添加打印 job 和 jobDetail 对象信息，如下：
+
+> ```log
+> [DefaultQuartzScheduler_QuartzSchedulerThread] ERROR org.quartz.core.ErrorLogger - An error occured instantiating job to be executed. > job= 'jGroup1.job1'
+> org.quartz.SchedulerException: Problem instantiating class 'org.ma5d.job.QuartzJUCJob$MyJobJUC' [See nested exception: java.lang.? InstantiationException: org.ma5d.job.QuartzJUCJob$MyJobJUC]
+> Caused by: java.lang.InstantiationException: org.ma5d.job.QuartzJUCJob$MyJobJUC
+> Caused by: java.lang.NoSuchMethodException: org.ma5d.job.QuartzJUCJob$MyJobJUC.<init>()
+> ```
+
+> 非静态内部类确实会隐式地包含对其外部类的引用，这是因为非静态内部类的实例需要与其外部类的实例关联。因此，当你创建一个非静态内部类的对象时，需要提供一个外部类的实例，以确保内部类能够访问外部类的成员。
+
+> Caused by: java.lang.IllegalAccessException: class org.quartz.simpl.SimpleJobFactory cannot access a member of class org.ma5d.job.QuartzJUCJob$MyJobJUC with modifiers ""
+
+> 修改为 public 即可
+
+[InstanceJob.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/job/InstanceJob.java)
+
+每次打印日志的 Job 和 JobDetail 对象都是不一样的，也就是每次执行任务都会创建新的 Job 和 JobDetail 对象。
+
+为什么要每次创建一个新的对象呢，因为可能任务执行比较久，<mark>一次任务没执行完，下一次任务就开始执行的问题</mark>，如果使用的是同一个对象，就可能存在并发问题。
 
 
+### 4.1 禁止并发
 
+但是如果不想要并发执行，而是想要上一次任务执行完成才可以执行下一次的任务，变成串行执行，该如何处理呢？可以为 Job 类添加 @DisallowConcurrentExecution 注解来禁止并发执行同一个 Job定义（JobDetail定义的）的多个实例。
 
+举个栗子：给 Job 类添加 @DisallowConcurrentExecution 注解，我们使用的还是之前使用的触发器，每1秒执行一次，但是我们的任务每次执行需要花费3秒执行。
 
+[ThreeJob.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/job/ThreeJob.java)
 
+如果没有 @DisallowConcurrentExecution 注解，虽然任务没有执行完成，但是每过1秒都会执行一次新的任务，导致任务会一直累积。而添加了 @DisallowConcurrentExecution 注解，上一次执行完成，才会执行下一次任务。可以看到每隔三秒执行一次，不会并发执行，而是变成了串行执行。
 
+### 4.2 Job的状态
 
+每次执行任务都是新的 JobDetail 和 Job 实例，那么在传递数据的时候，每次的 JobDataMap 都是相同的数据。这个就是无状态的 Job。即使我们在 Job 类中，修改了 JobDataMap 中的数据，也不会对下一次的执行产生影响。如果想要用一个计数器记录执行的次数，即我们想要 JobDataMap 的数据能一直保存下来应该如何设置呢？这个就需要有状态的 Job 了。
 
+> 这个使用static field 不就行了。
 
+举个栗子：使用 count 记录任务执行的次数，首先在 JobDetail 中初始化 count 的值。
 
+```java
+// 1.定义jobDetail
+@PersistJobDataAfterExecution
 
+JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
+jobDataMap.put("count", count);
+```
+
+## 5. 触发器
+
+触发器（Triggers）用于定义何时和如何执行与 Job 关联的任务。它们决定了任务的调度规则，比如何时执行、执行频率以及在何种条件下触发执行。我们在前面使用的触发器是SimpleTrigger， SimpleTrigger 只能定义按照指定频率执行的任务，如果要定义复杂的执行规则，SimpleTrigger 是无法支持的，一般我们用的最多的就是 CronTrigger 。
+
+### 5.1 CronTrigger
+
+CronTrigger 是 Quartz 中用于基于 Cron 表达式定义任务执行时间表的触发器类型。它允许用户按照日历时间来定义任务的执行规则，非常灵活且支持各种复杂的调度需求。
+
+1. CronTrigger演示
+
+先举个栗子：任务还是之前的任务类：
