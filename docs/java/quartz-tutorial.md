@@ -42,8 +42,6 @@ Quartz 就是一个开源的、用于 Java 编程语言的任务调度框架。�
 ### 1. 创建 Job 类
 创建一个 Job 类，名称自定义，需要实现 Job 接口，并实现 execute 方法。
 
-[TestClass.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/TestClass.java)
-
 ### 2. 编写定时任务
 需要创建任务详情（JobDetail）、触发器（Trigger）、调度器（Scheduler）。
 
@@ -65,8 +63,6 @@ JobDetail 通过 JobBuilder 创建。Trigger 通过 TriggerBuilder 创建。在�
 
 举个栗子：
 
-[TestClassParam.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/TestClassParam.java)
-
 在创建 Job 或 Trigger 的时候，都可以通过 JobDataMap 以 key-value 的形式设置参数，这是因为 JobDataMap 实现了 JDK 中的 Map 接口。下面就可以来获取上面传递的参数了。
 
 ### 3.2 接收参数
@@ -76,13 +72,13 @@ JobDetail 通过 JobBuilder 创建。Trigger 通过 TriggerBuilder 创建。在�
 1. 通过 JobDataMap 获取参数
 在 Job 类中的 execute 方法中，通过 JobExecutionContext 对象可以获取到 JobDetail 和 Trigger，然后获取到 JobDataMap。JobExecutionContext 对象是任务执行的上下文对象，可以获取到全局的信息。可以通过 JobExecutionContext 对象获取到 JobDetail 和 Trigger 的信息，然后获取到 JobDataMap 的信息。通过 getMergedJobDataMap() 可以获取 JobDetail 和 Trigger 传递的参数合并后的结果，如果传递参数的时候 JobDetail 和 Trigger 传递了相同的 key 值，那么 <mark>Trigger 中传递的参数会覆盖 JobDetail 中的参数</mark>。
 
-[MyJobParam.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/MyJobParam.java)
+[ParamTest.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/ParamTest.java)
 
 2. 通过属性获取参数
 
 首先在 Job 中定义与传递数据的时候 key 相同属性和 set 方法。这样在创建 job 的时候，会通过 setter 将参数设置进来。
 
-[TestClassSetter.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/TestClassSetter.java)
+[SetterTest.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/SetterTest.java)
 
 ## 4. Job
 
@@ -101,7 +97,7 @@ Quartz 每次在执行任务的时候，都会创建新的 Job 对象和 JobDeta
 
 > 修改为 public 即可
 
-[InstanceJob.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/job/InstanceJob.java)
+[InstanceTest.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/InstanceTest.java)
 
 每次打印日志的 Job 和 JobDetail 对象都是不一样的，也就是每次执行任务都会创建新的 Job 和 JobDetail 对象。
 
@@ -114,7 +110,7 @@ Quartz 每次在执行任务的时候，都会创建新的 Job 对象和 JobDeta
 
 举个栗子：给 Job 类添加 @DisallowConcurrentExecution 注解，我们使用的还是之前使用的触发器，每1秒执行一次，但是我们的任务每次执行需要花费3秒执行。
 
-[ThreeJob.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/job/ThreeJob.java)
+[ThreeTest.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/ThreeTest.java)
 
 如果没有 @DisallowConcurrentExecution 注解，虽然任务没有执行完成，但是每过1秒都会执行一次新的任务，导致任务会一直累积。而添加了 @DisallowConcurrentExecution 注解，上一次执行完成，才会执行下一次任务。可以看到每隔三秒执行一次，不会并发执行，而是变成了串行执行。
 
@@ -145,3 +141,60 @@ CronTrigger 是 Quartz 中用于基于 Cron 表达式定义任务执行时间表
 1. CronTrigger演示
 
 先举个栗子：任务还是之前的任务类：
+
+[TriggerTest.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/TriggerTest.java)
+
+上面的代码和之前的 HelloWorld 基本是一样的，只是使用了不同的触发器。上面定义了 CronTrigger 触发器，使用 Cron 表达式 */2 * * * * ? 来定义执行规则，并时候用 startAt 推迟了10秒执行。这个 Cron 表达式看上去有点懵逼，如果不会写表达式，可以百度一下 Cron 表达式在线工具，有很多网站可以编写 Cron 表达式。下面简单介绍一下 Cron 表达式 。
+
+
+2. Cron 表达式基础
+
+[crontab](https://ma5d.asia/docs/linux/crontab)
+
+```txt
+秒 分 时 日 月 周 年（可选）
+```
+
+
+3. Cron 表达式示例
+```shell
+# 每天下午 1 点执行任务：
+0 0 13 * * ?
+
+# 每隔5分钟执行一次：
+0 */5 * * * ?
+
+# 周一到周五上午 9 点到下午 5 点，每隔半小时执行一次：
+0 */30 9-17 * * MON-FRI
+
+# 在每月的最后一天，上午10点执行任务：
+0 0 10 L * ?
+```
+
+### 5.2 MisFire策略
+
+在 Quartz 中，Misfire 指的是触发器错过了预定的触发时间。例如下面一些情况可能会导致任务错过执行：
+- 当前没有空闲的线程池资源可用调度器暂停；系统宕机；
+- 使用了 @DisallowConcurrentExecution 注解，要执行下一次任务了，但是上一次任务还没有执行完成；
+- 指定了过期开始的执行时间，现在是08:00:00，指定开始执行时间为06:00:00；
+
+对于 CronTrigger 是否构成 misfire，有两个条件：
+- job 到达触发时间时没有被执行；
+- job 延迟执行的时间超过了Quartz 配置的 misfireThreshold 阈值。如果延迟执行的时间小于阈值，则 Quartz 不认为发生了misfire，会立即执行 job；如果延迟执行的时间大于或者等于阈值，则被判断为misfire，然后会按照指定的策略来执行。如果没有配置 Quartz 的 misfireThreshold，默认配置为60秒。
+
+Quartz 针对 CronTrigger 错过触发提供了不同的 Misfire 策略，确保作业能够尽可能地被执行。Misfire策略由 withMisfireHandlingInstructionXXX()方法来设置，其中 XXX 可以是IgnoreMisfires()、DoNothing()、FireAndProceed()，下面讲解一下。
+
+1. withMisfireHandlingInstructionDoNothing()：所有错过的触发都被忽略，并按照原计划执行任务，也就是错过的就错过了，等待下一次执行时间到了再执行。
+
+
+2. withMisfireHandlingInstructionFireAndProceed()：错过了很多次，但是只会立即执行一次，然后按照原计划执行任务。这个是默认的策略！
+
+3. withMisfireHandlingInstructionIgnoreMisfires()：立即执行所有错过的触发，错过了100个，一下子把错过的100个全部执行了，然后按照原计划执行任务。
+
+
+在实际使用中，根据您的需求选择合适的Misfire策略非常重要，这可以确保即使在意外情况下，任务也能够按照期望的方式执行。
+
+[MisFireTest.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/MisFireTest.java)
+
+因为现在还没有将 Quartz 的数据持久化到数据库，所以现在使用策略会发现没有效果，继续向后学习，在后面讲到将 Quartz 的数据持久化到数据库后，然后停掉项目，重新启动后，Quart 会重新启动运行，并使用不同的策略恢复任务，就可以看到效果了，例如配置为withMisfireHandlingInstructionIgnoreMisfires()，你会发现项目重新启动后，可能会出现立刻执行了很多次任务，因为这些任务是停掉项目后错过的。
+
