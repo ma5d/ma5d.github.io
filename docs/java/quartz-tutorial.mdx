@@ -186,7 +186,6 @@ Quartz 针对 CronTrigger 错过触发提供了不同的 Misfire 策略，确保
 
 1. withMisfireHandlingInstructionDoNothing()：所有错过的触发都被忽略，并按照原计划执行任务，也就是错过的就错过了，等待下一次执行时间到了再执行。
 
-
 2. withMisfireHandlingInstructionFireAndProceed()：错过了很多次，但是只会立即执行一次，然后按照原计划执行任务。这个是默认的策略！
 
 3. withMisfireHandlingInstructionIgnoreMisfires()：立即执行所有错过的触发，错过了100个，一下子把错过的100个全部执行了，然后按照原计划执行任务。
@@ -196,5 +195,32 @@ Quartz 针对 CronTrigger 错过触发提供了不同的 Misfire 策略，确保
 
 [MisFireTest.java](https://gitee.com/ma5d/hello-quartz/blob/main/src/main/java/org/ma5d/MisFireTest.java)
 
+<GiteeFileContent owner="ma5d" repo="hello-quartz" filePath="src/main/java/org/ma5d/MisFireTest.java" branch="main"/>
+
+
 因为现在还没有将 Quartz 的数据持久化到数据库，所以现在使用策略会发现没有效果，继续向后学习，在后面讲到将 Quartz 的数据持久化到数据库后，然后停掉项目，重新启动后，Quart 会重新启动运行，并使用不同的策略恢复任务，就可以看到效果了，例如配置为withMisfireHandlingInstructionIgnoreMisfires()，你会发现项目重新启动后，可能会出现立刻执行了很多次任务，因为这些任务是停掉项目后错过的。
+
+## 6. 调度器
+
+### 6.1 Calendar例外
+
+如果我们想在某些时候不执行任务，例如有一个任务，一年每天都会执行，但是想在节假日不执行，该如何做呢？这个时候，就可以使用例外规则的调度器。在 Quartz 中可以使用 Calendar 来定义例外规则。举个栗子：org.quartz.Calendar 在Quartz 中是一个接口，它有很多的实现类，我们这里演示一下，在指定的日期不执行任务。
+
+主要有三个步骤：
+
+1. 定义例外
+
+```java
+// 1.定义例外
+AnnualCalendar holidays = new AnnualCalendar();
+// 2024年元旦不执行
+Calendar newYear = new GregorianCalendar(2024, Calendar.JANUARY, 1);
+holidays.setDayExcluded(newYear, true);
+// 2024年中秋不执行
+Calendar middleAutumn = new GregorianCalendar(2024, Calendar.SEPTEMBER, 17);
+holidays.setDayExcluded(middleAutumn, true);
+```
+
+
+
 
