@@ -235,3 +235,10 @@ Quartz 针对 CronTrigger 错过触发提供了不同的 Misfire 策略，确保
 
 这些是 Quartz 中常见的内置日历实现，每种日历都有其特定的用途和功能。除了这些内置的日历实现外，你还可以实现自定义的 org.quartz.Calendar 接口，以满足你特定的业务需求。通过实现这个接口，你可以定义自己的日历逻辑，用于控制任务的执行时间。
 
+## 7 SpringBoot集成Quartz
+
+上面使用的是原生的方法演示 Quartz 的时候，但是在实际的使用中，肯定不会像前面那样使用，一般会在 Spring 项目中或 SpringBoot 项目中进行使用，下面演示一下在 SpringBoot 项目中使用 Quartz。
+
+1. 新建SpringBoot项目: 新建 SpringBoot 项目这里就不介绍了。可能你的项目已经是 SpringBoot 的项目了。
+
+2. 添加依赖: 在项目的 pom.xml 中添加依赖
