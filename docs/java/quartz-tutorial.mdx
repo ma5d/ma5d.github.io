@@ -210,17 +210,28 @@ Quartz 针对 CronTrigger 错过触发提供了不同的 Misfire 策略，确保
 
 1. 定义例外
 
-```java
-// 1.定义例外
-AnnualCalendar holidays = new AnnualCalendar();
-// 2024年元旦不执行
-Calendar newYear = new GregorianCalendar(2024, Calendar.JANUARY, 1);
-holidays.setDayExcluded(newYear, true);
-// 2024年中秋不执行
-Calendar middleAutumn = new GregorianCalendar(2024, Calendar.SEPTEMBER, 17);
-holidays.setDayExcluded(middleAutumn, true);
-```
+<GiteeFileContent owner="ma5d" repo="hello-quartz" filePath="src/main/java/org/ma5d/ExcludeTest.java" branch="main" startLine="23" endLine="30" />
 
+2. 将例外添加到调度器中
 
+<GiteeFileContent owner="ma5d" repo="hello-quartz" filePath="src/main/java/org/ma5d/ExcludeTest.java" branch="main" startLine="43" endLine="44" />
 
+- 第三个参数表示已存在具有相同名称的 Calendar，将其替换为新的 Calendar。如果设置为 false，如果已存在具有相同名称的 Calendar，则不会进行替换，而是保留现有的 Calendar。
+- 第四个参数如果设置为 true，则更新与 Calendar 相关联的触发器（如果有的话）。如果设置为 false，则不会更新与 Calendar 相关联的任何触发器。
+
+3. 完整代码
+
+<GiteeFileContent owner="ma5d" repo="hello-quartz" filePath="src/main/java/org/ma5d/ExcludeTest.java" branch="main"/>
+
+上面的 AnnualCalendar 是 org.quartz.Calendar 接口的一个实现，org.quartz.Calendar 接口定义了日历的抽象，而具体的日历实现则有多种方式，其中包括一些内置的和自定义的实现。
+
+一些常见的 Quartz 内置日历实现包括：
+
+- AnnualCalendar（年度日历）： 允许你指定每年的特定日期，标记为不执行的日期，比如节假日等。
+- CronCalendar（Cron日历）： 根据 Cron 表达式指定一组不执行的日期。
+- DailyCalendar（每日日历）： 允许你指定每天的特定时间段，任务只能在该时间段内触发。
+- HolidayCalendar（节假日日历）： 类似 AnnualCalendar，允许你指定一年中不执行任务的特定日期。
+- MonthlyCalendar（每月日历）： 允许你指定每月的特定日期，标记为不执行的日期。
+
+这些是 Quartz 中常见的内置日历实现，每种日历都有其特定的用途和功能。除了这些内置的日历实现外，你还可以实现自定义的 org.quartz.Calendar 接口，以满足你特定的业务需求。通过实现这个接口，你可以定义自己的日历逻辑，用于控制任务的执行时间。
 

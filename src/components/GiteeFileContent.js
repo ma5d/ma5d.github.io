@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CodeBlock from '@theme/CodeBlock';
 
-const GiteeFileContent = ({ owner, repo, filePath, branch = 'main' }) => {
+const GiteeFileContent = ({ owner, repo, filePath, branch = 'main', startLine, endLine}) => {
   const [fileContent, setFileContent] = useState('');
 
   useEffect(() => {
@@ -15,7 +15,12 @@ const GiteeFileContent = ({ owner, repo, filePath, branch = 'main' }) => {
         const binaryArray = Uint8Array.from(binaryString, char => char.charCodeAt(0));
         const decodedContent = new TextDecoder('utf-8').decode(binaryArray);
 
-        setFileContent(decodedContent);
+        const contentLines = decodedContent.split('\n');
+        const start = startLine ? Math.max(startLine - 1, 0) : 0;
+        const end = endLine ? endLine : contentLines.length;
+        const selectedLines = contentLines.slice(start, end).join('\n');
+
+        setFileContent(selectedLines);
 
       } catch (error) {
         console.error('Error fetching file content:', error);
@@ -23,7 +28,7 @@ const GiteeFileContent = ({ owner, repo, filePath, branch = 'main' }) => {
     };
 
     fetchFileContent();
-  }, [owner, repo, filePath, branch]); // 监听这些参数的变化
+  }, [owner, repo, filePath, branch, startLine, endLine]);
 
   return (
     <CodeBlock language="java">
