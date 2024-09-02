@@ -15,8 +15,11 @@ vfox use nodejs@18
 
 ```shell
 
+export HTTP_PROXY=http://127.0.0.1:7890
+export HTTPS_PROXY=http://127.0.0.1:7890
+
 npm config set proxy http://127.0.0.1:7890
 npm config set https-proxy http://127.0.0.1:7890
 
-npm --proxy=http://127.0.0.1:7890 --https-proxy=http://127.0.0.1:7890 install @docusaurus/core@latest @docusaurus/preset-classic@latest @docusaurus/module-type-aliases@latest @docusaurus/types@latest
+npm install @docusaurus/core@latest @docusaurus/preset-classic@latest @docusaurus/module-type-aliases@latest @docusaurus/types@latest
 ```

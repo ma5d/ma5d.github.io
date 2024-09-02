@@ -78,7 +78,7 @@ https://registry.npmjs.org
 
 ## 4.修改本地Npm连接源
 
-> 注：http://172.16.92.74:9998为博主搭建Nexus私服地址，请大家以实际情况进行更改，
+> 注：`http://172.16.92.74:9998`为博主搭建Nexus私服地址，请大家以实际情况进行更改，
 
 打开`Repositories`，找到创建的分组npm-public，点击Copy，复制连接源地址。
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201028152329883.png)

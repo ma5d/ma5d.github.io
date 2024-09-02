@@ -238,7 +238,7 @@ kubectl expose deployment nginx --port=80 --type=NodePort
 kubectl get pod,svc
 ```
 
-访问地址：http://NodeIP:Port
+访问地址：`http://NodeIP:Port`
 > 任意node IP 即可，node回自动分配高段位端口，并且转发到某一指定的80端口，重启不会失效。
 
 ## 三、kubernetes 集群搭建(二进制方式)
