@@ -69,5 +69,3 @@ docker run -d --name clickhouse-server \
 ```
 
 到这里就安装成功了，可以用dbeaver连接使用了
-
-本文转自 [https://www.jianshu.com/p/146187593a1a](https://www.jianshu.com/p/146187593a1a)，如有侵权，请联系删除。
